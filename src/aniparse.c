@@ -1274,67 +1274,67 @@ static int parse_ani_string(char *s, FILE *fp) {
 	}
 	strupr(command);
 	/************** GRAB STUFF *****************/
-	if(msc("GR",command)) {
+	if(strprefix("GR",command)) {
 		type=GRAB;
 	}
-	if(msc("LI",command)) {
+	if(strprefix("LI",command)) {
 		type=LINE;
 	}
-	if(msc("RL",command)) {
+	if(strprefix("RL",command)) {
 		type=RLINE;
 	}
-	if(msc("RE",command)) {
+	if(strprefix("RE",command)) {
 		type=RECT;
 	}
-	if(msc("FR",command)) {
+	if(strprefix("FR",command)) {
 		type=FRECT;
 	}
-	if(msc("EL",command)) {
+	if(strprefix("EL",command)) {
 		type=ELLIP;
 	}
-	if(msc("FE",command)) {
+	if(strprefix("FE",command)) {
 		type=FELLIP;
 	}
-	if(msc("CI",command)) {
+	if(strprefix("CI",command)) {
 		type=CIRC;
 	}
-	if(msc("FC",command)) {
+	if(strprefix("FC",command)) {
 		type=FCIRC;
 	}
-	if(msc("VT",command)) {
+	if(strprefix("VT",command)) {
 		type=VTEXT;
 	}
-	if(msc("TE",command)) {
+	if(strprefix("TE",command)) {
 		type=TEXT;
 	}
-	if(msc("SE",command)){
+	if(strprefix("SE",command)){
 		type=SETTEXT;
 	}
-	if(msc("TR",command)) {
+	if(strprefix("TR",command)) {
 		type=TRANSIENT;
 	}
-	if(msc("PE",command)) {
+	if(strprefix("PE",command)) {
 		type=PERMANENT;
 	}
-	if(msc("DI",command)) {
+	if(strprefix("DI",command)) {
 		type=DIMENSION;
 	}
-	if(msc("EN",command)) {
+	if(strprefix("EN",command)) {
 		type=END;
 	}
-	if(msc("DO",command)) {
+	if(strprefix("DO",command)) {
 		type=END;
 	}
-	if(msc("SP",command)) {
+	if(strprefix("SP",command)) {
 		type=SPEED;
 	}
-	if(msc("CO",command)) {
+	if(strprefix("CO",command)) {
 		type=COMET;
 	}
-	if(msc("XN",command)) {
+	if(strprefix("XN",command)) {
 		type=AXNULL;
 	}
-	if(msc("YN",command)) {
+	if(strprefix("YN",command)) {
 		type=AYNULL;
 	}
 	switch(type) {

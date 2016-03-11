@@ -43,6 +43,7 @@
 #include "parserslow.h"
 #include "pop_list.h"
 #include "read_dir.h"
+#include "strutil.h"
 #include "tabular.h"
 #include "volterra2.h"
 #include "xpplim.h"
@@ -151,7 +152,6 @@ static void set_up_xvt(void);
 static void set_up_pp(void);
 static void set_up_arry(void);
 static void set_value_from_box(BoxList *b, int i);
-static void stringintersect(char *target, char *sother);
 static int to_float(char *s, double *z);
 
 
@@ -2466,24 +2466,6 @@ static void set_value_from_box(BoxList *b, int i) {
 		add_editval(b,i,s);
 		break;
 	}
-}
-
-
-/* this is rather lazy and slow but hey it works */
-static void stringintersect(char *target, char *sother) {
-	int m = strlen(target);
-	int n = strlen(sother);
-	if(n<m) {
-		m = n;
-	}
-	int j=0;
-	while (j<m)	{
-		if(target[j] != sother[j])	{
-			break;
-		}
-		j++;
-	}
-	target[j] = '\0';
 }
 
 

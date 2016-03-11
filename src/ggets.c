@@ -23,6 +23,7 @@
 #include "mykeydef.h"
 #include "newhome.h"
 #include "pop_list.h"
+#include "strutil.h"
 
 /* --- Forward declarations --- */
 static void clr_line_at(Window w, int col0, int pos, int n);
@@ -345,22 +346,6 @@ void put_cursor_at(Window w, int col0, int pos) {
 	/* XDrawString(display,w,gc,col0+pos*DCURX-1,DCURY,"^",1);*/
 	XDrawLine(display,w,gc,x1,y1,x1,y2);
 	XDrawLine(display,w,gc,x2,y1,x2,y2);
-}
-
-
-void movmem(char *s1, char *s2, int len) {
-	int i;
-	for(i=len-1;i>=0;i--) {
-		s1[i]=s2[i];
-	}
-}
-
-
-void memmov(char *s1, char *s2, int len) {
-	int i;
-	for(i=0;i<len;i++) {
-		s1[i]=s2[i];
-	}
 }
 
 

@@ -255,21 +255,6 @@ void load_eqn(void) {
 }
 
 
-/*  ODE options stuff  here !!   */
-int msc(char *s1, char *s2) {
-	int n=strlen(s1),i;
-	if(strlen(s2)<n) {
-		return(0);
-	}
-	for(i=0;i<n;i++) {
-		if(s1[i]!=s2[i]) {
-			return(0);
-		}
-	}
-	return(1);
-}
-
-
 void loadeqn_init_options(void) {
 	TIMPLOT=1;
 	FOREVER=0;
@@ -499,8 +484,8 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 	static char mkey[]="demragvbqsc582y";
 	static char Mkey[]="DEMRAGVBQSC582Y";
 	strupr(s1);
-	if(msc("QUIET",s1)) {
-		if(!(msc(s2,"0") || msc(s2,"1")))	{
+	if(strprefix("QUIET",s1)) {
+		if(!(strprefix(s2,"0") || strprefix(s2,"1")))	{
 			plintf("QUIET option must be 0 or 1.\n");
 			exit(-1);
 		}
@@ -510,7 +495,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("LOGFILE",s1)) {
+	if(strprefix("LOGFILE",s1)) {
 		/*Will be 1 if -logfile was specified on the command line.*/
 		if(OVERRIDE_LOGFILE==0) {
 			if(logfile != NULL) {
@@ -520,19 +505,19 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("BELL",s1)) {
-		if(!(msc(s2,"0") || msc(s2,"1")))	{
+	if(strprefix("BELL",s1)) {
+		if(!(strprefix(s2,"0") || strprefix(s2,"1")))	{
 			plintf("BELL option must be 0 or 1.\n");
 			exit(-1);
 		}
 		tfBell=atoi(s2);
 		return;
 	}
-	if(msc("BUT",s1)) {
+	if(strprefix("BUT",s1)) {
 		add_user_button(s2);
 		return;
 	}
-	if((msc("BIGFONT",s1)) || (msc("BIG",s1))) {
+	if((strprefix("BIGFONT",s1)) || (strprefix("BIG",s1))) {
 		if((notAlreadySet.BIG_FONT_NAME || force)  ||
 		   ((mask!=NULL) && (mask->BIG_FONT_NAME==1))) {
 			strcpy(big_font_name,s2);
@@ -540,7 +525,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if((msc("SMALLFONT",s1)) || (msc("SMALL",s1))) {
+	if((strprefix("SMALLFONT",s1)) || (strprefix("SMALL",s1))) {
 		if((notAlreadySet.SMALL_FONT_NAME || force)  ||
 		   ((mask!=NULL) && (mask->SMALL_FONT_NAME==1))) {
 			strcpy(small_font_name,s2);
@@ -548,7 +533,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("FORECOLOR",s1)) {
+	if(strprefix("FORECOLOR",s1)) {
 		if((notAlreadySet.UserBlack || force)  ||
 		   ((mask!=NULL) && (mask->UserBlack==1))) {
 			sprintf(UserBlack,"#%s",s2);
@@ -556,7 +541,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("BACKCOLOR",s1)) {
+	if(strprefix("BACKCOLOR",s1)) {
 		if((notAlreadySet.UserWhite || force)  ||
 		   ((mask!=NULL) && (mask->UserWhite==1))) {
 			sprintf(UserWhite,"#%s",s2);
@@ -564,7 +549,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("MWCOLOR",s1)) {
+	if(strprefix("MWCOLOR",s1)) {
 		if((notAlreadySet.UserMainWinColor || force)  ||
 		   ((mask!=NULL) && (mask->UserMainWinColor==1))) {
 			/* printf("Setting MWCOLOR=%s\n",s2); */
@@ -573,7 +558,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("DWCOLOR",s1)) {
+	if(strprefix("DWCOLOR",s1)) {
 		if((notAlreadySet.UserDrawWinColor || force)  ||
 		   ((mask!=NULL) && (mask->UserDrawWinColor==1))) {
 			sprintf(UserDrawWinColor,"#%s",s2);
@@ -581,10 +566,10 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("GRADS",s1)) {
+	if(strprefix("GRADS",s1)) {
 		if((notAlreadySet.UserGradients || force)  ||
 		   ((mask!=NULL) && (mask->UserGradients==1))) {
-			if(!(msc(s2,"0") || msc(s2,"1"))) {
+			if(!(strprefix(s2,"0") || strprefix(s2,"1"))) {
 				plintf("GRADS option must be 0 or 1.\n");
 				exit(-1);
 			}
@@ -593,7 +578,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("PLOTFMT",s1)) {
+	if(strprefix("PLOTFMT",s1)) {
 		if((notAlreadySet.PLOTFORMAT || force)  ||
 		   ((mask!=NULL) && (mask->PLOTFORMAT==1)))	{
 			strcpy(PlotFormat,s2);
@@ -601,7 +586,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("BACKIMAGE",s1)) {
+	if(strprefix("BACKIMAGE",s1)) {
 		if((notAlreadySet.UserBGBitmap || force)  ||
 		   ((mask!=NULL) && (mask->UserBGBitmap==1)))	{
 			strcpy(UserBGBitmap,s2);
@@ -609,7 +594,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("WIDTH",s1)) {
+	if(strprefix("WIDTH",s1)) {
 		if((notAlreadySet.UserMinWidth || force) ||
 		   ((mask!=NULL) && (mask->UserMinWidth==1))) {
 			UserMinWidth=atoi(s2);
@@ -617,7 +602,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("HEIGHT",s1)) {
+	if(strprefix("HEIGHT",s1)) {
 		if((notAlreadySet.UserMinHeight || force)  ||
 		   ((mask!=NULL) && (mask->UserMinHeight==1))) {
 			UserMinHeight=atoi(s2);
@@ -625,7 +610,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("YNC",s1)) {
+	if(strprefix("YNC",s1)) {
 		if((notAlreadySet.YNullColor || force)  ||
 		   ((mask!=NULL) && (mask->YNullColor==1))) {
 			i=atoi(s2);
@@ -636,7 +621,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("XNC",s1)) {
+	if(strprefix("XNC",s1)) {
 		if((notAlreadySet.XNullColor || force)  ||
 		   ((mask!=NULL) && (mask->XNullColor==1))) {
 			i=atoi(s2);
@@ -647,7 +632,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("SMC",s1)) {
+	if(strprefix("SMC",s1)) {
 		if((notAlreadySet.StableManifoldColor || force)  ||
 		   ((mask!=NULL) && (mask->StableManifoldColor==1))) {
 			i=atoi(s2);
@@ -658,7 +643,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("UMC",s1)) {
+	if(strprefix("UMC",s1)) {
 		if((notAlreadySet.UnstableManifoldColor || force)  ||
 		   ((mask!=NULL) && (mask->UnstableManifoldColor==1))) {
 			i=atoi(s2);
@@ -669,7 +654,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("LT",s1)) {
+	if(strprefix("LT",s1)) {
 		if((notAlreadySet.START_LINE_TYPE || force)  ||
 		   ((mask!=NULL) && (mask->START_LINE_TYPE==1))) {
 			i=atoi(s2);
@@ -681,7 +666,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("SEED",s1)) {
+	if(strprefix("SEED",s1)) {
 		if((notAlreadySet.RandSeed || force)  ||
 		   ((mask!=NULL) && (mask->RandSeed==1))) {
 			i=atoi(s2);
@@ -693,7 +678,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("BACK",s1)) {
+	if(strprefix("BACK",s1)) {
 		if((notAlreadySet.PaperWhite || force)  ||
 		   ((mask!=NULL) && (mask->PaperWhite==1))) {
 			if(s2[0]=='w' || s2[0]=='W') {
@@ -705,7 +690,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("COLORMAP",s1)) {
+	if(strprefix("COLORMAP",s1)) {
 		if((notAlreadySet.COLORMAP || force)  ||
 		   ((mask!=NULL) && (mask->COLORMAP==1)))	{
 			i=atoi(s2);
@@ -716,7 +701,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("NPLOT",s1)) {
+	if(strprefix("NPLOT",s1)) {
 		if((notAlreadySet.NPLOT || force)  ||
 		   ((mask!=NULL) && (mask->NPLOT==1))) {
 			NPltV=atoi(s2);
@@ -724,7 +709,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("DLL_LIB",s1)) {
+	if(strprefix("DLL_LIB",s1)) {
 		if((notAlreadySet.DLL_LIB || force)  ||
 		   ((mask!=NULL) && (mask->DLL_LIB==1))) {
 			sprintf(dll_lib,"%s",s2);
@@ -733,7 +718,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("DLL_FUN",s1)) {
+	if(strprefix("DLL_FUN",s1)) {
 		if((notAlreadySet.DLL_FUN || force)  ||
 		   ((mask!=NULL) && (mask->DLL_FUN==1))) {
 			sprintf(dll_fun,"%s",s2);
@@ -743,11 +728,11 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		return;
 	}
 	/* can now initialize several plots */
-	if(msc("SIMPLOT",s1)) {
+	if(strprefix("SIMPLOT",s1)) {
 		SimulPlotFlag=1;
 		return;
 	}
-	if(msc("MULTIWIN",s1)) {
+	if(strprefix("MULTIWIN",s1)) {
 		MultiWin=1;
 		return;
 	}
@@ -759,45 +744,45 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		sprintf(xxl,"XLO%d",j);
 		sprintf(yyh,"YHI%d",j);
 		sprintf(yyl,"YLO%d",j);
-		if(msc(xx,s1)) {
+		if(strprefix(xx,s1)) {
 			find_variable(s2,&i);
 			if(i>-1) {
 				IX_PLT[j]=i;
 			}
 			return;
 		}
-		if(msc(yy,s1)) {
+		if(strprefix(yy,s1)) {
 			find_variable(s2,&i);
 			if(i>-1) {
 				IY_PLT[j]=i;
 			}
 			return;
 		}
-		if(msc(zz,s1)) {
+		if(strprefix(zz,s1)) {
 			find_variable(s2,&i);
 			if(i>-1) {
 				IZ_PLT[j]=i;
 			}
 			return;
 		}
-		if(msc(xxh,s1)) {
+		if(strprefix(xxh,s1)) {
 			X_HI[j]=atof(s2);
 			return;
 		}
-		if(msc(xxl,s1)) {
+		if(strprefix(xxl,s1)) {
 			X_LO[j]=atof(s2);
 			return;
 		}
-		if(msc(yyh,s1)) {
+		if(strprefix(yyh,s1)) {
 			Y_HI[j]=atof(s2);
 			return;
 		}
-		if(msc(yyl,s1)) {
+		if(strprefix(yyl,s1)) {
 			Y_LO[j]=atof(s2);
 			return;
 		}
 	}
-	if(msc("XP",s1)) {
+	if(strprefix("XP",s1)) {
 		if((notAlreadySet.XP || force)  ||
 		   ((mask!=NULL) && (mask->XP==1))) {
 			find_variable(s2,&i);
@@ -809,7 +794,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("YP",s1)) {
+	if(strprefix("YP",s1)) {
 		if((notAlreadySet.YP || force)  ||
 		   ((mask!=NULL) && (mask->YP==1))) {
 			find_variable(s2,&i);
@@ -821,7 +806,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("ZP",s1)) {
+	if(strprefix("ZP",s1)) {
 		if((notAlreadySet.ZP || force)  ||
 		   ((mask!=NULL) && (mask->ZP==1))) {
 			find_variable(s2,&i);
@@ -833,7 +818,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("AXES",s1)) {
+	if(strprefix("AXES",s1)) {
 		if((notAlreadySet.AXES || force)  ||
 		   ((mask!=NULL) && (mask->AXES==1))) {
 			if(s2[0]=='3') {
@@ -845,7 +830,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("NJMP",s1)) {
+	if(strprefix("NJMP",s1)) {
 		if((notAlreadySet.NOUT || force)  ||
 		   ((mask!=NULL) && (mask->NOUT==1))) {
 			NJMP=atoi(s2);
@@ -853,7 +838,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("NOUT",s1)) {
+	if(strprefix("NOUT",s1)) {
 		if((notAlreadySet.NOUT || force)  ||
 		   ((mask!=NULL) && (mask->NOUT==1))) {
 			NJMP=atoi(s2);
@@ -861,7 +846,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("NMESH",s1)) {
+	if(strprefix("NMESH",s1)) {
 		if((notAlreadySet.NMESH || force)  ||
 		   ((mask!=NULL) && (mask->NMESH==1))) {
 			NMESH=atoi(s2);
@@ -869,7 +854,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("METH",s1)) {
+	if(strprefix("METH",s1)) {
 		if((notAlreadySet.METHOD || force)  ||
 		   ((mask!=NULL) && (mask->METHOD==1))) {
 			for(i=0;i<15;i++) {
@@ -881,7 +866,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("VMAXPTS",s1)) {
+	if(strprefix("VMAXPTS",s1)) {
 		if((notAlreadySet.VMAXPTS || force)  ||
 		   ((mask!=NULL) && (mask->VMAXPTS==1))) {
 			MaxPoints=atoi(s2);
@@ -889,7 +874,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("MAXSTOR",s1)) {
+	if(strprefix("MAXSTOR",s1)) {
 		if((notAlreadySet.MAXSTOR || force)  ||
 		   ((mask!=NULL) && (mask->MAXSTOR==1)))	{
 			MAXSTOR=atoi(s2);
@@ -897,7 +882,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("TOR_PER",s1)) {
+	if(strprefix("TOR_PER",s1)) {
 		if((notAlreadySet.TOR_PER || force)  ||
 		   ((mask!=NULL) && (mask->TOR_PER==1)))	{
 			TOR_PERIOD=atof(s2);
@@ -906,7 +891,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("JAC_EPS",s1)) {
+	if(strprefix("JAC_EPS",s1)) {
 		if((notAlreadySet.JAC_EPS || force)  ||
 		   ((mask!=NULL) && (mask->JAC_EPS==1)))	{
 			NEWT_ERR=atof(s2);
@@ -914,7 +899,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("NEWT_TOL",s1)) {
+	if(strprefix("NEWT_TOL",s1)) {
 		if((notAlreadySet.NEWT_TOL || force)  ||
 		   ((mask!=NULL) && (mask->NEWT_TOL==1))) {
 			EVEC_ERR=atof(s2);
@@ -922,7 +907,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("NEWT_ITER",s1)) {
+	if(strprefix("NEWT_ITER",s1)) {
 		if((notAlreadySet.NEWT_ITER || force)  ||
 		   ((mask!=NULL) && (mask->NEWT_ITER==1))) {
 			EVEC_ITER=atoi(s2);
@@ -930,7 +915,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("FOLD",s1)) {
+	if(strprefix("FOLD",s1)) {
 		if((notAlreadySet.FOLD || force)  ||
 		   ((mask!=NULL) && (mask->FOLD==1))) {
 			find_variable(s2,&i);
@@ -941,7 +926,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("TOTAL",s1)) {
+	if(strprefix("TOTAL",s1)) {
 		if((notAlreadySet.TEND || force)  ||
 		   ((mask!=NULL) && (mask->TEND==1))) {
 			TEND=atof(s2);
@@ -949,7 +934,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("DTMIN",s1)) {
+	if(strprefix("DTMIN",s1)) {
 		if((notAlreadySet.DTMIN || force)  ||
 		   ((mask!=NULL) && (mask->DTMIN==1))) {
 			HMIN=atof(s2);
@@ -957,7 +942,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("DTMAX",s1)) {
+	if(strprefix("DTMAX",s1)) {
 		if((notAlreadySet.DTMAX || force)  ||
 		   ((mask!=NULL) && (mask->DTMAX==1))) {
 			HMAX=atof(s2);
@@ -965,7 +950,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("DT",s1)) {
+	if(strprefix("DT",s1)) {
 		if((notAlreadySet.DT || force)  ||
 		   ((mask!=NULL) && (mask->DT==1))) {
 			DELTA_T=atof(s2);
@@ -973,7 +958,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("T0",s1)) {
+	if(strprefix("T0",s1)) {
 		if((notAlreadySet.T0 || force)  ||
 		   ((mask!=NULL) && (mask->T0==1))) {
 			T0=atof(s2);
@@ -981,7 +966,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("TRANS",s1)) {
+	if(strprefix("TRANS",s1)) {
 		if((notAlreadySet.TRANS || force)  ||
 		   ((mask!=NULL) && (mask->TRANS==1))) {
 			TRANS=atof(s2);
@@ -989,7 +974,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("BOUND",s1)) {
+	if(strprefix("BOUND",s1)) {
 		if((notAlreadySet.BOUND || force)  ||
 		   ((mask!=NULL) && (mask->BOUND==1))) {
 			BOUND=atof(s2);
@@ -997,7 +982,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("ATOL",s1)) {
+	if(strprefix("ATOL",s1)) {
 		if((notAlreadySet.ATOLER || force)  ||
 		   ((mask!=NULL) && (mask->ATOLER==1))) {
 			ATOLER=atof(s2);
@@ -1005,7 +990,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("TOL",s1)) {
+	if(strprefix("TOL",s1)) {
 		if((notAlreadySet.TOLER || force)  ||
 		   ((mask!=NULL) && (mask->TOLER==1))) {
 			TOLER=atof(s2);
@@ -1014,7 +999,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		return;
 	}
 
-	if(msc("DELAY",s1)) {
+	if(strprefix("DELAY",s1)) {
 		if((notAlreadySet.DELAY || force)  ||
 		   ((mask!=NULL) && (mask->DELAY==1))) {
 			DELAY=atof(s2);
@@ -1022,7 +1007,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("BANDUP",s1)) {
+	if(strprefix("BANDUP",s1)) {
 		if((notAlreadySet.BANDUP || force)  ||
 		   ((mask!=NULL) && (mask->BANDUP==1))) {
 			cv_bandflag=1;
@@ -1031,7 +1016,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("BANDLO",s1)) {
+	if(strprefix("BANDLO",s1)) {
 		if((notAlreadySet.BANDLO || force)  ||
 		   ((mask!=NULL) && (mask->BANDLO==1))) {
 			cv_bandflag=1;
@@ -1040,7 +1025,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("PHI",s1)) {
+	if(strprefix("PHI",s1)) {
 		if((notAlreadySet.PHI || force)  ||
 		   ((mask!=NULL) && (mask->PHI==1)))	{
 			PHI0=atof(s2);
@@ -1048,7 +1033,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("THETA",s1)) {
+	if(strprefix("THETA",s1)) {
 		if((notAlreadySet.THETA || force)  ||
 		   ((mask!=NULL) && (mask->THETA==1))) {
 			THETA0=atof(s2);
@@ -1056,7 +1041,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("XLO",s1)) {
+	if(strprefix("XLO",s1)) {
 		if((notAlreadySet.XLO || force)  ||
 		   ((mask!=NULL) && (mask->XLO==1))) {
 			MY_XLO=atof(s2);
@@ -1064,7 +1049,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("YLO",s1)) {
+	if(strprefix("YLO",s1)) {
 		if((notAlreadySet.YLO || force)  ||
 		   ((mask!=NULL) && (mask->YLO==1)))	{
 			MY_YLO=atof(s2);
@@ -1072,7 +1057,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("XHI",s1)) {
+	if(strprefix("XHI",s1)) {
 		if((notAlreadySet.XHI || force)  ||
 		   ((mask!=NULL) && (mask->XHI==1)))	{
 			MY_XHI=atof(s2);
@@ -1080,7 +1065,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("YHI",s1)) {
+	if(strprefix("YHI",s1)) {
 		if((notAlreadySet.YHI || force)  ||
 		   ((mask!=NULL) && (mask->YHI==1)))	{
 			MY_YHI=atof(s2);
@@ -1088,7 +1073,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("XMAX",s1)) {
+	if(strprefix("XMAX",s1)) {
 		if((notAlreadySet.XMAX || force)  ||
 		   ((mask!=NULL) && (mask->XMAX==1))) {
 			x_3d[1]=atof(s2);
@@ -1096,7 +1081,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("YMAX",s1)) {
+	if(strprefix("YMAX",s1)) {
 		if((notAlreadySet.YMAX || force)  ||
 		   ((mask!=NULL) && (mask->YMAX==1))) {
 			y_3d[1]=atof(s2);
@@ -1104,7 +1089,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("ZMAX",s1)) {
+	if(strprefix("ZMAX",s1)) {
 		if((notAlreadySet.ZMAX || force)  ||
 		   ((mask!=NULL) && (mask->ZMAX==1))) {
 			z_3d[1]=atof(s2);
@@ -1112,7 +1097,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("XMIN",s1)) {
+	if(strprefix("XMIN",s1)) {
 		if((notAlreadySet.XMIN || force)  ||
 		   ((mask!=NULL) && (mask->XMIN==1))) {
 			x_3d[0]=atof(s2);
@@ -1125,7 +1110,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("YMIN",s1)) {
+	if(strprefix("YMIN",s1)) {
 		if((notAlreadySet.YMIN || force)  ||
 		   ((mask!=NULL) && (mask->YMIN==1))) {
 			y_3d[0]=atof(s2);
@@ -1138,7 +1123,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("ZMIN",s1)) {
+	if(strprefix("ZMIN",s1)) {
 		if((notAlreadySet.ZMIN || force)  ||
 		   ((mask!=NULL) && (mask->ZMIN==1))) {
 			z_3d[0]=atof(s2);
@@ -1146,7 +1131,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("POIMAP",s1)) {
+	if(strprefix("POIMAP",s1)) {
 		if((notAlreadySet.POIMAP || force)  ||
 		   ((mask!=NULL) && (mask->POIMAP==1))) {
 			if(s2[0]=='m' || s2[0]=='M') {
@@ -1162,7 +1147,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("POIVAR",s1)) {
+	if(strprefix("POIVAR",s1)) {
 		if((notAlreadySet.POIVAR || force)  ||
 		   ((mask!=NULL) && (mask->POIVAR==1))) {
 			find_variable(s2,&i);
@@ -1173,7 +1158,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("OUTPUT",s1)) {
+	if(strprefix("OUTPUT",s1)) {
 		if((notAlreadySet.OUTPUT || force)  ||
 		   ((mask!=NULL) && (mask->OUTPUT==1))) {
 			strcpy(batchout,s2);
@@ -1181,7 +1166,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("POISGN",s1)) {
+	if(strprefix("POISGN",s1)) {
 		if((notAlreadySet.POISGN || force)  ||
 		   ((mask!=NULL) && (mask->POISGN==1))) {
 			POISGN=atoi(s2);
@@ -1190,7 +1175,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		return;
 	}
 
-	if(msc("POISTOP",s1)) {
+	if(strprefix("POISTOP",s1)) {
 		if((notAlreadySet.POISTOP || force)  ||
 		   ((mask!=NULL) && (mask->POISTOP==1)))	{
 			SOS=atoi(s2);
@@ -1198,7 +1183,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("STOCH",s1)) {
+	if(strprefix("STOCH",s1)) {
 		if((notAlreadySet.STOCH || force) ||
 		   ((mask!=NULL) && (mask->STOCH==1))) {
 			STOCH_FLAG=atoi(s2);
@@ -1206,7 +1191,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("POIPLN",s1)) {
+	if(strprefix("POIPLN",s1)) {
 		if((notAlreadySet.POIPLN || force) ||
 		   ((mask!=NULL) && (mask->POIPLN==1))) {
 			POIPLN=atof(s2);
@@ -1214,7 +1199,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("RANGEOVER",s1)) {
+	if(strprefix("RANGEOVER",s1)) {
 		if((notAlreadySet.RANGEOVER || force) ||
 		   ((mask!=NULL) && (mask->RANGEOVER==1))) {
 			strcpy(range.item,s2);
@@ -1222,7 +1207,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("RANGESTEP",s1)) {
+	if(strprefix("RANGESTEP",s1)) {
 		if((notAlreadySet.RANGESTEP || force) ||
 		   ((mask!=NULL) && (mask->RANGESTEP==1))) {
 			range.steps=atoi(s2);
@@ -1230,7 +1215,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("RANGELOW",s1)) {
+	if(strprefix("RANGELOW",s1)) {
 		if((notAlreadySet.RANGELOW || force) ||
 		   ((mask!=NULL) && (mask->RANGELOW==1))) {
 			range.plow=atof(s2);
@@ -1239,7 +1224,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		return;
 	}
 
-	if(msc("RANGEHIGH",s1)) {
+	if(strprefix("RANGEHIGH",s1)) {
 		if((notAlreadySet.RANGEHIGH || force) ||
 		   ((mask!=NULL) && (mask->RANGEHIGH==1))) {
 			range.phigh=atof(s2);
@@ -1247,7 +1232,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("RANGERESET",s1)) {
+	if(strprefix("RANGERESET",s1)) {
 		if((notAlreadySet.RANGERESET || force) ||
 		   ((mask!=NULL) && (mask->RANGERESET==1))) {
 			if(s2[0]=='y' || s2[0]=='Y') {
@@ -1259,7 +1244,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("RANGEOLDIC",s1)) {
+	if(strprefix("RANGEOLDIC",s1)) {
 		if((notAlreadySet.RANGEOLDIC || force) ||
 		   ((mask!=NULL) && (mask->RANGEOLDIC==1))) {
 			if(s2[0]=='y' || s2[0]=='Y') {
@@ -1271,7 +1256,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("RANGE",s1)) {
+	if(strprefix("RANGE",s1)) {
 		if((notAlreadySet.RANGE || force) ||
 		   ((mask!=NULL) && (mask->RANGE==1))) {
 			batch_range=atoi(s2);
@@ -1279,7 +1264,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("NTST",s1)) {
+	if(strprefix("NTST",s1)) {
 		if((notAlreadySet.NTST || force) ||
 		   ((mask!=NULL) && (mask->NTST==1))) {
 			auto_ntst=atoi(s2);
@@ -1287,7 +1272,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("NMAX",s1)) {
+	if(strprefix("NMAX",s1)) {
 		if((notAlreadySet.NMAX || force) ||
 		   ((mask!=NULL) && (mask->NMAX==1))) {
 			auto_nmx=atoi(s2);
@@ -1295,7 +1280,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("NPR",s1)) {
+	if(strprefix("NPR",s1)) {
 		if((notAlreadySet.NPR || force) ||
 		   ((mask!=NULL) && (mask->NPR==1)))	{
 			auto_npr=atoi(s2);
@@ -1303,7 +1288,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("NCOL",s1)) {
+	if(strprefix("NCOL",s1)) {
 		if((notAlreadySet.NCOL || force) ||
 		   ((mask!=NULL) && (mask->NCOL==1))) {
 			auto_ncol=atoi(s2);
@@ -1311,7 +1296,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("DSMIN",s1)) {
+	if(strprefix("DSMIN",s1)) {
 		if((notAlreadySet.DSMIN || force) ||
 		   ((mask!=NULL) && (mask->DSMIN==1))) {
 			auto_dsmin=atof(s2);
@@ -1319,7 +1304,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("DSMAX",s1)) {
+	if(strprefix("DSMAX",s1)) {
 		if((notAlreadySet.DSMAX || force) ||
 		   ((mask!=NULL) && (mask->DSMAX==1))) {
 			auto_dsmax=atof(s2);
@@ -1327,7 +1312,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("DS",s1)) {
+	if(strprefix("DS",s1)) {
 		if((notAlreadySet.DS || force) ||
 		   ((mask!=NULL) && (mask->DS==1))) {
 			auto_ds=atof(s2);
@@ -1335,7 +1320,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("PARMIN",s1)) {
+	if(strprefix("PARMIN",s1)) {
 		if((notAlreadySet.XMAX || force) ||
 		   ((mask!=NULL) && (mask->XMAX==1))) {
 			auto_rl0=atof(s2);
@@ -1343,7 +1328,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("PARMAX",s1)) {
+	if(strprefix("PARMAX",s1)) {
 		if((notAlreadySet.PARMAX || force) ||
 		   ((mask!=NULL) && (mask->PARMAX==1))) {
 			auto_rl1=atof(s2);
@@ -1351,7 +1336,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("NORMMIN",s1)) {
+	if(strprefix("NORMMIN",s1)) {
 		if((notAlreadySet.NORMMIN || force) ||
 		   ((mask!=NULL) && (mask->NORMMIN==1))) {
 			auto_a0=atof(s2);
@@ -1359,7 +1344,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("NORMMAX",s1)) {
+	if(strprefix("NORMMAX",s1)) {
 		if((notAlreadySet.NORMMAX || force) ||
 		   ((mask!=NULL) && (mask->NORMMAX==1))) {
 			auto_a1=atof(s2);
@@ -1367,7 +1352,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("EPSL",s1)) {
+	if(strprefix("EPSL",s1)) {
 		if((notAlreadySet.EPSL || force) ||
 		   ((mask!=NULL) && (mask->EPSL==1))) {
 			auto_epsl=atof(s2);
@@ -1375,7 +1360,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("EPSU",s1)) {
+	if(strprefix("EPSU",s1)) {
 		if((notAlreadySet.EPSU || force) ||
 		   ((mask!=NULL) && (mask->EPSU==1))) {
 			auto_epsu=atof(s2);
@@ -1383,7 +1368,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("EPSS",s1)) {
+	if(strprefix("EPSS",s1)) {
 		if((notAlreadySet.EPSS || force) ||
 		   ((mask!=NULL) && (mask->EPSS==1))) {
 			auto_epss=atof(s2);
@@ -1391,7 +1376,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("RUNNOW",s1)) {
+	if(strprefix("RUNNOW",s1)) {
 		if((notAlreadySet.RUNNOW || force) ||
 		   ((mask!=NULL) && (mask->RUNNOW==1))) {
 			RunImmediately=atoi(s2);
@@ -1399,7 +1384,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("SEC",s1)) {
+	if(strprefix("SEC",s1)) {
 		if((notAlreadySet.SEC || force) ||
 		   ((mask!=NULL) && (mask->SEC==1))) {
 			SEc=atoi(s2);
@@ -1407,7 +1392,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("UEC",s1)) {
+	if(strprefix("UEC",s1)) {
 		if((notAlreadySet.UEC || force) ||
 		   ((mask!=NULL) && (mask->UEC==1))) {
 			UEc=atoi(s2);
@@ -1415,7 +1400,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("SPC",s1)) {
+	if(strprefix("SPC",s1)) {
 		if((notAlreadySet.SPC || force) ||
 		   ((mask!=NULL) && (mask->SPC==1)))	{
 			SPc=atoi(s2);
@@ -1423,7 +1408,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("UPC",s1)) {
+	if(strprefix("UPC",s1)) {
 		if((notAlreadySet.UPC || force) ||
 		   ((mask!=NULL) && (mask->UPC==1)))	{
 			UPc=atoi(s2);
@@ -1431,7 +1416,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("AUTOEVAL",s1)) {
+	if(strprefix("AUTOEVAL",s1)) {
 		if((notAlreadySet.AUTOEVAL || force) ||
 		   ((mask!=NULL) && (mask->AUTOEVAL==1))) {
 			f=atoi(s2);
@@ -1440,7 +1425,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("AUTOXMAX",s1)) {
+	if(strprefix("AUTOXMAX",s1)) {
 		if((notAlreadySet.AUTOXMAX || force) ||
 		   ((mask!=NULL) && (mask->AUTOXMAX==1))) {
 			auto_xmax=atof(s2);
@@ -1448,7 +1433,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("AUTOYMAX",s1)) {
+	if(strprefix("AUTOYMAX",s1)) {
 		if((notAlreadySet.AUTOYMAX || force) ||
 		   ((mask!=NULL) && (mask->AUTOYMAX==1))) {
 			auto_ymax=atof(s2);
@@ -1456,7 +1441,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("AUTOXMIN",s1)) {
+	if(strprefix("AUTOXMIN",s1)) {
 		if((notAlreadySet.AUTOXMIN || force) ||
 		   ((mask!=NULL) && (mask->AUTOXMIN==1))) {
 			auto_xmin=atof(s2);
@@ -1464,7 +1449,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("AUTOYMIN",s1)) {
+	if(strprefix("AUTOYMIN",s1)) {
 		if((notAlreadySet.AUTOYMIN || force) ||
 		   ((mask!=NULL) && (mask->AUTOYMIN==1))) {
 			auto_ymin=atof(s2);
@@ -1472,7 +1457,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("AUTOVAR",s1)) {
+	if(strprefix("AUTOVAR",s1)) {
 		if((notAlreadySet.AUTOVAR || force) ||
 		   ((mask!=NULL) && (mask->AUTOVAR==1)))	{
 			find_variable(s2,&i);
@@ -1484,7 +1469,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		return;
 	}
 	/* postscript options */
-	if(msc("PS_FONT",s1)) {
+	if(strprefix("PS_FONT",s1)) {
 		if((notAlreadySet.PS_FONT || force) ||
 		   ((mask!=NULL) && (mask->PS_FONT==1)))	{
 			strcpy(PS_FONT,s2);
@@ -1492,7 +1477,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("PS_LineWidth",s1)) {
+	if(strprefix("PS_LineWidth",s1)) {
 		if((notAlreadySet.PS_LineWidth || force) ||
 		   ((mask!=NULL) && (mask->PS_LineWidth==1))) {
 			PS_LineWidth=atof(s2);
@@ -1500,7 +1485,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("PS_FSIZE",s1)) {
+	if(strprefix("PS_FSIZE",s1)) {
 		if((notAlreadySet.PS_FSIZE || force) ||
 		   ((mask!=NULL) && (mask->PS_FSIZE==1))) {
 			PS_FontSize=atoi(s2);
@@ -1509,7 +1494,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		return;
 	}
 
-	if(msc("PS_COLOR",s1)) {
+	if(strprefix("PS_COLOR",s1)) {
 		if((notAlreadySet.PS_COLOR || force) ||
 		   ((mask!=NULL) && (mask->PS_COLOR==1))) {
 			PS_ColorFlag=atoi(s2);
@@ -1518,8 +1503,8 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("TUTORIAL",s1)) {
-		if(!(msc(s2,"0") || msc(s2,"1")))	{
+	if(strprefix("TUTORIAL",s1)) {
+		if(!(strprefix(s2,"0") || strprefix(s2,"1")))	{
 			plintf("TUTORIAL option must be 0 or 1.\n");
 			exit(-1);
 		}
@@ -1530,7 +1515,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("S1",s1)) {
+	if(strprefix("S1",s1)) {
 		if((notAlreadySet.SLIDER1 || force)  ||
 		   ((mask!=NULL) && (mask->SLIDER1==1)))	{
 			strncpy(SLIDERVAR[0],s2,20);
@@ -1540,7 +1525,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		return;
 	}
 
-	if(msc("S2",s1)) {
+	if(strprefix("S2",s1)) {
 		if((notAlreadySet.SLIDER2 || force)  ||
 		   ((mask!=NULL) && (mask->SLIDER2==1))) {
 			strncpy(SLIDERVAR[1],s2,20);
@@ -1549,7 +1534,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("S3",s1)) {
+	if(strprefix("S3",s1)) {
 		if((notAlreadySet.SLIDER3 || force)  ||
 		   ((mask!=NULL) && (mask->SLIDER3==1)))	{
 			strncpy(SLIDERVAR[2],s2,20);
@@ -1558,7 +1543,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("SLO1",s1)) {
+	if(strprefix("SLO1",s1)) {
 		if((notAlreadySet.SLIDER1LO || force)  ||
 		   ((mask!=NULL) && (mask->SLIDER1LO==1))) {
 			SLIDERLO[0]=atof(s2);
@@ -1567,7 +1552,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		return;
 	}
 
-	if(msc("SLO2",s1)) {
+	if(strprefix("SLO2",s1)) {
 		if((notAlreadySet.SLIDER2LO || force)  ||
 		   ((mask!=NULL) && (mask->SLIDER2LO==1))) {
 			SLIDERLO[1]=atof(s2);
@@ -1575,7 +1560,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("SLO3",s1)) {
+	if(strprefix("SLO3",s1)) {
 		if((notAlreadySet.SLIDER3LO || force)  ||
 		   ((mask!=NULL) && (mask->SLIDER3LO==1))) {
 			SLIDERLO[2]=atof(s2);
@@ -1583,7 +1568,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("SHI1",s1)) {
+	if(strprefix("SHI1",s1)) {
 		if((notAlreadySet.SLIDER1HI || force)  ||
 		   ((mask!=NULL) && (mask->SLIDER1HI==1))) {
 			SLIDERHI[0]=atof(s2);
@@ -1591,7 +1576,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("SHI2",s1)) {
+	if(strprefix("SHI2",s1)) {
 		if((notAlreadySet.SLIDER2HI || force)  ||
 		   ((mask!=NULL) && (mask->SLIDER2HI==1))) {
 			SLIDERHI[0]=atof(s2);
@@ -1599,7 +1584,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("SHI3",s1)) {
+	if(strprefix("SHI3",s1)) {
 		if((notAlreadySet.SLIDER3HI || force)  ||
 		   ((mask!=NULL) && (mask->SLIDER3HI==1))) {
 			SLIDERHI[0]=atof(s2);
@@ -1611,7 +1596,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 	This is rally only relevant for batch jobs as it
 	writes files then
  */
-	if(msc("POSTPROCESS",s1)) {
+	if(strprefix("POSTPROCESS",s1)) {
 		if((notAlreadySet.POSTPROCESS || force)  ||
 		   ((mask!=NULL) && (mask->POSTPROCESS==1))) {
 			post_process=atoi(s2);
@@ -1619,7 +1604,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("HISTLO",s1)) {
+	if(strprefix("HISTLO",s1)) {
 		if((notAlreadySet.HISTLO || force)  ||
 		   ((mask!=NULL) && (mask->HISTLO==1))) {
 			hist_inf.xlo=atof(s2);
@@ -1627,7 +1612,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("HISTHI",s1)) {
+	if(strprefix("HISTHI",s1)) {
 		if((notAlreadySet.HISTHI || force)  ||
 		   ((mask!=NULL) && (mask->HISTHI==1))) {
 			hist_inf.xhi=atof(s2);
@@ -1635,7 +1620,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("HISTBINS",s1)) {
+	if(strprefix("HISTBINS",s1)) {
 		if((notAlreadySet.HISTBINS || force)  ||
 		   ((mask!=NULL) && (mask->HISTBINS==1))) {
 			hist_inf.nbins=atoi(s2);
@@ -1643,7 +1628,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("HISTCOL",s1)) {
+	if(strprefix("HISTCOL",s1)) {
 		if((notAlreadySet.HISTCOL || force)  ||
 		   ((mask!=NULL) && (mask->HISTCOL==1))) {
 			find_variable(s2,&i);
@@ -1654,7 +1639,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("SPECCOL",s1)) {
+	if(strprefix("SPECCOL",s1)) {
 		if((notAlreadySet.SPECCOL || force)  ||
 		   ((mask!=NULL) && (mask->SPECCOL==1)))	{
 			find_variable(s2,&i);
@@ -1665,7 +1650,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("SPECCOL2",s1)) {
+	if(strprefix("SPECCOL2",s1)) {
 		if((notAlreadySet.SPECCOL2 || force)  ||
 		   ((mask!=NULL) && (mask->SPECCOL2==1))) {
 			find_variable(s2,&i);
@@ -1676,7 +1661,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("SPECWIDTH",s1)) {
+	if(strprefix("SPECWIDTH",s1)) {
 		if((notAlreadySet.SPECWIDTH || force)  ||
 		   ((mask!=NULL) && (mask->SPECWIDTH==1))) {
 			spec_wid=atoi(s2);
@@ -1684,7 +1669,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("SPECWIN",s1)) {
+	if(strprefix("SPECWIN",s1)) {
 		if((notAlreadySet.SPECWIN || force)  ||
 		   ((mask!=NULL) && (mask->SPECWIN==1)))	{
 			spec_win=atoi(s2);
@@ -1692,7 +1677,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("DFGRID",s1)) {
+	if(strprefix("DFGRID",s1)) {
 		if((notAlreadySet.DFGRID || force) ||
 		   ((mask!=NULL) && (mask->DFGRID==1))) {
 			DF_GRID=atoi(s2);
@@ -1700,7 +1685,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("DFDRAW",s1)) {
+	if(strprefix("DFDRAW",s1)) {
 		if((notAlreadySet.DFBATCH || force) ||
 		   ((mask!=NULL) && (mask->DFBATCH==1))) {
 			DFBatch=atoi(s2);
@@ -1708,7 +1693,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		}
 		return;
 	}
-	if(msc("NCDRAW",s1)) {
+	if(strprefix("NCDRAW",s1)) {
 		if((notAlreadySet.NCBATCH || force) ||
 		   ((mask!=NULL) && (mask->NCBATCH==1)))	{
 			NCBatch=atoi(s2);
@@ -1717,7 +1702,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		return;
 	}
 	/* colorize customizing !! */
-	if(msc("COLORVIA",s1)) {
+	if(strprefix("COLORVIA",s1)) {
 		if((notAlreadySet.COLORVIA || force) ||
 		   ((mask!=NULL) && (mask->COLORVIA==1))) {
 			strcpy(ColorVia,s2);
@@ -1725,7 +1710,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		notAlreadySet.COLORVIA=0;
 		return;
 	}
-	if(msc("COLORIZE",s1)) {
+	if(strprefix("COLORIZE",s1)) {
 		if((notAlreadySet.COLORIZE || force) ||
 		   ((mask!=NULL) && (mask->COLORIZE==1))) {
 			ColorizeFlag=atoi(s2);
@@ -1733,7 +1718,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		notAlreadySet.COLORIZE=0;
 		return;
 	}
-	if(msc("COLORLO",s1)) {
+	if(strprefix("COLORLO",s1)) {
 		if((notAlreadySet.COLORLO || force) ||
 		   ((mask!=NULL) && (mask->COLORLO==1))) {
 			ColorViaLo=atof(s2);
@@ -1741,7 +1726,7 @@ void set_option(char *s1, char *s2, int force, OptionsSet *mask) {
 		notAlreadySet.COLORLO=0;
 		return;
 	}
-	if(msc("COLORHI",s1)) {
+	if(strprefix("COLORHI",s1)) {
 		if((notAlreadySet.COLORHI || force) ||
 		   ((mask!=NULL) && (mask->COLORHI==1))) {
 			ColorViaHi=atof(s2);

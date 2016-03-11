@@ -260,7 +260,6 @@ void load_eqn(void);
 void loadeqn_load_xpprc(void);
 void loadeqn_init_options(void);
 void loadeqn_setup_all(void);
-int msc(char *s1, char *s2);
 void set_internopts(OptionsSet *mask);
 void set_internopts_comline(void);
 void set_option(char *s1, char *s2,int force,OptionsSet *mask);
