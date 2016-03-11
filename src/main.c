@@ -131,7 +131,6 @@ int screen;
 int tfBell;
 int TrueColorFlag;
 int use_ani_file=0;
-int use_intern_sets=1;
 int UserGradients=-1;
 int UserMinWidth=0,UserMinHeight=0;
 int Xup,TipsFlag=1;

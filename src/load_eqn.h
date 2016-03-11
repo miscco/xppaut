@@ -214,7 +214,6 @@ extern int ENDSING;
 extern int EVEC_ITER;
 extern int FFT;
 extern int FOREVER;
-extern int got_file;
 extern int HIST;
 extern int INFLAG;
 extern int itor[MAXODE];

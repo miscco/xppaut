@@ -49,7 +49,6 @@ extern int tfBell;
 extern int TipsFlag;
 extern int TrueColorFlag;
 extern int use_ani_file;
-extern int use_intern_sets;
 extern int UserGradients;
 extern int UserMinHeight;
 extern int UserMinWidth;

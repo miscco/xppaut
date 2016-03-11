@@ -97,7 +97,7 @@ int FFT,NULL_HERE,POIEXT;
 int HIST,HVAR,hist_ind,FOREVER;
 /*  control of range stuff  */
 int PAUSER,ENDSING,SHOOT,PAR_FOL;
-int xorfix,silent,got_file;
+int xorfix,silent;
 
 
 /* --- Functions --- */
@@ -218,14 +218,15 @@ void load_eqn(void) {
 		std=1;
 	}
 	struct dirent *dp;
-	if(got_file==1 && (std==0)  && (dp=(struct dirent*)opendir(this_file))!=NULL) {
+	if(this_file[0] && (std==0)  &&
+	   (dp=(struct dirent*)opendir(this_file))!=NULL) {
 		no_eqn = 1;
 		okay=0;
 		change_directory(this_file);
 		okay=make_eqn();
 		return;
 	} else {
-		if(got_file==1 && (fptr=fopen(this_file,"r"))!=NULL) {
+		if(this_file[0] && (fptr=fopen(this_file,"r"))!=NULL) {
 			if(std==1) {
 				sprintf(this_file,"console");
 			}
