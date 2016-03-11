@@ -6,7 +6,7 @@ AC_INIT([xppaut], [8.0.0], [xppaut-l_at_mailman.ucsd.edu])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_SRCDIR([src/main.c])
 AC_CONFIG_HEADERS([src/config.h])
-AM_INIT_AUTOMAKE([foreign])
+AM_INIT_AUTOMAKE([foreign subdir-objects])
 
 # Checks for programs.
 AC_PROG_CC
@@ -14,6 +14,28 @@ AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_RANLIB
+
+#############################
+# Platform specific setup
+#############################
+AC_CANONICAL_HOST
+# Check for which host we are on and setup a few things
+# specifically based on the host
+case $host_os in
+  linux*)
+	;;
+  darwin*)
+        LDFLAGS="$LDFLAGS -L/usr/X11R6/lib"
+        ;;
+  cygwin)
+        CFLAGS="$CFLAGS -DNON_UNIX_STDIO -DNORAND48 -DSTRUPR"
+	LDFLAGS="$LDFLAGS -L/usr/X11R6/lib"        
+	;;
+    *)
+        #Default Case
+        AC_MSG_ERROR([Your platform is not currently supported])
+        ;;
+esac
 
 # Checks for libraries.
 AC_CHECK_LIB([X11], [XOpenDisplay])
@@ -60,27 +82,6 @@ AC_CHECK_FUNCS([ \
 	strncasecmp \
 	strupr])
 
-#############################
-# Platform specific setup
-#############################
-AC_CANONICAL_HOST
-# Check for which host we are on and setup a few things
-# specifically based on the host
-case $host_os in
-  linux*)
-	;;
-  MAC*)
-        CFLAGS="$CFLAGS -I/usr/X11R6/include"
-        ;;
-  CYGWIN)
-        CFLAGS="$CFLAGS -DNON_UNIX_STDIO -DNORAND48 -DSTRUPR -I/usr/X11R6/include"
-        ;;
-    *)
-        #Default Case
-        AC_MSG_ERROR([Your platform is not currently supported])
-        ;;
-esac
-
 AM_CONDITIONAL([HAVE_STRUPR], [test x$HAVE_STRUPR != x])
 
 MAJORVER=${PACKAGE_VERSION%.*}
@@ -98,5 +99,6 @@ AC_CONFIG_FILES([
 	ode/Makefile
 	share/Makefile
 	src/Makefile
+	src/auto/Makefile
 	src/cvodesrc/Makefile])
 AC_OUTPUT
