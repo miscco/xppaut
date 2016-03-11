@@ -60,6 +60,27 @@ AC_CHECK_FUNCS([ \
 	strncasecmp \
 	strupr])
 
+#############################
+# Platform specific setup
+#############################
+AC_CANONICAL_HOST
+# Check for which host we are on and setup a few things
+# specifically based on the host
+case $host_os in
+  linux*)
+	;;
+  MAC*)
+        CFLAGS="$CFLAGS -I/usr/X11R6/include"
+        ;;
+  CYGWIN)
+        CFLAGS="$CFLAGS -DNON_UNIX_STDIO -DNORAND48 -DSTRUPR -I/usr/X11R6/include"
+        ;;
+    *)
+        #Default Case
+        AC_MSG_ERROR([Your platform is not currently supported])
+        ;;
+esac
+
 AM_CONDITIONAL([HAVE_STRUPR], [test x$HAVE_STRUPR != x])
 
 MAJORVER=${PACKAGE_VERSION%.*}
