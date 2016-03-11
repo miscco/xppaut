@@ -2530,29 +2530,29 @@ stpnpl(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 
 	findlb(iap, rap, irs, &nfpr1, &found);
 	if(fscanf(fp3,"%ld",&ibr)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&ntot1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&itp1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&lab1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nfpr1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&isw1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&ntpl1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nar1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nskip1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&(*ntsr))!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&(*ncolrs))!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nparr)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	iap->ibr = ibr;
 	nrsp1 = *ntsr + 1;
 
@@ -2561,30 +2561,30 @@ stpnpl(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 			k1 = i * ndim;
 			k2 = k1 + ndm - 1;
 			if(fscanf(fp3,"%lf",&temp[i])!=1)
-				plintf("Error reading from file fp3");
+				printf("Error reading from file fp3");
 			for (k = k1; k <= k2; ++k) {
 				if(fscanf(fp3,"%lf",&ARRAY2D(ups, j, k))!=1)
-						plintf("Error reading from file fp3");
+						printf("Error reading from file fp3");
 			}
 		}
 		tm[j] = temp[0];
 	}
 
 	if(fscanf(fp3,"%lf",&tm[-1 + nrsp1])!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	for (k = 0; k < ndm; ++k) {
 		if(fscanf(fp3,"%lf",&ARRAY2D(ups, *ntsr, k))!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 
 	if(fscanf(fp3,"%ld",icprs)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&icprs[1])!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%lf",&rd1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%lf",&rd2)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 
 	/* Read U-dot (derivative with respect to arclength). */
 
@@ -2594,7 +2594,7 @@ stpnpl(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 			k2 = k1 + ndm - 1;
 			for (k = k1; k <= k2; ++k) {
 				if(fscanf(fp3,"%lf",&ARRAY2D(udotps, j, k))!=1)
-						plintf("Error reading from file fp3");
+						printf("Error reading from file fp3");
 			}
 		}
 	}
@@ -2602,7 +2602,7 @@ stpnpl(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 
 	for (k = 0; k < ndm; ++k) {
 		if(fscanf(fp3,"%lf",&ARRAY2D(udotps, *ntsr, k))!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 
 	/* Read the parameter values. */
@@ -2614,7 +2614,7 @@ stpnpl(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 	}
 	for (i = 0; i < nparr; ++i) {
 		if(fscanf(fp3,"%lf",&par[i])!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 
 	/* Complement starting data */
@@ -2948,29 +2948,29 @@ stpnpd(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 
 	findlb(iap, rap, irs, &nfpr1, &found);
 	if(fscanf(fp3,"%ld",&ibr)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&ntot1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&itp1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&lab1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nfpr1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&isw1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&ntpl1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nar1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nskip1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&(*ntsr))!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&(*ncolrs))!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nparr)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	iap->ibr = ibr;
 	nrsp1 = *ntsr + 1;
 
@@ -2979,29 +2979,29 @@ stpnpd(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 			k1 = i * ndim;
 			k2 = k1 + ndm - 1;
 			if(fscanf(fp3,"%lf",&temp[i])!=1)
-				plintf("Error reading from file fp3");
+				printf("Error reading from file fp3");
 			for (k = k1; k <= k2; ++k) {
 				if(fscanf(fp3,"%lf",&ARRAY2D(ups, j, k))!=1)
-						plintf("Error reading from file fp3");
+						printf("Error reading from file fp3");
 			}
 		}
 		tm[j] = temp[0];
 	}
 	if(fscanf(fp3,"%lf",&tm[-1 + nrsp1])!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	for (k = 0; k < ndm; ++k) {
 		if(fscanf(fp3,"%lf",&ARRAY2D(ups, *ntsr, k))!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 
 	if(fscanf(fp3,"%ld",icprs)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&icprs[1])!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%lf",rldot)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%lf",&rldot[1])!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 
 	/* Read U-dot (derivative with respect to arclength). */
 
@@ -3011,7 +3011,7 @@ stpnpd(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 			k2 = k1 + ndm - 1;
 			for (k = k1; k <= k2; ++k) {
 				if(fscanf(fp3,"%lf",&ARRAY2D(udotps, j, k))!=1)
-						plintf("Error reading from file fp3");
+						printf("Error reading from file fp3");
 			}
 		}
 	}
@@ -3019,7 +3019,7 @@ stpnpd(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 
 	for (k = 0; k < ndm; ++k) {
 		if(fscanf(fp3,"%lf",&ARRAY2D(udotps, *ntsr, k))!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 
 	/* Read the parameter values. */
@@ -3031,7 +3031,7 @@ stpnpd(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 	}
 	for (i = 0; i < nparr; ++i) {
 		if(fscanf(fp3,"%lf",&par[i])!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 
 	/* Complement starting data */
@@ -3376,29 +3376,29 @@ stpntr(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 
 	findlb(iap, rap, irs, &nfpr1, &found);
 	if(fscanf(fp3,"%ld",&ibr)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&ntot1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&itp1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&lab1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nfpr1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&isw1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&ntpl1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nar1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nskip1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&(*ntsr))!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&(*ncolrs))!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nparr)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	iap->ibr = ibr;
 	nrsp1 = *ntsr + 1;
 
@@ -3407,10 +3407,10 @@ stpntr(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 			k1 = i * ndim;
 			k2 = k1 + ndm - 1;
 			if(fscanf(fp3,"%lf",&temp[i])!=1)
-				plintf("Error reading from file fp3");
+				printf("Error reading from file fp3");
 			for (k = k1; k <= k2; ++k) {
 				if(fscanf(fp3,"%lf",&ARRAY2D(ups, j, k))!=1)
-						plintf("Error reading from file fp3");
+						printf("Error reading from file fp3");
 			}
 			k2p1 = k2 + 1;
 			k3 = k2 + ndm;
@@ -3423,10 +3423,10 @@ stpntr(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 	}
 
 	if(fscanf(fp3,"%lf",&tm[*ntsr])!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	for (k = 0; k < ndm; ++k) {
 		if(fscanf(fp3,"%lf",&ARRAY2D(ups, *ntsr, k))!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 	for (i = 0; i < ndm; ++i) {
 		ARRAY2D(ups, *ntsr, (ndm + i)) = 0.;
@@ -3434,13 +3434,13 @@ stpntr(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 	}
 
 	if(fscanf(fp3,"%ld",icprs)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&icprs[1])!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%lf",rldot)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%lf",&rldot[1])!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	rldot[2] = 0.;
 	rldot[3] = 0.;
 
@@ -3452,7 +3452,7 @@ stpntr(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 			k2 = k1 + ndm - 1;
 			for (k = k1; k <= k2; ++k) {
 				if(fscanf(fp3,"%lf",&ARRAY2D(udotps, j, k))!=1)
-						plintf("Error reading from file fp3");
+						printf("Error reading from file fp3");
 			}
 			k2p1 = k2 + 1;
 			k3 = k2 + ndm;
@@ -3465,7 +3465,7 @@ stpntr(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 
 	for (k = 0; k < ndm; ++k) {
 		if(fscanf(fp3,"%lf",&ARRAY2D(udotps, *ntsr, k))!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 	for (i = 0; i < ndm; ++i) {
 		ARRAY2D(udotps, *ntsr, (ndm + i)) = 0.;
@@ -3481,7 +3481,7 @@ stpntr(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 	}
 	for (i = 0; i < nparr; ++i) {
 		if(fscanf(fp3,"%lf",&par[i])!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 
 	par[12] = 0.;
@@ -3932,29 +3932,29 @@ stpnpo(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 
 	findlb(iap, rap, irs, &nfpr1, &found);
 	if(fscanf(fp3,"%ld",&ibr)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&ntot1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&itp1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&lab1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nfpr1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&isw1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&ntpl1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nar1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nskip1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&(*ntsr))!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&(*ncolrs))!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nparr)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	iap->ibr = ibr;
 	nrsp1 = *ntsr + 1;
 
@@ -3963,32 +3963,32 @@ stpnpo(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 			k1 = i * ndim;
 			k2 = k1 + ndm - 1;
 			if(fscanf(fp3,"%lf",&temp[i])!=1)
-				plintf("Error reading from file fp3");
+				printf("Error reading from file fp3");
 			for (k = k1; k <= k2; ++k) {
 				if(fscanf(fp3,"%lf",&ARRAY2D(ups, j, k))!=1)
-						plintf("Error reading from file fp3");
+						printf("Error reading from file fp3");
 			}
 		}
 		tm[j] = temp[0];
 	}
 	if(fscanf(fp3,"%lf",&tm[*ntsr])!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	for (k = 0; k < ndm; ++k) {
 		if(fscanf(fp3,"%lf",&ARRAY2D(ups, *ntsr, k))!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 	for (j = 0; j < *ntsr; ++j) {
 		dtm[j] = tm[j + 1] - tm[j];
 	}
 
 	if(fscanf(fp3,"%ld",icprs)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&icprs[1])!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%lf",&rld1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%lf",&rld2)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 
 	/* Read U-dot (derivative with respect to arclength). */
 	for (j = 0; j < *ntsr; ++j) {
@@ -3997,13 +3997,13 @@ stpnpo(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 			k2 = k1 + ndm - 1;
 			for (k = k1; k <= k2; ++k) {
 				if(fscanf(fp3,"%lf",&ARRAY2D(udotps, j, k))!=1)
-						plintf("Error reading from file fp3");
+						printf("Error reading from file fp3");
 			}
 		}
 	}
 	for (k = 0; k < ndm; ++k) {
 		if(fscanf(fp3,"%lf",&ARRAY2D(udotps, *ntsr, k))!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 
 	/* Read the parameter values. */
@@ -4014,7 +4014,7 @@ stpnpo(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 	}
 	for (i = 0; i < nparr; ++i) {
 		if(fscanf(fp3,"%lf",&par[i])!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 
 	for (j = 0; j < *ntsr; ++j) {
@@ -4558,29 +4558,29 @@ stpnbl(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 
 	findlb(iap, rap, irs, &nfpr1, &found);
 	if(fscanf(fp3,"%ld",&ibr)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&ntot1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&itp1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&lab1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nfpr1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&isw1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&ntpl1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nar1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nskip1)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&(*ntsr))!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&(*ncolrs))!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	if(fscanf(fp3,"%ld",&nparr)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	iap->ibr = ibr;
 	nrsp1 = *ntsr + 1;
 
@@ -4589,27 +4589,27 @@ stpnbl(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 			k1 = i * ndim;
 			k2 = k1 + ndm - 1;
 			if(fscanf(fp3,"%lf",&temp[i])!=1)
-				plintf("Error reading from file fp3");
+				printf("Error reading from file fp3");
 			for (k = k1; k <= k2; ++k) {
 				if(fscanf(fp3,"%lf",&ARRAY2D(ups, j, k))!=1)
-						plintf("Error reading from file fp3");
+						printf("Error reading from file fp3");
 			}
 		}
 		tm[j] = temp[0];
 	}
 	if(fscanf(fp3,"%lf",&tm[*ntsr])!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	for (k = 0; k < ndm; ++k) {
 		if(fscanf(fp3,"%lf",&ARRAY2D(ups, *ntsr, k))!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 
 	nfpr0 = nfpr / 2;
 	if(fscanf(fp3,"%ld",icprs)!=1)
-		plintf("Error reading from file fp3");
+		printf("Error reading from file fp3");
 	for (i = 0; i < nfpr0; ++i) {
 		if(fscanf(fp3,"%lf",&rldot[i])!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 
 	/* Read U-dot (Derivative with respect to arclength). */
@@ -4620,13 +4620,13 @@ stpnbl(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 			k2 = (i + 1) * ndim - 1;
 			for (k = k1; k <= k2; ++k) {
 				if(fscanf(fp3,"%lf",&ARRAY2D(ups, j, k))!=1)
-						plintf("Error reading from file fp3");
+						printf("Error reading from file fp3");
 			}
 		}
 	}
 	for (k = ndm; k < ndim; ++k) {
 		if(fscanf(fp3,"%lf",&ARRAY2D(ups, *ntsr, k))!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 
 	/* Read the parameter values. */
@@ -4638,7 +4638,7 @@ stpnbl(iap_type *iap, rap_type *rap, doublereal *par, integer *icp, integer *nts
 	}
 	for (i = 0; i < nparr; ++i) {
 		if(fscanf(fp3,"%lf",&par[i])!=1)
-			plintf("Error reading from file fp3");
+			printf("Error reading from file fp3");
 	}
 
 	nfpx = nfpr / 2 - 1;
