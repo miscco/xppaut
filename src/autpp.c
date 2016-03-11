@@ -4,6 +4,7 @@
 #include "auto/auto_f2c.h"
 #include "auto_nox.h"
 #include "derived.h"
+#include "gear.h"
 #include "load_eqn.h"
 #include "main.h"
 #include "numerics.h"
@@ -11,7 +12,6 @@
 #include "pp_shoot.h"
 #include "xAuto.h"
 
-void getjactrans(double *x,double *y,double *yp,double *xp, double eps, double *d, int n);
 XAUTO xAuto;
 
 /*    Hooks to xpp RHS     */
