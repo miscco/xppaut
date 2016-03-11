@@ -202,9 +202,6 @@ double outperiod[20];
 integer UzrPar[20];
 int NAutoUzr;
 
-char *get_first();
-char *get_next();
-
 char this_auto_file[200];
 char fort3[200];
 char fort7[200];
@@ -723,11 +720,12 @@ void auto_per_par(void) {
 		status=do_string_box(9,5,2,"AutoPer",n,values,45);
 		if(status!=0) {
 			for(i=0;i<9;i++) {
-				ptr=get_first(values[i],"=");
+				char *toksave;
+				ptr=strtok_r(values[i], "=", &toksave);
 				in=auto_name_to_index(ptr);
 				if(in>=0) {
 					Auto.uzrpar[i]=in;
-					ptr=get_next("@");
+					ptr=strtok_r(NULL, "@", &toksave);
 					Auto.period[i]=atof(ptr);
 				}
 			}

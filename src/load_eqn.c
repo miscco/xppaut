@@ -181,15 +181,14 @@ void loadeqn_load_xpprc(void) {
 void extract_action(char *ptr) {
 	char name[XPP_MAX_NAME],value[XPP_MAX_NAME];
 	char tmp[2048];
-	char *junk,*mystring;
-	/* plintf("ptr=%s \n",ptr);  */
+	char *junk,*mystring, *toksave;
 	strcpy(tmp,ptr);
-	junk=get_first(tmp," ");
+	junk = strtok_r(tmp," ", &toksave);
 	if(junk == NULL) {
 		/*No more tokens--should this throw an error?*/
 	}
 
-	while((mystring=get_next(" ,;\n"))!=NULL) {
+	while((mystring=strtok_r(NULL, " ,;\n", &toksave))!=NULL) {
 		split_apart(mystring,name,value);
 		if(strlen(name)>0 && strlen(value)>0) {
 			do_intern_set(name,value);
@@ -417,21 +416,22 @@ void set_internopts(OptionsSet *mask) {
 
 void set_internopts_comline(void) {
 	int i;
-	char *ptr,name[20],value[80],*junk,*mystring;
+	char *ptr,name[20],value[80],*junk,*mystring, *toksave;
 	if(Nopts==0) {
 		return;
 	}
 	/*  parsem here   */
 	/*Check for QUIET and LOGFILE options first...*/
-	char intrnoptcpy[255]; /*Must use copy to avoid side effects of strtok used in get_first below*/
+	/*Must use copy to avoid side effects of strtok_r used in get_first below*/
+	char intrnoptcpy[DEFAULT_STRING_LENGTH-1];
 	for(i=0;i<Nopts;i++) {
 		strcpy(intrnoptcpy,interopt[i]);
 		ptr=intrnoptcpy;
-		junk=get_first(ptr," ,");
+		junk=strtok_r(ptr," ,", &toksave);
 		if(junk == NULL) {
 			/*No more tokens.  Should this throw an error?*/
 		}
-		while((mystring=get_next(" ,\n\r"))!=NULL) {
+		while((mystring=strtok_r(NULL, " ,\n\r", &toksave))!=NULL) {
 			split_apart(mystring,name,value);
 			strupr(name);
 
@@ -459,8 +459,8 @@ void set_internopts_comline(void) {
 
 	for(i=0;i<Nopts;i++) {
 		ptr=interopt[i];
-		junk=get_first(ptr," ,");
-		while((mystring=get_next(" ,\n\r"))!=NULL) {
+		junk=strtok_r(ptr," ,", &toksave);
+		while((mystring=strtok_r(NULL, " ,\n\r", &toksave))!=NULL) {
 			split_apart(mystring,name,value);
 			if(strlen(name)>0 && strlen(value)>0)	{
 				set_option(name,value,0,tempNAS);
@@ -1797,10 +1797,10 @@ static void do_intern_set(char *name1, char *value) {
 
 static void set_internopt_line(char *line, int force, OptionsSet *mask) {
 	char name[20], value[80];
-	char *mystring;
+	char *mystring, *toksave;
 
-	get_first(line," ,");
-	while((mystring=get_next(" ,\n\r"))!=NULL) {
+	strtok_r(line," ,", &toksave);
+	while((mystring=strtok_r(NULL, " ,\n\r", &toksave))!=NULL) {
 		split_apart(mystring,name,value);
 		if(strlen(name)>0 && strlen(value)>0)	{
 			set_option(name, value, force, mask);

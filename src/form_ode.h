@@ -65,8 +65,6 @@ void create_plot_list(void);
 int disc(char *string);
 int find_char(char *s1, char *s2, int i0, int *i1);
 int get_eqn(FILE *fptr);
-char *get_first(char *string, char *src);
-char *get_next(char *src);
 int make_eqn(void);
 int search_array(char *old, char *new_char, int *i1, int *i2, int *flag);
 void strip_saveqn(void);

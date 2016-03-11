@@ -341,20 +341,6 @@ int get_eqn(FILE *fptr) {
 }
 
 
-char *get_first(char *string, char *src) {
-	char *ptr;
-	ptr=strtok(string,src);
-	return(ptr);
-}
-
-
-char *get_next(char *src) {
-	char *ptr;
-	ptr=strtok(NULL,src);
-	return(ptr);
-}
-
-
 int make_eqn(void) {
 
 	int okay;
@@ -714,7 +700,7 @@ static int read_eqn(void) {
 static int compiler(char *bob, FILE *fptr) {
 	double value,xlo,xhi;
 	int narg,done,nn,iflg=0,VFlag=0,nstates,alt,index,sign;
-	char *ptr,*my_string,*command;
+	char *ptr,*my_string,*command, *toksave;
 	char name[20],formula[MAXEXPLEN];
 	char condition[MAXEXPLEN];
 	char fixname[MAXODE1][12];
@@ -729,7 +715,7 @@ static int compiler(char *bob, FILE *fptr) {
 		}
 		return(done);
 	}
-	command=get_first(ptr," ,");
+	command=strtok_r(ptr," ,", &toksave);
 	strlwr(command);
 	switch(*command) {
 	case 'd': done=0;
@@ -739,10 +725,10 @@ static int compiler(char *bob, FILE *fptr) {
 	case 'h': welcome();
 		break;
 	case 'x':
-		my_string=get_next("{ ");
+		my_string=strtok_r(NULL, "{ ", &toksave);
 		strcpy(condition,my_string);
 
-		my_string=get_next("}\n");
+		my_string=strtok_r(NULL, "}\n", &toksave);
 		strcpy(formula,my_string);
 		add_intern_set(condition,formula);
 		break;
@@ -794,13 +780,13 @@ static int compiler(char *bob, FILE *fptr) {
 		plintf("\n");
 		break;
 	case 'g': /* global */
-		my_string=get_next("{ ");
+		my_string=strtok_r(NULL, "{ ", &toksave);
 		sign=atoi(my_string);
 		plintf(" GLOBAL: sign =%d \n",sign);
-		my_string=get_next("{}");
+		my_string=strtok_r(NULL, "{}", &toksave);
 		strcpy(condition,my_string);
 		plintf(" condition = %s \n",condition);
-		my_string=get_next("\n");
+		my_string=strtok_r(NULL, "\n", &toksave);
 		strcpy(formula,my_string);
 		plintf(" events=%s \n",formula);
 		if(add_global(condition,sign,formula)) {
@@ -846,11 +832,11 @@ static int compiler(char *bob, FILE *fptr) {
 		plintf("\nFixed variables:\n");
 		goto vrs;
 	case 'm': /* Markov variable  */
-		my_string=get_next(" ");
+		my_string=strtok_r(NULL, " ", &toksave);
 		strcpy(name,my_string);
-		my_string=get_next(" ");
+		my_string=strtok_r(NULL, " ", &toksave);
 		value=atof(my_string);
-		my_string=get_next(" \n");
+		my_string=strtok_r(NULL, " \n", &toksave);
 		nstates=atoi(my_string);
 		add_var(name,value);
 		strcpy(uvar_names[IN_VARS+NMarkov],name);
@@ -865,7 +851,7 @@ static int compiler(char *bob, FILE *fptr) {
 		}
 		break;
 	case 'r': /* state table for Markov variables  */
-		my_string=get_next("\n");
+		my_string=strtok_r(NULL, "\n", &toksave);
 		strcpy(name,my_string);
 		nlin=NLINES;
 		index=old_build_markov(fptr,name);
@@ -922,7 +908,7 @@ vrs:
 		}
 		break;
 	case 'b':
-		my_string=get_next("\n");
+		my_string=strtok_r(NULL, "\n", &toksave);
 		my_bc[BVP_N].com=(int *)malloc(200*sizeof(int));
 		/*         plintf(" adding boundary condition %s \n",my_string);
 	   */
@@ -940,11 +926,11 @@ vrs:
 		if(ConvertStyle) {
 			printf(" Warning  kernel declaration cannot be converted \n");
 		}
-		my_string=get_next(" ");
+		my_string=strtok_r(NULL, " ", &toksave);
 		strcpy(name,my_string);
-		my_string=get_next(" ");
+		my_string=strtok_r(NULL, " ", &toksave);
 		value=atof(my_string);
-		my_string=get_next("$");
+		my_string=strtok_r(NULL, "$", &toksave);
 		strcpy(formula,my_string);
 		plintf("Kernel mu=%f %s = %s \n",value,name,formula);
 		if(add_kernel(name,value,formula)) {
@@ -959,18 +945,18 @@ vrs:
 			}
 			exit(0);
 		}
-		my_string=get_next(" ");
+		my_string=strtok_r(NULL, " ", &toksave);
 		strcpy(name,my_string);
-		my_string=get_next(" \n");
+		my_string=strtok_r(NULL, " \n", &toksave);
 		if(my_string[0]=='%') {
 			printf(" Function form of table....\n");
-			my_string=get_next(" ");
+			my_string=strtok_r(NULL, " ", &toksave);
 			nn=atoi(my_string);
-			my_string=get_next(" ");
+			my_string=strtok_r(NULL, " ", &toksave);
 			xlo=atof(my_string);
-			my_string=get_next(" ");
+			my_string=strtok_r(NULL, " ", &toksave);
 			xhi=atof(my_string);
-			my_string=get_next("\n");
+			my_string=strtok_r(NULL, "\n", &toksave);
 			strcpy(formula,my_string);
 			printf(" %s has %d pts from %f to %f = %s\n",
 				   name,nn,xlo,xhi,formula);
@@ -990,7 +976,7 @@ vrs:
 		} else {
 			if(my_string[0]=='@') {
 				plintf(" Two-dimensional array: \n ");
-				my_string=get_next(" ");
+				my_string=strtok_r(NULL, " ", &toksave);
 				strcpy(formula,my_string);
 				plintf(" %s = %s \n",name,formula);
 				if(add_2d_table(name,formula)) {
@@ -1014,11 +1000,11 @@ vrs:
 		}
 		break;
 	case 'u':
-		my_string=get_next(" ");
+		my_string=strtok_r(NULL, " ", &toksave);
 		strcpy(name,my_string);
-		my_string=get_next(" ");
+		my_string=strtok_r(NULL, " ", &toksave);
 		narg=atoi(my_string);
-		my_string=get_next("$");
+		my_string=strtok_r(NULL, "$", &toksave);
 		strcpy(formula,my_string);
 		plintf("%s %d :\n",name,narg);
 		if(ConvertStyle) {
@@ -1043,7 +1029,7 @@ vrs:
 			done=0;
 			break;
 		}
-		my_string=get_next("\n");
+		my_string=strtok_r(NULL, "\n", &toksave);
 		strcpy(formula,my_string);
 		nn=strlen(formula)+1;
 		if((my_ode[NODE]=(int *)malloc(MAXEXPLEN*sizeof(int)))==NULL) {
@@ -1103,7 +1089,7 @@ vrs:
 
 	case 'a':   /* name auxiliary variables */
 		plintf("Auxiliary variables:\n");
-		while((my_string=get_next(" ,\n"))!=NULL) {
+		while((my_string=strtok_r(NULL, " ,\n", &toksave))!=NULL) {
 			strcpy(aux_names[Naux],my_string);
 			plintf("|%s| ",aux_names[Naux]);
 			Naux++;
@@ -1113,7 +1099,7 @@ vrs:
 
 	default:
 		if(ConvertStyle) {
-			my_string=get_next("\n");
+			my_string=strtok_r(NULL, "\n", &toksave);
 			fprintf(convertf,"%s %s\n",command,my_string);
 		}
 		break;
@@ -1501,9 +1487,10 @@ static int do_new_parser(FILE *fp, char *first, int nnn) {
 						strupr(v.lhs);
 					}
 					if(v.type==COMMAND && v.lhs[0]=='G' && v.lhs[1]=='R') {
-						my_string=get_first(v.rhs," ");
+						char *toksave;
+						my_string=strtok_r(v.rhs," ", &toksave);
 						strcpy(name,my_string);
-						my_string=get_next(" \n");
+						my_string=strtok_r(NULL, " \n", &toksave);
 						if(my_string==NULL) {
 							nstates=0;
 						} else {
@@ -1523,9 +1510,10 @@ static int do_new_parser(FILE *fp, char *first, int nnn) {
 					/* check for Markov to get rid of extra lines */
 
 					if(v.type==COMMAND && v.lhs[0]=='M' && v.lhs[1]=='A') {
-						my_string=get_first(v.rhs," ");
+						char *toksave;
+						my_string=strtok_r(v.rhs," ", &toksave);
 						strcpy(name,my_string);
-						my_string=get_next(" \n");
+						my_string=strtok_r(NULL, " \n", &toksave);
 						if(my_string==NULL) {
 							nstates=0;
 						} else {
@@ -1896,10 +1884,11 @@ static void compile_em(void) {
 
 	v=my_varinfo;
 	while(1) {
+		char *toksave;
 		if(v->type==COMMAND && v->lhs[0]=='I') {
 			sprintf(big,"i %s \n",v->rhs);
 			ptr=big;
-			junk=get_first(ptr," ,");
+			junk=strtok_r(ptr," ,", &toksave);
 			if(junk == NULL) {
 				/*No more tokens.  Should this throw an error?*/
 			}
@@ -2072,18 +2061,18 @@ static void compile_em(void) {
 		case TABLE:
 			sprintf(big,"t %s %s ",v->lhs,v->rhs);
 			ptr=big;
-			junk=get_first(ptr," ,");
-			my_string=get_next(" ");
-			my_string=get_next(" \n");
+			junk=strtok_r(ptr," ,", &toksave);
+			my_string=strtok_r(NULL, " ", &toksave);
+			my_string=strtok_r(NULL, " \n", &toksave);
 			if(my_string[0]=='%') {
 				plintf(" Function form of table....\n");
-				my_string=get_next(" ");
+				my_string=strtok_r(NULL, " ", &toksave);
 				nn=atoi(my_string);
-				my_string=get_next(" ");
+				my_string=strtok_r(NULL, " ", &toksave);
 				xlo=atof(my_string);
-				my_string=get_next(" ");
+				my_string=strtok_r(NULL, " ", &toksave);
 				xhi=atof(my_string);
-				my_string=get_next("\n");
+				my_string=strtok_r(NULL, "\n", &toksave);
 				strcpy(formula,my_string);
 				plintf(" %s has %d pts from %f to %f = %s\n",
 					   v->lhs,nn,xlo,xhi,formula);
@@ -2095,7 +2084,7 @@ static void compile_em(void) {
 			} else {
 				if(my_string[0]=='@') {
 					plintf(" Two-dimensional array: \n ");
-					my_string=get_next(" ");
+					my_string=strtok_r(NULL, " ", &toksave);
 					strcpy(formula,my_string);
 					plintf(" %s = %s \n",name,formula);
 					if(add_2d_table(name,formula)) {
@@ -2661,7 +2650,7 @@ static void add_comment(char *s) {
 
 static void advance_past_first_word(char** sptr) {
 	/* changes the string pointed to by sptr to start after the end of the string...
-	   this may seem odd, but it has to do with avoiding \0's added by strtok */
+	   this may seem odd, but it has to do with avoiding \0's added by strtok_r */
 	int len = strlen(*sptr);
 	(*sptr) += len + 1;
 }
