@@ -94,7 +94,9 @@ noinst_HEADERS = \
 	xAuto.h \
 	xpplim.h \
         $(bitmap_headers) \
-        $(solver_headers)
+        $(solver_headers) \
+        $(util_headers)
+
 
 bitmap_headers = \
 	bitmap/alert.bitmap \
@@ -122,8 +124,12 @@ bitmap_headers = \
         bitmap/txtview.bitmap
 
 solver_headers = \
+        solver/backeuler.h \
         solver/discrete.h \
         solver/symplect.h
+
+util_headers = \
+        util/matrixalgebra.h
 
 xppaut_LDADD = \
 	cvodesrc/libcvode.a \
@@ -195,8 +201,9 @@ xppaut_SOURCES = \
 	torus.c \
 	txtread.c \
 	userbut.c \
-	volterra2.c \
-        $(solver_sources)
+        volterra2.c \
+        $(solver_sources) \
+        $(util_sources)
 
 libxpp_a_SOURCES = \
 	abort.c \
@@ -265,8 +272,13 @@ libxpp_a_SOURCES = \
 	txtread.c \
 	userbut.c \
 	volterra2.c \
-        $(solver_sources)
+        $(solver_sources) \
+        $(util_sources)
 
 solver_sources = \
+        solver/backeuler.c \
         solver/discrete.c \
         solver/symplect.c
+
+util_sources = \
+        util/matrixalgebra.c

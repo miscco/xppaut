@@ -686,34 +686,3 @@ int one_flag_step_adap(double *y, int neq, double *t, double tout, double eps,
 	}
 	return 0;
 }
-
-
-int one_flag_step_backeul(double *y, double *t, double dt, int neq, double *yg, double *yp,
-						  double *yp2, double *ytemp, double *errvec, double *jac, int *istart) {
-	double yold[MAXODE],told;
-	int i,hit,j;
-	double s;
-	double dtt=dt;
-	int nstep=0;
-	while(1) {
-		for(i=0;i<neq;i++) {
-			yold[i]=y[i];
-		}
-		told=*t;
-		if((j=one_bak_step(y,t,dtt,neq,yg,yp,yp2,ytemp,errvec,jac,istart))!=0) {
-			return(j);
-		}
-		if((hit=one_flag_step(yold,y,istart,told,t,neq,&s ))==0) {
-			break;
-		}
-		/* Its a hit !! */
-		nstep++;
-		dtt=(1-s)*dt;
-		if(nstep>(NFlags+2)) {
-			plintf(" Working too hard?");
-			plintf("smin=%g\n",s);
-			break;
-		}
-	}
-	return 0;
-}
