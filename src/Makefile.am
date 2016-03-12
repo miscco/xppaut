@@ -124,6 +124,7 @@ bitmap_headers = \
         bitmap/txtview.bitmap
 
 solver_headers = \
+        solver/adams.h \
         solver/backeuler.h \
         solver/discrete.h \
         solver/euler.h \
@@ -279,6 +280,7 @@ libxpp_a_SOURCES = \
         $(util_sources)
 
 solver_sources = \
+        solver/adams.c \
         solver/backeuler.c \
         solver/discrete.c \
         solver/euler.c \

@@ -34,6 +34,7 @@
 #include "pp_shoot.h"
 #include "storage.h"
 #include "struct.h"
+#include "solver/adams.h"
 #include "solver/backeuler.h"
 #include "solver/discrete.h"
 #include "solver/euler.h"
