@@ -36,6 +36,7 @@
 #include "struct.h"
 #include "solver/backeuler.h"
 #include "solver/discrete.h"
+#include "solver/euler.h"
 #include "solver/symplect.h"
 #include "volterra2.h"
 

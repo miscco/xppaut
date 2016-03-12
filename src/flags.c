@@ -422,33 +422,6 @@ int one_flag_step(double *yold, double *ynew, int *istart, double told, double *
 
 
 /*  here are the ODE drivers */
-int one_flag_step_euler(double *y, double dt, double *work, int neq, double *tim, int *istart) {
-	double yold[MAXODE],told;
-	int i,hit;
-	double s,dtt=dt;
-	int nstep=0;
-	while(1) {
-		for(i=0;i<neq;i++) {
-			yold[i]=y[i];
-		}
-		told=*tim;
-		one_step_euler(y,dtt,work,neq,tim);
-		if((hit=one_flag_step(yold,y,istart,told,tim,neq,&s ))==0) {
-			break;
-		}
-		/* Its a hit !! */
-		nstep++;
-		dtt=(1-s)*dt;
-		if(nstep>(NFlags+2)) {
-			plintf(" Working too hard?? ");
-			plintf("smin=%g\n",s);
-			break;
-		}
-	}
-	return(1);
-}
-
-
 int one_flag_step_heun(double *y, double dt, double *yval[2], int neq, double *tim, int *istart) {
 	double yold[MAXODE],told;
 	int i,hit;

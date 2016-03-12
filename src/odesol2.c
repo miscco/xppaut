@@ -28,17 +28,6 @@ static double coefc[]={ .375,2.375/3.00,-.625/3.00,0.125/3.00 };
 static double *y_s[4],*y_p[4],*ypred;
 
 
-void one_step_euler(double *y, double dt, double *yp, int neq, double *t) {
-	int j;
-	set_wieners(dt,y,*t);
-	rhs(*t,y,yp,neq);
-	*t+=dt;
-	for(j=0;j<neq;j++) {
-		y[j]=y[j]+dt*yp[j];
-	}
-}
-
-
 void one_step_rk4(double *y, double dt, double *yval[3], int neq, double *tim) {
 	int i;
 	double t=*tim,t1,t2;
@@ -81,24 +70,6 @@ void one_step_heun(double *y, double dt, double *yval[2], int neq, double *tim) 
 		y[i]=.5*(y[i]+yval[0][i]+dt*yval[1][i]);
 	}
 	*tim=t1;
-}
-
-
-/*  Euler  */
-int euler(double *y, double *tim, double dt, int nt, int neq, int *istart, double *work) {
-	int i;
-	if(NFlags==0) {
-		for(i=0;i<nt;i++) {
-			one_step_euler(y,dt,work,neq,tim);
-			stor_delay(y);
-		}
-		return(0);
-	}
-	for(i=0;i<nt;i++) {
-		one_flag_step_euler(y,dt,work,neq,tim,istart);
-		stor_delay(y);
-	}
-	return(0);
 }
 
 

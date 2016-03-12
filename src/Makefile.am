@@ -126,6 +126,7 @@ bitmap_headers = \
 solver_headers = \
         solver/backeuler.h \
         solver/discrete.h \
+        solver/euler.h \
         solver/symplect.h
 
 util_headers = \
@@ -278,6 +279,7 @@ libxpp_a_SOURCES = \
 solver_sources = \
         solver/backeuler.c \
         solver/discrete.c \
+        solver/euler.c \
         solver/symplect.c
 
 util_sources = \

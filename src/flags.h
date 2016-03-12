@@ -10,7 +10,6 @@ int add_global(char *cond, int sign, char *rest);
 void show_flags(void);
 int compile_flags(void);
 int one_flag_step(double *yold, double *ynew, int *istart, double told, double *tnew, int neq, double *s);
-int one_flag_step_euler(double *y, double dt, double *work, int neq, double *tim, int *istart);
 int one_flag_step_heun(double *y, double dt, double *yval[2], int neq, double *tim, int *istart);
 int one_flag_step_rk4(double *y, double dt, double *yval[3], int neq, double *tim, int *istart);
 int one_flag_step_gear(int neq, double *t, double tout, double *y, double hmin, double hmax, double eps, int mf, double *error, int *kflag, int *jstart, double *work, int *iwork);
