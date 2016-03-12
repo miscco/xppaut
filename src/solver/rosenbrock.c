@@ -1,25 +1,27 @@
-#include "odesol2.h"
+#include "rosenbrock.h"
 
 #include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
 
-#include "delay_handle.h"
-#include "flags.h"
-#include "gear.h"
-#include "load_eqn.h"
-#include "main.h"
-#include "markov.h"
-#include "numerics.h"
-#include "solver/runge_kutta.h"
-#include "util/matrixalgebra.h"
-#include "xpplim.h"
+#include "../delay_handle.h"
+#include "../flags.h"
+#include "../gear.h"
+#include "../load_eqn.h"
+#include "../main.h"
+#include "../markov.h"
+#include "../util/matrixalgebra.h"
+#include "../numerics.h"
+
 
 /* --- Macros --- */
 #define MAX(a,b) ((a)>(b)?(a):(b))
 #define MIN(a,b) ((a)<(b)?(a):(b))
 
-/* this is rosen  - rosenbock step
+
+/* --- Forward declarations --- */
+static int one_flag_step_rosen(double *y, double *tstart, double tfinal, int *istart, int n, double *work, int *ierr);
+
+/* --- Functions --- */
+/* This is rosen  - rosenbock step
  * This uses banded routines as well
  */
 int rb23(double *y, double *tstart, double tfinal, int *istart, int n, double *work, int *ierr) {
@@ -173,4 +175,39 @@ int rosen(double *y, double *tstart, double tfinal, int *istart, int n, double *
 	return(0);
 }
 
+
+/* --- Static functions --- */
+static int one_flag_step_rosen(double *y, double *tstart, double tfinal, int *istart, int n, double *work, int *ierr) {
+	double yold[MAXODE],told;
+	int i,ok,hit;
+	double s;
+	int nstep=0;
+	while(1) {
+		for(i=0;i<n;i++) {
+			yold[i]=y[i];
+		}
+		told=*tstart;
+		ok=rosen(y,tstart,tfinal,istart,n,work,ierr);
+		if(ok==-1) {
+			break;
+		}
+		if((hit=one_flag_step(yold,y,istart,told,tstart,n,&s ))==0) {
+			break;
+		}
+		/* Its a hit !! */
+		nstep++;
+
+		if(*tstart==tfinal) {
+			break;
+		}
+		if(nstep>(NFlags+2)) {
+			printf(" Working too hard? ");
+			printf("smin=%g\n",s);
+			*ierr=-2;
+			return 1;
+			break;
+		}
+	}
+	return 0;
+}
 

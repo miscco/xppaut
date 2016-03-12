@@ -76,7 +76,6 @@ type =3 halt
 #include "init_conds.h"
 #include "integrate.h"
 #include "newpars.h"
-#include "odesol2.h"
 #include "parserslow.h"
 #include "pop_list.h"
 #include "stiff.h"
@@ -456,40 +455,6 @@ int one_flag_step_gear(int neq, double *t, double tout, double *y, double hmin, 
 	return 0;
 }
 
-
-int one_flag_step_rosen(double *y, double *tstart, double tfinal, int *istart, int n, double *work, int *ierr) {
-	double yold[MAXODE],told;
-	int i,ok,hit;
-	double s;
-	int nstep=0;
-	while(1) {
-		for(i=0;i<n;i++) {
-			yold[i]=y[i];
-		}
-		told=*tstart;
-		ok=rosen(y,tstart,tfinal,istart,n,work,ierr);
-		if(ok==-1) {
-			break;
-		}
-		if((hit=one_flag_step(yold,y,istart,told,tstart,n,&s ))==0) {
-			break;
-		}
-		/* Its a hit !! */
-		nstep++;
-
-		if(*tstart==tfinal) {
-			break;
-		}
-		if(nstep>(NFlags+2)) {
-			plintf(" Working too hard? ");
-			plintf("smin=%g\n",s);
-			*ierr=-2;
-			return 1;
-			break;
-		}
-	}
-	return 0;
-}
 
 int one_flag_step_dp(int *istart, double *y, double *t, int n, double tout,
 					 double *tol, double *atol, int flag, int *kflag) {

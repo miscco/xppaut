@@ -72,7 +72,6 @@ noinst_HEADERS = \
         newpars.h \
         nullcline.h \
         numerics.h \
-        odesol2.h \
         parserslow.h \
         pop_list.h \
         pp_shoot.h \
@@ -129,6 +128,7 @@ solver_headers = \
         solver/discrete.h \
         solver/euler.h \
         solver/heun.h \
+        solver/rosenbrock.h \
         solver/runge_kutta.h \
         solver/symplect.h
 
@@ -190,7 +190,6 @@ xppaut_SOURCES = \
         my_svg.c \
         nullcline.c \
         numerics.c \
-        odesol2.c \
         parserslow.c \
         pop_list.c \
         pp_shoot.c \
@@ -260,7 +259,6 @@ libxpp_a_SOURCES = \
         my_svg.c \
         nullcline.c \
         numerics.c \
-        odesol2.c \
         parserslow.c \
         pop_list.c \
         pp_shoot.c \
@@ -285,6 +283,7 @@ solver_sources = \
         solver/discrete.c \
         solver/euler.c \
         solver/heun.c \
+        solver/rosenbrock.c \
         solver/runge_kutta.c \
         solver/symplect.c
 

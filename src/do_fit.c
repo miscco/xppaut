@@ -16,9 +16,9 @@
 #include "load_eqn.h"
 #include "do_fit.h"
 #include "numerics.h"
-#include "odesol2.h"
 #include "parserslow.h"
 #include "pop_list.h"
+#include "solver/rosenbrock.h"
 #include "stiff.h"
 #include "storage.h"
 

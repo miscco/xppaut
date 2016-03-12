@@ -28,7 +28,6 @@
 #include "my_ps.h"
 #include "nullcline.h"
 #include "numerics.h"
-#include "odesol2.h"
 #include "parserslow.h"
 #include "read_dir.h"
 #include "storage.h"

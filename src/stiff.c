@@ -8,7 +8,6 @@
 #include "markov.h"
 #include "main.h"
 #include "numerics.h"
-#include "odesol2.h"
 
 /* --- Macros --- */
 #define MAX(a,b) ((a)>(b)?(a):(b))

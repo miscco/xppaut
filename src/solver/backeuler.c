@@ -9,7 +9,6 @@
 #include "../main.h"
 #include "../markov.h"
 #include "../numerics.h"
-#include "../odesol2.h"
 #include "../util/matrixalgebra.h"
 
 /* --- Forward declarations --- */
