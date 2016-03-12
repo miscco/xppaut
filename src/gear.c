@@ -25,15 +25,12 @@ static void get_evec(double *a, double *anew, double *b, double *bp, int n, int 
 static void getjac(double *x, double *y, double *yp, double *xp, double eps, double *dermat, int n);
 static void hqrx(int n, int low, int igh, double *h, double *ev, int *ierr);
 static int imin(int x, int y);
-static int isamax(int n, double *sx, int incx);
 static double Max(double x, double y);
 static double Min(double x, double y);
 static void orthesx(int n, int low, int igh, double *a, double *ort);
 static void pr_evec(double *x, double *ev, int n, int pr, double eval,int type);
-static void saxpy(int n, double sa, double *sx, int incx, double *sy, int incy);
 static double sgnum(double x, double y);
 static double sqr2(double z);
-static void sscal(int n, double sa, double *sx, int incx);
 
 
 /* --- Data --- */
@@ -1023,133 +1020,6 @@ void rooter(double *x, double err, double eps, double big, double *work, int *ie
 }
 
 
-double sdot(int n, double *sx, int incx, double *sy, int incy) {
-	int i,ix,iy;
-	double stemp=0.0;
-	if(n<=0)
-		return(0.0);
-	ix=0;
-	iy=0;
-	if(incx<0) {
-		ix=-n*incx;
-	}
-	if(incy<0) {
-		iy=-n*incy;
-	}
-	for(i=0;i<n;i++,ix+=incx,iy+=incy) {
-		stemp+=sx[ix]*sy[iy];
-	}
-	return(stemp);
-}
-
-
-/**
- * Factors a real matrix by Gaussian elimination.
- *
- * @param a (in/out) the matrix to be factored.
- * @param lda the leading dimension of the array A.
- * @param n the order of the matrix A.
- * @param ipvt (out) an integer vector of pivot indices.
- * @param info (out) = 0  normal value.
- *             = k  if  u(k,k) .eq. 0.0 .  This is not an error
- *                  condition for this subroutine, but it does
- *                  indicate that SGESL or SGEDI will divide by zero
- *                  if called.  Use  RCOND  in SGECO for a reliable
- *                  indication of singularity.
- */
-void sgefa(double *a, int lda, int n, int *ipvt, int *info) {
-	int j,k,kp1,l,nm1;
-	double t;
-	*info=-1;
-	nm1=n-1;
-	if(nm1>0) {
-		for(k=1;k<=nm1;k++) {
-			kp1=k+1;
-			l=isamax(n-k+1,&a[(k-1)*lda+k-1],lda)+k-1;
-			ipvt[k-1]=l;
-			if(a[l*lda+k-1]!=0.0) {
-				if(l!=(k-1)) {
-					t=a[l*lda+k-1];
-					a[l*lda+k-1]=a[(k-1)*lda+k-1];
-					a[(k-1)*lda+k-1]=t;
-				}
-				t=-1.0/a[(k-1)*lda+k-1];
-				sscal(n-k,t,(a+k*lda+k-1),lda);
-				for(j=kp1;j<=n;j++)	{
-					t=a[l*lda+j-1];
-					if(l!=(k-1)) {
-						a[l*lda+j-1]=a[(k-1)*lda+j-1];
-						a[(k-1)*lda+j-1]=t;
-					}
-					saxpy(n-k,t,(a+k*lda+k-1),lda,(a+k*lda+j-1),lda);
-				}
-			} else {
-				*info=k-1;
-			}
-		}
-	}
-	ipvt[n-1]=n-1;
-	if(a[(n-1)*lda+n-1]==0.0) {
-		*info=n-1;
-	}
-}
-
-
-/**
- * Solves the real system
- *   A * X = B  or  transpose(A) * X = B
- * using factors computed by sgeco or sgefa.
- *
- * @param a the output from sgeco or sgefa.
- * @param lda the leading dimension of the array A.
- * @param n the order of the matrix A.
- * @param ipvt the pivot vector from sgeco or sgefa.
- * @param b (in/out) the right hand side vector.
- * @param job whether to solve the transpose(A) problem.
- */
-void sgesl(double *a, int lda, int n, int *ipvt, double *b, int job) {
-	int k,kb,l,nm1;
-	double t;
-	nm1=n-1;
-	if(job==0) {
-		if(nm1>=1) {
-			for(k=1;k<=nm1;k++) {
-				l=ipvt[k-1];
-				t=b[l];
-				if(l!=(k-1)) {
-					b[l]=b[k-1];
-					b[k-1]=t;
-				}
-				saxpy(n-k,t,(a+lda*k+k-1),lda,(b+k),1);
-			}
-		}
-		for(kb=1;kb<=n;kb++) {
-			k=n+1-kb;
-			b[k-1]=b[k-1]/a[(k-1)*lda+k-1];
-			t=-b[k-1];
-			saxpy(k-1,t,(a+k-1),lda,b,1);
-		}
-		return;
-	}
-	for(k=1;k<=n;k++) {
-		t=sdot(k-1,(a+k-1),lda,b,1);
-		b[k-1]=(b[k-1]-t)/a[(k-1)*lda+k-1];
-	}
-	if(nm1>0) {
-		for(kb=1;kb<=nm1;kb++) {
-			k=n-kb;
-			b[k-1]=b[k-1]+sdot(n-k,(a+k*lda+k-1),lda,b+k,1);
-			l=ipvt[k-1];
-			if(l!=(k-1)) {
-				t=b[l];
-				b[l]=b[k-1];
-				b[k-1]=t;
-			}
-		}
-	}
-}
-
-
 /* this uses the current labeled saddle point stuff to integrate */
 void shoot_this_now(void) {
 	int i,k,type,oldcol,dummy;
@@ -1493,38 +1363,6 @@ static int imin(int x, int y) {
 
 
 
-static int isamax(int n, double *sx, int incx) {
-	int i,ix,imax;
-	double smax;
-	if(n<1)
-		return(-1);
-	if(n==1)
-		return(0);
-	if(incx!=1) {
-		ix=0;
-		imax=0;
-		smax=fabs(sx[0]);
-		ix+=incx;
-		for(i=1;i<n;i++,ix+=incx) {
-			if(fabs(sx[ix])>smax) {
-				imax=i;
-				smax=fabs(sx[ix]);
-			}
-		}
-		return(imax);
-	}
-	imax=0;
-	smax=fabs(sx[0]);
-	for(i=1;i<n;i++) {
-		if(fabs(sx[i])>smax) {
-			imax=i;
-			smax=fabs(sx[i]);
-		}
-	}
-	return(imax);
-}
-
-
 static double Max(double x, double y) {
 	if(x>y) {
 		return(x);
@@ -1622,26 +1460,6 @@ static void pr_evec(double *x, double *ev, int n, int pr, double eval,int type) 
 }
 
 
-static void saxpy(int n, double sa, double *sx, int incx, double *sy, int incy) {
-	int i,ix,iy;
-	if(n<=0)
-		return;
-	if(sa==0.0)
-		return;
-	ix=0;
-	iy=0;
-	if(incx<0) {
-		ix=-n*incx;
-	}
-	if(incy<0) {
-		iy=-n*incy;
-	}
-	for(i=0;i<n;i++,ix+=incx,iy+=incy) {
-		sy[iy]=sy[iy]+sa*sx[ix];
-	}
-}
-
-
 static double sgnum(double x, double y) {
 	if(y<0.0) {
 		return(-fabs(x));
@@ -1653,14 +1471,4 @@ static double sgnum(double x, double y) {
 
 static double sqr2(double z) {
 	return(z*z);
-}
-
-static void sscal(int n, double sa, double *sx, int incx) {
-	int i,nincx;
-	if(n<=0)
-		return;
-	nincx=n*incx;
-	for(i=0;i<nincx;i+=incx) {
-		sx[i]*=sa;
-	}
 }

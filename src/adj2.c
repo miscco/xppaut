@@ -16,7 +16,6 @@
 #include "browse.h"
 #include "do_fit.h"
 #include "form_ode.h"
-#include "gear.h"
 #include "ggets.h"
 #include "histogram.h"
 #include "integrate.h"
@@ -28,6 +27,7 @@
 #include "pop_list.h"
 #include "storage.h"
 #include "strutil.h"
+#include "util/matrixalgebra.h"
 
 /* --- Forward Declarations --- */
 static int create_transpose(void);

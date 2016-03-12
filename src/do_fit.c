@@ -21,6 +21,7 @@
 #include "solver/rosenbrock.h"
 #include "stiff.h"
 #include "storage.h"
+#include "util/matrixalgebra.h"
 
 
 /* --- Macros --- */
