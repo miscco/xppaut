@@ -37,6 +37,7 @@
 #include "solver/backeuler.h"
 #include "solver/discrete.h"
 #include "solver/euler.h"
+#include "solver/runge_kutta.h"
 #include "solver/symplect.h"
 #include "volterra2.h"
 
@@ -88,7 +89,7 @@ void do_meth(void) {
 		solver=mod_euler;
 		break;
 	case 3:
-		solver=rung_kut;
+		solver=runge_kutta;
 		break;
 	case 4:
 		solver=adams;
@@ -112,7 +113,7 @@ void do_meth(void) {
 	case DP83:
 	case RB23:
 		NJMP=1; break;
-	default: solver=rung_kut;
+	default: solver=runge_kutta;
 	}
 }
 

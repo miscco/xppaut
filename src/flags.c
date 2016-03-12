@@ -449,34 +449,6 @@ int one_flag_step_heun(double *y, double dt, double *yval[2], int neq, double *t
 }
 
 
-int one_flag_step_rk4(double *y, double dt, double *yval[3], int neq, double *tim, int *istart) {
-	double yold[MAXODE],told;
-	int i,hit;
-	double s,dtt=dt;
-	int nstep=0;
-	while(1) {
-		for(i=0;i<neq;i++) {
-			yold[i]=y[i];
-		}
-		told=*tim;
-		one_step_rk4(y,dtt,yval,neq,tim);
-		if((hit=one_flag_step(yold,y,istart,told,tim,neq,&s ))==0) {
-			break;
-		}
-		/* Its a hit !! */
-		nstep++;
-		dtt=(1-s)*dt;
-		if(nstep>(NFlags+2)) {
-			plintf(" Working too hard?");
-			plintf("smin=%g\n",s);
-			/* plintflaginfo(); */
-			break;
-		}
-	}
-	return(1);
-}
-
-
 int one_flag_step_gear(int neq, double *t, double tout, double *y, double hmin, double hmax,
 					   double eps, int mf, double *error, int *kflag, int *jstart,
 					   double *work, int *iwork) {

@@ -127,6 +127,7 @@ solver_headers = \
         solver/backeuler.h \
         solver/discrete.h \
         solver/euler.h \
+        solver/runge_kutta.h \
         solver/symplect.h
 
 util_headers = \
@@ -280,6 +281,7 @@ solver_sources = \
         solver/backeuler.c \
         solver/discrete.c \
         solver/euler.c \
+        solver/runge_kutta.c \
         solver/symplect.c
 
 util_sources = \

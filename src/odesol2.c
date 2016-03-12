@@ -11,6 +11,8 @@
 #include "main.h"
 #include "markov.h"
 #include "numerics.h"
+#include "solver/runge_kutta.h"
+#include "util/matrixalgebra.h"
 #include "xpplim.h"
 
 /* --- Macros --- */
@@ -27,34 +29,6 @@ static double coefp[]={ 6.875/3.00,-7.375/3.00,4.625/3.00,-.375};
 static double coefc[]={ .375,2.375/3.00,-.625/3.00,0.125/3.00 };
 static double *y_s[4],*y_p[4],*ypred;
 
-
-void one_step_rk4(double *y, double dt, double *yval[3], int neq, double *tim) {
-	int i;
-	double t=*tim,t1,t2;
-	set_wieners(dt,y,t);
-	rhs(t,y,yval[1],neq);
-	for(i=0;i<neq;i++) {
-		yval[0][i]=y[i]+dt*yval[1][i]/6.00;
-		yval[2][i]=y[i]+dt*yval[1][i]*0.5;
-	}
-	t1=t+.5*dt;
-	rhs(t1,yval[2],yval[1],neq);
-	for(i=0;i<neq;i++) {
-		yval[0][i]=yval[0][i]+dt*yval[1][i]/3.00;
-		yval[2][i]=y[i]+.5*dt*yval[1][i];
-	}
-	rhs(t1,yval[2],yval[1],neq);
-	for(i=0;i<neq;i++) {
-		yval[0][i]=yval[0][i]+dt*yval[1][i]/3.000;
-		yval[2][i]=y[i]+dt*yval[1][i];
-	}
-	t2=t+dt;
-	rhs(t2,yval[2],yval[1],neq);
-	for(i=0;i<neq;i++) {
-		y[i]=yval[0][i]+dt*yval[1][i]/6.00;
-	}
-	*tim=t2;
-}
 
 void one_step_heun(double *y, double dt, double *yval[2], int neq, double *tim) {
 	int i;
@@ -95,30 +69,6 @@ int mod_euler(double *y, double *tim, double dt, int nt, int neq, int *istart, d
 }
 
 
-/*  Runge Kutta    */
-int rung_kut(double *y, double *tim, double dt, int nt, int neq, int *istart, double *work) {
-	register int j;
-	double *yval[3];
-
-	yval[0]=work;
-	yval[1]=work+neq;
-	yval[2]=work+neq+neq;
-
-	if(NFlags==0) {
-		for(j=0;j<nt;j++) {
-			one_step_rk4(y,dt,yval,neq,tim);
-			stor_delay(y);
-		}
-		return(0);
-	}
-	for(j=0;j<nt;j++) {
-		one_flag_step_rk4(y,dt,yval,neq,tim,istart);
-		stor_delay(y);
-	}
-	return(0);
-}
-
-
 /*   ABM   */
 int adams(double *y, double *tim, double dt, int nstep, int neq, int *ist, double *work) {
 	int istart=*ist,i,istpst,k,ik,n;
@@ -143,7 +93,7 @@ n20:
 	x0=xst;
 	rhs(x0,y,y_p[3],neq);
 	for(k=1;k<4;k++) {
-		rung_kut(y,&x0,dt,1,neq,&irk,work1);
+		runge_kutta(y,&x0,dt,1,neq,&irk,work1);
 		stor_delay(y);
 		for(i=0;i<neq;i++) {
 			y_s[3-k][i]=y[i];

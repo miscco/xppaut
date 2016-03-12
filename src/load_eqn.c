@@ -36,6 +36,7 @@
 #include "tabular.h"
 #include "txtread.h"
 #include "userbut.h"
+#include "solver/runge_kutta.h"
 #include "volterra2.h"
 #include "xpplim.h"
 
@@ -294,7 +295,7 @@ void loadeqn_init_options(void) {
 
 	oldhp_x=-100000.0 ;
 	oldhp_y=-100000.0;
-	solver=rung_kut;
+	solver=runge_kutta;
 	PLOT_3D=0;
 
 	METHOD=3;
