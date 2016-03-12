@@ -32,24 +32,6 @@ static double coefc[]={ .375,2.375/3.00,-.625/3.00,0.125/3.00 };
 static double *y_s[4],*y_p[4],*ypred;
 
 
-/*   DISCRETE    */
-int discrete(double *y, double *tim, double dt, int nt, int neq, int *istart, double *work) {
-	int i;
-	if(NFlags==0) {
-		for(i=0;i<nt;i++) {
-			one_step_discrete(y,dt,work,neq,tim);
-			stor_delay(y);
-		}
-		return(0);
-	}
-	for(i=0;i<nt;i++) {
-		one_flag_step_discrete(y,dt,work,neq,tim,istart);
-		stor_delay(y);
-	}
-	return(0);
-}
-
-
 /* Backward Euler  */
 int bak_euler(double *y, double *tim, double dt, int nt, int neq, int *istart, double *work) {
 	int i,j;
@@ -132,17 +114,6 @@ int one_bak_step(double *y, double *t, double dt, int neq, double *yg, double *y
 		if(iter>MaxEulIter) {
 			return(-2);
 		}
-	}
-}
-
-
-void one_step_discrete(double *y, double dt, double *yp, int neq, double *t) {
-	int j;
-	set_wieners(dt,y,*t);
-	rhs(*t,y,yp,neq);
-	*t=*t+dt;
-	for(j=0;j<neq;j++) {
-		y[j]=yp[j];
 	}
 }
 

@@ -34,6 +34,7 @@
 #include "pp_shoot.h"
 #include "storage.h"
 #include "struct.h"
+#include "solver/discrete.h"
 #include "solver/symplect.h"
 #include "volterra2.h"
 

@@ -122,6 +122,7 @@ bitmap_headers = \
         bitmap/txtview.bitmap
 
 solver_headers = \
+        solver/discrete.h \
         solver/symplect.h
 
 xppaut_LDADD = \
@@ -267,4 +268,5 @@ libxpp_a_SOURCES = \
         $(solver_sources)
 
 solver_sources = \
+        solver/discrete.c \
         solver/symplect.c

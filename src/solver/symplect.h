@@ -1,6 +1,6 @@
-#ifndef XPPAUT_SYMPLECT_H
-#define XPPAUT_SYMPLECT_H
+#ifndef XPPAUT_SOLVER_SYMPLECT_H
+#define XPPAUT_SOLVER_SYMPLECT_H
 
 int symplect3(double *y, double *tim, double dt, int nt, int neq, int *istart, double *work);
 
-#endif // XPPAUT_SYMPLECT_H
+#endif // XPPAUT_SOLVER_SYMPLECT_H
