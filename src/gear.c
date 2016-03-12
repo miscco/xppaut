@@ -1037,7 +1037,7 @@ double sdot(int n, double *sx, int incx, double *sy, int incy) {
 		iy=-n*incy;
 	}
 	for(i=0;i<n;i++,ix+=incx,iy+=incy) {
-		stemp+=sx[ix]*sx[iy];
+		stemp+=sx[ix]*sy[iy];
 	}
 	return(stemp);
 }
