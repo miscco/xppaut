@@ -37,6 +37,7 @@
 #include "solver/backeuler.h"
 #include "solver/discrete.h"
 #include "solver/euler.h"
+#include "solver/heun.h"
 #include "solver/runge_kutta.h"
 #include "solver/symplect.h"
 #include "volterra2.h"
@@ -86,7 +87,7 @@ void do_meth(void) {
 		solver=euler;
 		break;
 	case 2:
-		solver=mod_euler;
+		solver=heun;
 		break;
 	case 3:
 		solver=runge_kutta;
