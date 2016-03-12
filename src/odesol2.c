@@ -29,27 +29,7 @@ static void get_the_jac(double t, double *y, double *yp, double *ypnew, double *
 /* --- Data --- */
 static double coefp[]={ 6.875/3.00,-7.375/3.00,4.625/3.00,-.375};
 static double coefc[]={ .375,2.375/3.00,-.625/3.00,0.125/3.00 };
-static double symp_b[]={7/24.,.75,-1./24};
-static double symp_B[]={2/3.,-2./3.,1.0};
 static double *y_s[4],*y_p[4],*ypred;
-
-
-/* my first symplectic integrator */
-int symplect3(double *y, double *tim, double dt, int nt, int neq, int *istart, double *work) {
-	int i;
-	if(NFlags==0) {
-		for(i=0;i<nt;i++) {
-			one_step_symp(y,dt,work,neq,tim);
-		}
-		stor_delay(y);
-		return(0);
-	}
-	for(i=0;i<nt;i++) {
-		one_flag_step_symp(y,dt,work,neq,tim,istart);
-		stor_delay(y);
-	}
-	return(0);
-}
 
 
 /*   DISCRETE    */
@@ -164,20 +144,6 @@ void one_step_discrete(double *y, double dt, double *yp, int neq, double *t) {
 	for(j=0;j<neq;j++) {
 		y[j]=yp[j];
 	}
-}
-
-void one_step_symp(double *y, double h, double *f, int n, double *t) {
-	int s,j;
-	for(s=0;s<3;s++) {
-		for(j=0;j<n;j+=2) {
-			y[j]+=(h*symp_b[s]*y[j+1]);
-		}
-		rhs(*t,y,f,n);
-		for(j=0;j<n;j+=2) {
-			y[j+1]+=(h*symp_B[s]*f[j+1]);
-		}
-	}
-	*t+=h;
 }
 
 

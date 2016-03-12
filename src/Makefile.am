@@ -4,9 +4,10 @@ AM_CPPFLAGS = \
 	-DAUTO \
 	-DCVODE_YES \
 	-DMYSTR1=$(MAJORVER) \
-	-DMYSTR2=$(MINORVER) \
-	-Icvodesrc \
-	-Iauto
+        -DMYSTR2=$(MINORVER) \
+        -Iauto \
+        -Icvodesrc \
+        -Isolver
 
 bin_PROGRAMS = \
 	xppaut
@@ -92,7 +93,8 @@ noinst_HEADERS = \
 	volterra2.h \
 	xAuto.h \
 	xpplim.h \
-	$(bitmap_headers)
+        $(bitmap_headers) \
+        $(solver_headers)
 
 bitmap_headers = \
 	bitmap/alert.bitmap \
@@ -117,7 +119,10 @@ bitmap_headers = \
 	bitmap/param.bitmap \
 	bitmap/pp.bitmap \
 	bitmap/start.bitmap \
-	bitmap/txtview.bitmap
+        bitmap/txtview.bitmap
+
+solver_headers = \
+        solver/symplect.h
 
 xppaut_LDADD = \
 	cvodesrc/libcvode.a \
@@ -184,12 +189,13 @@ xppaut_SOURCES = \
 	simplenet.c \
 	stiff.c \
 	storage.c \
+        strutil.c \
 	tabular.c \
 	torus.c \
 	txtread.c \
 	userbut.c \
 	volterra2.c \
-	$(strutil_sources)
+        $(solver_sources)
 
 libxpp_a_SOURCES = \
 	abort.c \
@@ -252,11 +258,13 @@ libxpp_a_SOURCES = \
 	simplenet.c \
 	stiff.c \
 	storage.c \
+        strutil.c \
 	tabular.c \
 	torus.c \
 	txtread.c \
 	userbut.c \
 	volterra2.c \
-	$(strutil_sources)
+        $(solver_sources)
 
-strutil_sources = strutil.c
+solver_sources = \
+        solver/symplect.c
