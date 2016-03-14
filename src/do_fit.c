@@ -24,10 +24,6 @@
 #include "util/matrixalgebra.h"
 
 
-/* --- Macros --- */
-#define MAX(a,b) ((a)>(b)?(a):(b))
-
-
 /* --- Types --- */
 typedef struct {
 	char file[25];

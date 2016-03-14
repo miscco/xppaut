@@ -10,6 +10,7 @@
 #include "numerics.h"
 #include "parserslow.h"
 #include "pp_shoot.h"
+#include "util/matrixalgebra.h"
 #include "xAuto.h"
 
 XAUTO xAuto;

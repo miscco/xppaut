@@ -1,4 +1,4 @@
- 
+
 /******************************************************************
  *                                                                *
  * File          : band.h                                         *
@@ -40,14 +40,14 @@
  * other implementations of the type N_Vector. Thus, the          *
  * implementation of BandBacksolve may need to change if the      *
  * type N_Vector is changed.                                      *
- *                                                                * 
+ *                                                                *
  * Routines that work with real ** begin with "band" (except for  *
  * the factor and solve routines which are called gbfa and gbsl,  *
  * respectively). The underlying matrix storage is described in   *
  * the documentation for bandalloc.                               *
  *                                                                *
  ******************************************************************/
- 
+
 
 #ifndef _band_h
 #define _band_h
@@ -56,7 +56,7 @@
 #include "llnltyps.h"
 #include "vector.h"
 
- 
+
 /******************************************************************
  *                                                                *
  * Type: BandMat                                                  *
@@ -66,7 +66,7 @@
  * with the following fields:                                     *
  *                                                                *
  * size is the number of columns (== number of rows)              *
- *                                                                * 
+ *                                                                *
  * mu   is the upper bandwidth, 0 <= mu <= size-1                 *
  *                                                                *
  * ml   is the lower bandwidth, 0 <= ml <= size-1                 *
@@ -86,7 +86,7 @@
  *                                                                *
  * If we number rows and columns in the band matrix starting      *
  * from 0, then                                                   *
- *                                                                * 
+ *                                                                *
  * data[0] is a pointer to (smu+ml+1)*size contiguous locations   *
  *            which hold the elements within the band of A        *
  *                                                                *
@@ -123,11 +123,11 @@ typedef struct {
   integer mu, ml, smu;
   real **data;
 } *BandMat;
- 
+
 
 /* BandMat accessor macros */
 
- 
+
 /******************************************************************
  *                                                                *
  * Macro : BAND_ELEM                                              *
@@ -173,11 +173,11 @@ typedef struct {
  ******************************************************************/
 
 #define BAND_COL_ELEM(col_j,i,j) (col_j[i-j])
- 
+
 
 /* Functions that use the BandMat representation for a band matrix */
 
- 
+
 /******************************************************************
  *                                                                *
  * Function : BandAllocMat                                        *
@@ -196,8 +196,8 @@ typedef struct {
  * BandAllocMat returns the storage allocated (type BandMat) or   *
  * NULL if the request for matrix storage cannot be satisfied.    *
  * See the documentation for the type BandMat for matrix storage  *
- * details.                                                       * 
- *                                                                * 
+ * details.                                                       *
+ *                                                                *
  ******************************************************************/
 
 BandMat BandAllocMat(integer N, integer mu, integer ml, integer smu);
@@ -215,7 +215,7 @@ BandMat BandAllocMat(integer N, integer mu, integer ml, integer smu);
  * information is an array of N integers and this routine returns *
  * the pointer to the memory it allocates. If the request for     *
  * pivot storage cannot be satisfied, BandAllocPiv returns NULL.  *
- *                                                                * 
+ *                                                                *
  ******************************************************************/
 
 integer *BandAllocPiv(integer N);
@@ -372,12 +372,12 @@ void BandFreePiv(integer *p);
  ******************************************************************/
 
 void BandPrint(BandMat A);
- 
+
 
 
 /* Functions that use the real ** representation for a band matrix */
 
- 
+
 /******************************************************************
  *                                                                *
  * Function : bandalloc                                           *
@@ -486,7 +486,7 @@ integer *bandallocpiv(integer n);
  ******************************************************************/
 
 integer gbfa(real **a, integer n, integer mu, integer ml, integer smu,
-             integer *p);
+			 integer *p);
 
 
 /******************************************************************
@@ -530,7 +530,7 @@ void bandzero(real **a, integer n, integer mu, integer ml, integer smu);
  ******************************************************************/
 
 void bandcopy(real **a, real **b, integer n, integer a_smu, integer b_smu,
-              integer copymu, integer copyml);
+			  integer copymu, integer copyml);
 
 
 /******************************************************************
@@ -543,7 +543,7 @@ void bandcopy(real **a, real **b, integer n, integer a_smu, integer b_smu,
  ******************************************************************/
 
 void bandscale(real c, real **a, integer n, integer mu, integer ml,
-               integer smu);
+			   integer smu);
 
 
 /******************************************************************
@@ -598,6 +598,6 @@ void bandfree(real **a);
  ******************************************************************/
 
 void bandprint(real **a, integer n, integer mu, integer ml, integer smu);
- 
+
 
 #endif

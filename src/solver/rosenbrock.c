@@ -12,11 +12,6 @@
 #include "../numerics.h"
 
 
-/* --- Macros --- */
-#define MAX(a,b) ((a)>(b)?(a):(b))
-#define MIN(a,b) ((a)<(b)?(a):(b))
-
-
 /* --- Forward declarations --- */
 static int one_flag_step_rosen(double *y, double *tstart, double tfinal, int *istart, int n, double *work, int *ierr);
 

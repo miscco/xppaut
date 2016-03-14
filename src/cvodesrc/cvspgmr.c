@@ -47,7 +47,7 @@
 #define ONE  RCONST(1.0)
 
 /******************************************************************
- *                                                                *           
+ *                                                                *
  * Types : CVSpgmrMemRec, CVSpgmrMem                              *
  *----------------------------------------------------------------*
  * The type CVSpgmrMem is pointer to a CVSpgmrMemRec. This        *
@@ -65,26 +65,26 @@ typedef struct {
   real g_delta;       /* delta = deltar * sqrtN                       */
   int  g_maxl;        /* maxl = maximum dimension of the Krylov space */
 
-    int g_nstlpre;  /* value of nst at the last precond call       */     
-    int g_npe;      /* npe = total number of precond calls         */   
-    int g_nli;      /* nli = total number of linear iterations     */
-    int g_nps;      /* nps = total number of psolve calls          */
-    int g_ncfl;     /* ncfl = total number of convergence failures */
+	int g_nstlpre;  /* value of nst at the last precond call       */
+	int g_npe;      /* npe = total number of precond calls         */
+	int g_nli;      /* nli = total number of linear iterations     */
+	int g_nps;      /* nps = total number of psolve calls          */
+	int g_ncfl;     /* ncfl = total number of convergence failures */
 
-  N_Vector g_ytemp;      /* temp vector used by CVAtimesDQ              */ 
+  N_Vector g_ytemp;      /* temp vector used by CVAtimesDQ              */
   N_Vector g_x;          /* temp vector used by CVSpgmrSolve            */
   N_Vector g_ycur;       /* CVODE current y vector in Newton Iteration  */
   N_Vector g_fcur;       /* fcur = f(tn, ycur)                          */
 
   CVSpgmrPrecondFn g_precond; /* precond = user-supplied routine to   */
-                              /* compute a preconditioner             */
+							  /* compute a preconditioner             */
 
   CVSpgmrPSolveFn g_psolve;   /* psolve = user-supplied routine to    */
-			      /* solve preconditioner linear system   */
+				  /* solve preconditioner linear system   */
 
   void *g_P_data;            /* P_data passed to psolve and precond   */
   SpgmrMem g_spgmr_mem;      /* spgmr_mem is memory used by the       */
-                             /* generic Spgmr solver                  */
+							 /* generic Spgmr solver                  */
 
 } CVSpgmrMemRec, *CVSpgmrMem;
 
@@ -111,14 +111,14 @@ static int CVSpgmrPSolve(void *lin_mem, N_Vector r, N_Vector z, int lr);
 
 /* Readability Replacements */
 
-#define N       (cv_mem->cv_N)      
+#define N       (cv_mem->cv_N)
 #define uround  (cv_mem->cv_uround)
 #define tq      (cv_mem->cv_tq)
 #define nst     (cv_mem->cv_nst)
 #define tn      (cv_mem->cv_tn)
 #define h       (cv_mem->cv_h)
 #define gamma   (cv_mem->cv_gamma)
-#define gammap  (cv_mem->cv_gammap)   
+#define gammap  (cv_mem->cv_gammap)
 #define nfe     (cv_mem->cv_nfe)
 #define f       (cv_mem->cv_f)
 #define f_data  (cv_mem->cv_f_data)
@@ -134,7 +134,7 @@ static int CVSpgmrPSolve(void *lin_mem, N_Vector r, N_Vector z, int lr);
 #define lmem    (cv_mem->cv_lmem)
 #define machenv (cv_mem->cv_machenv)
 
-#define sqrtN   (cvspgmr_mem->g_srqtN)   
+#define sqrtN   (cvspgmr_mem->g_srqtN)
 #define ytemp   (cvspgmr_mem->g_ytemp)
 #define x       (cvspgmr_mem->g_x)
 #define ycur    (cvspgmr_mem->g_ycur)
@@ -158,21 +158,21 @@ static int CVSpgmrPSolve(void *lin_mem, N_Vector r, N_Vector z, int lr);
  respectively. It allocates memory for a structure of type
  CVSpgmrMemRec and sets the cv_lmem field in (*cvode_mem) to the
  address of this structure. CVSpgmr sets the following fields in the
- CVSpgmrMemRec structure:                                       
+ CVSpgmrMemRec structure:
 
-   g_pretype = pretype                                       
-   g_maxl    = MIN(N,CVSPGMR_MAXL)  if maxl <= 0             
-             = maxl                 if maxl > 0              
-   g_delt    = CVSPGMR_DELT if delt == 0.0                     
-             = delt         if delt != 0.0                     
-   g_P_data  = P_data                                        
-   g_precond = precond                                       
-   g_psolve  = psolve                                        
+   g_pretype = pretype
+   g_maxl    = MIN(N,CVSPGMR_MAXL)  if maxl <= 0
+			 = maxl                 if maxl > 0
+   g_delt    = CVSPGMR_DELT if delt == 0.0
+			 = delt         if delt != 0.0
+   g_P_data  = P_data
+   g_precond = precond
+   g_psolve  = psolve
 
 **********************************************************************/
 
 void CVSpgmr(void *cvode_mem, int pretype, int gstype, int maxl, real delt,
-	     CVSpgmrPrecondFn precond, CVSpgmrPSolveFn psolve, void *P_data)
+		 CVSpgmrPrecondFn precond, CVSpgmrPSolveFn psolve, void *P_data)
 
 {
   CVodeMem cv_mem;
@@ -216,7 +216,7 @@ void CVSpgmr(void *cvode_mem, int pretype, int gstype, int maxl, real delt,
 
 /*************** CVSpgmrInit *****************************************
 
- This routine initializes remaining memory specific to the Spgmr 
+ This routine initializes remaining memory specific to the Spgmr
  linear solver.  If any memory request fails, all memory previously
  allocated is freed, and an error message printed, before returning.
 
@@ -228,63 +228,63 @@ static int CVSpgmrInit(CVodeMem cv_mem, bool *setupNonNull)
 
   cvspgmr_mem = (CVSpgmrMem) lmem;
 
-  /* Print error message and return if cvspgmr_mem is NULL */  
+  /* Print error message and return if cvspgmr_mem is NULL */
   if (cvspgmr_mem == NULL) {
-    fprintf(errfp, MSG_MEM_FAIL);
-    return(LINIT_ERR);
+	fprintf(errfp, MSG_MEM_FAIL);
+	return(LINIT_ERR);
   }
 
-  /* Check for legal pretype, precond, and psolve */ 
+  /* Check for legal pretype, precond, and psolve */
   if ((pretype != NONE) && (pretype != LEFT) &&
-      (pretype != RIGHT) && (pretype != BOTH)) {
-    fprintf(errfp, MSG_BAD_PRETYPE, pretype, NONE, LEFT, RIGHT, BOTH);
-    return(LINIT_ERR);
+	  (pretype != RIGHT) && (pretype != BOTH)) {
+	fprintf(errfp, MSG_BAD_PRETYPE, pretype, NONE, LEFT, RIGHT, BOTH);
+	return(LINIT_ERR);
   }
   if ((pretype != NONE) && (psolve == NULL)) {
-    fprintf(errfp, MSG_PSOLVE_REQ);
-    return(LINIT_ERR);
+	fprintf(errfp, MSG_PSOLVE_REQ);
+	return(LINIT_ERR);
   }
 
   /* Check for legal gstype */
   if ((gstype != MODIFIED_GS) && (gstype != CLASSICAL_GS)) {
-    fprintf(errfp, MSG_BAD_GSTYPE, gstype, MODIFIED_GS, CLASSICAL_GS);
-    return(LINIT_ERR);
+	fprintf(errfp, MSG_BAD_GSTYPE, gstype, MODIFIED_GS, CLASSICAL_GS);
+	return(LINIT_ERR);
   }
 
   /* Allocate memory for ytemp and x */
   ytemp = N_VNew(N, machenv);
   if (ytemp == NULL) {
-    fprintf(errfp, MSG_MEM_FAIL);
-    return(LINIT_ERR);
+	fprintf(errfp, MSG_MEM_FAIL);
+	return(LINIT_ERR);
   }
   x = N_VNew(N, machenv);
   if (x == NULL) {
-    fprintf(errfp, MSG_MEM_FAIL);
-    N_VFree(ytemp);
-    return(LINIT_ERR);
+	fprintf(errfp, MSG_MEM_FAIL);
+	N_VFree(ytemp);
+	return(LINIT_ERR);
   }
 
   /* Call SpgmrMalloc to allocate workspace for Spgmr */
   spgmr_mem = SpgmrMalloc(N, maxl, machenv);
   if (spgmr_mem == NULL) {
-    fprintf(errfp, MSG_MEM_FAIL);
-    N_VFree(ytemp);
-    N_VFree(x);
-    return(LINIT_ERR);
+	fprintf(errfp, MSG_MEM_FAIL);
+	N_VFree(ytemp);
+	N_VFree(x);
+	return(LINIT_ERR);
   }
 
   /* Initialize sqrtN and counters, and set workspace lengths */
 
   sqrtN = RSqrt(N);
   npe = nli = nps = ncfl = nstlpre = 0;
-    
+
   if (iopt != NULL) {
-    iopt[SPGMR_NPE] = npe;
-    iopt[SPGMR_NLI] = nli;
-    iopt[SPGMR_NPS] = nps;
-    iopt[SPGMR_NCFL] = ncfl;
-    iopt[SPGMR_LRW] = N*(maxl + 5) + maxl*(maxl + 4) + 1;
-    iopt[SPGMR_LIW] = 0;
+	iopt[SPGMR_NPE] = npe;
+	iopt[SPGMR_NLI] = nli;
+	iopt[SPGMR_NPS] = nps;
+	iopt[SPGMR_NCFL] = ncfl;
+	iopt[SPGMR_LRW] = N*(maxl + 5) + maxl*(maxl + 4) + 1;
+	iopt[SPGMR_LIW] = 0;
   }
 
   /* Set setupNonNull to TRUE iff there is preconditioning        */
@@ -320,8 +320,8 @@ static int CVSpgmrSetup(CVodeMem cv_mem, int convfail, N_Vector ypred,
   /* Use nst, gamma/gammap, and convfail to set J eval. flag jok */
   dgamma = ABS((gamma/gammap) - ONE);
   jbad = (nst == 0) || (nst > nstlpre + CVSPGMR_MSBPRE) ||
-         ((convfail == FAIL_BAD_J) && (dgamma < CVSPGMR_DGMAX)) ||
- 	 (convfail == FAIL_OTHER);
+		 ((convfail == FAIL_BAD_J) && (dgamma < CVSPGMR_DGMAX)) ||
+	 (convfail == FAIL_OTHER);
   *jcurPtr = jbad;
   jok = !jbad;
 
@@ -332,8 +332,8 @@ static int CVSpgmrSetup(CVodeMem cv_mem, int convfail, N_Vector ypred,
 
   /* If jcur = TRUE, increment npe and save nst value */
   if (*jcurPtr) {
-    npe++;
-    nstlpre = nst;
+	npe++;
+	nstlpre = nst;
   }
 
   /* Set npe, and return the same value ier that precond returned */
@@ -366,49 +366,49 @@ static int CVSpgmrSolve(CVodeMem cv_mem, N_Vector b, N_Vector ynow,
   real bnorm, res_norm;
   CVSpgmrMem cvspgmr_mem;
   int nli_inc, nps_inc, ier;
-  
+
   cvspgmr_mem = (CVSpgmrMem) lmem;
 
   /* Test norm(b); if small, return x = 0 or x = b */
-  deltar = delt*tq[4]; 
+  deltar = delt*tq[4];
   bnorm = N_VWrmsNorm(b, ewt);
   if (bnorm <= deltar) {
-    if (mnewt > 0) N_VConst(ZERO, b); 
-    return(0);
+	if (mnewt > 0) N_VConst(ZERO, b);
+	return(0);
   }
 
   /* Set vectors ycur and fcur for use by the Atimes and Psolve routines */
   ycur = ynow;
   fcur = fnow;
 
-  /* Set inputs delta and initial guess x = 0 to SpgmrSolve */  
+  /* Set inputs delta and initial guess x = 0 to SpgmrSolve */
   delta = deltar * sqrtN;
   N_VConst(ZERO, x);
-  
+
   /* Call SpgmrSolve and copy x to b */
   ier = SpgmrSolve(spgmr_mem, cv_mem, x, b, pretype, gstype, delta, 0,
 		   cv_mem, ewt, ewt, CVSpgmrAtimesDQ, CVSpgmrPSolve,
 		   &res_norm, &nli_inc, &nps_inc);
   N_VScale(ONE, x, b);
-  
+
   /* Increment counters nli, nps, and ncfl */
   nli += nli_inc;
   nps += nps_inc;
   if (iopt != NULL) {
-    iopt[SPGMR_NLI] = nli;
-    iopt[SPGMR_NPS] = nps;
-  }  
-  if (ier != 0) { 
-    ncfl++;
-    if (iopt != NULL) iopt[SPGMR_NCFL] = ncfl;
+	iopt[SPGMR_NLI] = nli;
+	iopt[SPGMR_NPS] = nps;
+  }
+  if (ier != 0) {
+	ncfl++;
+	if (iopt != NULL) iopt[SPGMR_NCFL] = ncfl;
   }
 
   /* Set return value to -1, 0, or 1 */
-  if (ier < 0) return(-1);  
-  if ((ier == SPGMR_SUCCESS) || 
-      ((ier == SPGMR_RES_REDUCED) && (mnewt == 0)))
-    return(0);
-  return(1);  
+  if (ier < 0) return(-1);
+  if ((ier == SPGMR_SUCCESS) ||
+	  ((ier == SPGMR_RES_REDUCED) && (mnewt == 0)))
+	return(0);
+  return(1);
 }
 
 /*************** CVSpgmrFree *****************************************
@@ -422,7 +422,7 @@ static void CVSpgmrFree(CVodeMem cv_mem)
   CVSpgmrMem cvspgmr_mem;
 
   cvspgmr_mem = (CVSpgmrMem) lmem;
-  
+
   N_VFree(ytemp);
   N_VFree(x);
   SpgmrFree(spgmr_mem);
@@ -450,15 +450,15 @@ static int CVSpgmrAtimesDQ(void *cvode_mem, N_Vector v, N_Vector z)
   /* If rho = norm(v) is 0, return z = 0 */
   rho = N_VWrmsNorm(v, ewt);
   if (rho == ZERO) {
-    N_VConst(ZERO, z);
-    return(0);
+	N_VConst(ZERO, z);
+	return(0);
   }
 
   /* Set ytemp = ycur + (1/rho) v */
-  N_VLinearSum(ONE/rho, v, ONE, ycur, ytemp); 
+  N_VLinearSum(ONE/rho, v, ONE, ycur, ytemp);
 
   /* Set z = f(tn, ytemp) */
-  f(N, tn, ytemp, z, f_data); 
+  f(N, tn, ytemp, z, f_data);
   nfe++;
 
   /* Replace z by v - (gamma*rho)(z - fcur) */
@@ -471,7 +471,7 @@ static int CVSpgmrAtimesDQ(void *cvode_mem, N_Vector v, N_Vector z)
 /*************** CVSpgmrPSolve ***************************************
 
  This routine interfaces between the generic SpgmrSolve routine and
- the user's psolve routine.  It passes to psolve all required state 
+ the user's psolve routine.  It passes to psolve all required state
  information from cvode_mem.  Its return value is the same as that
  returned by psolve. Note that the generic SPGMR solver guarantees
  that CVSpgmrPSolve will not be called in the case in which
@@ -490,9 +490,9 @@ static int CVSpgmrPSolve(void *cvode_mem, N_Vector r, N_Vector z, int lr)
   cvspgmr_mem = (CVSpgmrMem)lmem;
 
   ier = psolve(N, tn, ycur, fcur, ytemp, gamma, ewt, delta, &nfe, r,
-	        lr, P_data, z);
+			lr, P_data, z);
   /* This call is counted in nps within the CVSpgmrSolve routine */
 
-  return(ier);     
+  return(ier);
 }
 

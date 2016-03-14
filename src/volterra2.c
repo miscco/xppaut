@@ -28,10 +28,6 @@
 #include "util/timeutil.h"
 #include "xpplim.h"
 
-/* --- Macros --- */
-#define MAX(a,b) ((a)>(b)?(a):(b))
-#define MIN(a,b) ((a)<(b)?(a):(b))
-
 
 /* --- Forward declarations --- */
 static double alpha1n(double mu, double dt, double t, double t0);

@@ -10,6 +10,7 @@
 #include "gear.h"
 #include "ggets.h"
 #include "main.h"
+#include "util/matrixalgebra.h"
 #include "xpplim.h"
 
 /* --- Macros --- */
@@ -88,7 +89,7 @@ void do_delay_sing(double *x, double eps, double err, double big, int maxit, int
 		for(j=0;j<n;j++) {
 			xp[j]=x[j];
 		}
-		dx=eps*amax(eps,fabs(x[i]));
+		dx=eps*MAX(eps,fabs(x[i]));
 		xp[i]=xp[i]+dx;
 		rhs(0.0,xp,yp,n);
 		for(j=0;j<n;j++) {
@@ -112,7 +113,7 @@ void do_delay_sing(double *x, double eps, double err, double big, int maxit, int
 			for(j=0;j<n;j++) {
 				variable_shift[1][j]=variable_shift[0][j];
 			}
-			dx=eps*amax(eps,fabs(x[i]));
+			dx=eps*MAX(eps,fabs(x[i]));
 			variable_shift[1][i]=x[i]+dx;
 			rhs(0.0,x,yp,n);
 			variable_shift[1][i]=x[i];

@@ -12,9 +12,6 @@
 #include "util/timeutil.h"
 
 /* --- Macros --- */
-#define MAX(a,b) ((a)>(b)?(a):(b))
-#define MIN(a,b) ((a)<(b)?(a):(b))
-#define SIGN(a,b) ((b)>=0.0 ? fabs(a):-fabs(a))
 #define SAFETY 0.9
 #define GROW 1.5
 #define PGROW -0.25

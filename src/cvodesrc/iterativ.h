@@ -12,7 +12,7 @@
  * are responsible for                                            *
  *    multiplying A by a given vector v (ATimesFn), and           *
  *    solving the preconditioner equation Pz = r (PSolveFn).      *
- *                                                                * 
+ *                                                                *
  ******************************************************************/
 
 
@@ -40,7 +40,7 @@
  * BOTH  : The iterative linear solver uses preconditioning on    *
  *         both the left and the right.                           *
  *                                                                *
- ******************************************************************/ 
+ ******************************************************************/
 
 enum { NONE, LEFT, RIGHT, BOTH };
 
@@ -153,7 +153,7 @@ int ModifiedGS(N_Vector *v, real **h, int k, int p, real *new_vk_norm);
  *                                                                *
  * s is a length k array of reals which can be used as workspace  *
  * by the ClassicalGS routine.                                    *
- *                                                                * 
+ *                                                                *
  * ClassicalGS returns 0 to indicate success. It cannot fail.     *
  *                                                                *
  ******************************************************************/

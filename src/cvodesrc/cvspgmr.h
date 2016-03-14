@@ -23,7 +23,7 @@
 #include "llnltyps.h"
 #include "vector.h"
 
- 
+
 /******************************************************************
  *                                                                *
  * CVSPGMR solver statistics indices                              *
@@ -52,9 +52,9 @@
  *                    workspace vectors used by this solver.      *
  *                                                                *
  ******************************************************************/
- 
+
 enum { SPGMR_NPE = CVODE_IOPT_SIZE,
-       SPGMR_NLI, SPGMR_NPS, SPGMR_NCFL, SPGMR_LRW, SPGMR_LIW };
+	   SPGMR_NLI, SPGMR_NPS, SPGMR_NCFL, SPGMR_LRW, SPGMR_LIW };
 
 
 /******************************************************************
@@ -63,7 +63,7 @@ enum { SPGMR_NPE = CVODE_IOPT_SIZE,
  *----------------------------------------------------------------*
  * CVSPGMR_MAXL    : default value for the maximum Krylov         *
  *                   dimension is MIN(N, CVSPGMR_MAXL)            *
- *                                                                * 
+ *                                                                *
  * CVSPGMR_MSBPRE  : maximum number of steps between              *
  *                   preconditioner evaluations                   *
  *                                                                *
@@ -79,15 +79,15 @@ enum { SPGMR_NPE = CVODE_IOPT_SIZE,
 
 #define CVSPGMR_MAXL    5
 
-#define CVSPGMR_MSBPRE  50 
+#define CVSPGMR_MSBPRE  50
 
-#define CVSPGMR_DGMAX   RCONST(0.2)  
+#define CVSPGMR_DGMAX   RCONST(0.2)
 
-#define CVSPGMR_DELT    RCONST(0.05) 
+#define CVSPGMR_DELT    RCONST(0.05)
 
- 
+
 /******************************************************************
- *                                                                *           
+ *                                                                *
  * Type : CVSpgmrPrecondFn                                        *
  *----------------------------------------------------------------*
  * The user-supplied preconditioner setup function Precond and    *
@@ -147,7 +147,7 @@ enum { SPGMR_NPE = CVODE_IOPT_SIZE,
  * jcurPtr is a pointer to an output integer flag which is        *
  *         to be set by Precond as follows:                       *
  *         Set *jcurPtr = TRUE if Jacobian data was recomputed.   *
- *         Set *jcurPtr = FALSE if Jacobian data was not          * 
+ *         Set *jcurPtr = FALSE if Jacobian data was not          *
  *                        recomputed, but saved data was reused.  *
  *                                                                *
  * gamma   is the scalar appearing in the Newton matrix.          *
@@ -182,17 +182,17 @@ enum { SPGMR_NPE = CVODE_IOPT_SIZE,
  *   < 0 for an unrecoverable error (integration is halted).      *
  *                                                                *
  ******************************************************************/
-  
+
 typedef int (*CVSpgmrPrecondFn)(integer N, real t, N_Vector y, N_Vector fy,
-                                bool jok, bool *jcurPtr, real gamma,
-                                N_Vector ewt, real h, real uround,
-                                  int *nfePtr, void *P_data,
-                                N_Vector vtemp1, N_Vector vtemp2,
-                                N_Vector vtemp3);
- 
- 
+								bool jok, bool *jcurPtr, real gamma,
+								N_Vector ewt, real h, real uround,
+								  int *nfePtr, void *P_data,
+								N_Vector vtemp1, N_Vector vtemp2,
+								N_Vector vtemp3);
+
+
 /******************************************************************
- *                                                                *           
+ *                                                                *
  * Type : CVSpgmrPSolveFn                                         *
  *----------------------------------------------------------------*
  * The user-supplied preconditioner solve function PSolve         *
@@ -251,13 +251,13 @@ typedef int (*CVSpgmrPrecondFn)(integer N, real t, N_Vector y, N_Vector fy,
  *   negative for an unrecoverable error (integration is halted). *
  *                                                                *
  ******************************************************************/
-  
+
 typedef int (*CVSpgmrPSolveFn)(integer N, real t, N_Vector y, N_Vector fy,
-                               N_Vector vtemp, real gamma, N_Vector ewt,
-                               real delta,   int *nfePtr, N_Vector r,
-                               int lr, void *P_data, N_Vector z);
- 
- 
+							   N_Vector vtemp, real gamma, N_Vector ewt,
+							   real delta,   int *nfePtr, N_Vector r,
+							   int lr, void *P_data, N_Vector z);
+
+
 /******************************************************************
  *                                                                *
  * Function : CVSpgmr                                             *
@@ -315,8 +315,8 @@ typedef int (*CVSpgmrPSolveFn)(integer N, real t, N_Vector y, N_Vector fy,
  *             these routines are called.                         *
  *                                                                *
  ******************************************************************/
-  
+
 void CVSpgmr(void *cvode_mem, int pretype, int gstype, int maxl, real delt,
-             CVSpgmrPrecondFn precond, CVSpgmrPSolveFn psolve, void *P_data);
- 
+			 CVSpgmrPrecondFn precond, CVSpgmrPSolveFn psolve, void *P_data);
+
 #endif

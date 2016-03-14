@@ -153,7 +153,7 @@ static void dprhs(unsigned n, double t, double *y, double *f) {
 	my_rhs(t,y,f,n);
 }
 
-static double sign (double a, double b) {
+static double SIGN (double a, double b) {
 	return (b < 0.0)? -fabs(a) : fabs(a);
 } /* sign */
 
@@ -202,7 +202,7 @@ static double hinit (unsigned n, FcnEqDiff fcn, double x, double* y,
 		h = sqrt (dny/dnf) * 0.01;
 	}
 	h = min_d (h, hmax);
-	h = sign (h, posneg);
+	h = SIGN (h, posneg);
 
 	/* perform an explicit Euler step */
 	for(i = 0; i < n; i++) {
@@ -236,7 +236,7 @@ static double hinit (unsigned n, FcnEqDiff fcn, double x, double* y,
 	}
 	h = min_d (100.0 * h, min_d (h1, hmax));
 
-	return sign (h, posneg);
+	return SIGN (h, posneg);
 } /* hinit */
 
 
@@ -444,7 +444,7 @@ static int dopcor (unsigned n, FcnEqDiff fcn, double x, double* y, double xend,
 	expo1 = 1.0/8.0 - beta * 0.2;
 	facc1 = 1.0 / fac1;
 	facc2 = 1.0 / fac2;
-	posneg = sign (1.0, xend-x);
+	posneg = SIGN (1.0, xend-x);
 
 	/* initial preparations */
 	atoli = atoler[0];
@@ -969,7 +969,7 @@ static double hinit5 (unsigned n, FcnEqDiff fcn, double x, double* y,
 		h = sqrt (dny/dnf) * 0.01;
 	}
 	h = min_d (h, hmax);
-	h = sign (h, posneg);
+	h = SIGN (h, posneg);
 
 	/* perform an explicit Euler step */
 	for(i = 0; i < n; i++) {
@@ -1003,7 +1003,7 @@ static double hinit5 (unsigned n, FcnEqDiff fcn, double x, double* y,
 	}
 	h = min_d (100.0 * h, min_d (h1, hmax));
 
-	return sign (h, posneg);
+	return SIGN (h, posneg);
 } /* hinit */
 
 
@@ -1047,7 +1047,7 @@ static int dopcor5 (unsigned n, FcnEqDiff fcn, double x, double* y, double xend,
 	expo1 = 0.2 - beta * 0.75;
 	facc1 = 1.0 / fac1;
 	facc2 = 1.0 / fac2;
-	posneg = sign (1.0, xend-x);
+	posneg = SIGN (1.0, xend-x);
 
 	/* initial preparations */
 	atoli = atoler[0];
