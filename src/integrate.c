@@ -1364,22 +1364,40 @@ out:
 
 
 int ode_int(double *y, double *t, int *istart) {
-	double error[MAXODE];
 	int kflag;
-	int nodes=xpv.node+xpv.nvec;
 	int nit;
+	double error[MAXODE];
+	double tout;
+
+	int nodes=xpv.node+xpv.nvec;
 	double tend=TEND;
-	double dt=DELTA_T,tout;
-	if(METHOD==METHOD_DISCRETE) {
-		nit=tend;
-		dt=dt/fabs(dt);
-	} else {
-		nit=(tend+.1*fabs(dt))/fabs(dt);
-	}
+	double dt=DELTA_T;
+
 	MSWTCH(xpv.x,y);
 	evaluate_derived();
 	tout=*t+tend*dt/fabs(dt);
 	switch(METHOD) {
+	case METHOD_DISCRETE:
+		nit=tend;
+		dt=dt/fabs(dt);
+		kflag=solver(xpv.x,t,dt,nit,nodes,istart,WORK);
+		MSWTCH(y,xpv.x);
+		if (kflag < 0) {
+			ping();
+			if (RANGE_FLAG)
+				return 0;
+			switch (kflag) {
+			case -1:
+				err_msg(" Singular Jacobian ");
+				break;
+			case -2:
+				err_msg("Too many iterates");
+				break;
+			}
+
+			return 0;
+		}
+		break;
 	case METHOD_GEAR:
 		if(*istart==1) {
 			*istart=0;
@@ -1396,6 +1414,9 @@ int ode_int(double *y, double *t, int *istart) {
 		}
 		break;
 	case METHOD_CVODE:
+		/* cvode(command,y,t,n,tout,kflag,atol,rtol)
+		 * command = 0 continue, 1 is start 2 finish
+		 */
 		cvode(istart,xpv.x,t,nodes,tout,&kflag,&TOLER,&ATOLER);
 		MSWTCH(y,xpv.x);
 		if(kflag<0) {
@@ -1448,6 +1469,7 @@ int ode_int(double *y, double *t, int *istart) {
 		err_msg("Method not implemented");
 		return 0;
 	default:
+		nit=(tend+.1*fabs(dt))/fabs(dt);
 		kflag=solver(xpv.x,t,dt,nit,nodes,istart,WORK);
 		MSWTCH(y,xpv.x);
 		if(kflag<0) {
@@ -1471,12 +1493,13 @@ int ode_int(double *y, double *t, int *istart) {
 
 
 int one_step_int(double *y, double t0, double t1, int *istart) {
-	int nit;
 	int kflag;
-	double dt=DELTA_T;
-	double z;
+	int nit;
 	double error[MAXODE];
+
+	double dt=DELTA_T;
 	double t=t0;
+
 	switch(METHOD) {
 	case METHOD_DISCRETE:
 		nit=fabs(t0-t1);
@@ -1530,8 +1553,7 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 		stor_delay(y);
 		break;
 	default:
-		z=(t1-t0)/dt;
-		nit=(int)z;
+		nit=(int)(t1-t0)/dt;
 		kflag=solver(y,&t,dt,nit,NODE,istart,WORK);
 
 		if(kflag<0)
