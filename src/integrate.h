@@ -39,6 +39,9 @@ extern int DelayErr;
 extern int MakePlotFlag;
 extern int MyStart;
 extern int RANGE_FLAG;
+extern int StableManifoldColor;
+extern int UnstableManifoldColor;
+
 extern int SuppressBounds;
 extern int SuppressOut;
 
@@ -69,7 +72,6 @@ void send_halt(double *y, double t);
 void send_output(double *y, double t);
 void set_cycle(int flag, int *icol);
 void shoot(double *x, double *xg, double *evec, int sgn);
-void shoot_easy(double *x);
 void stop_integration(void);
 void swap_color(int *col, int rorw);
 void usual_integrate_stuff(double *x);

@@ -43,6 +43,7 @@ noinst_HEADERS = \
 		eig_list.h \
 		extra.h \
 		fftn.h \
+		find_fixedPoint.h \
 		flags.h \
 		form_ode.h \
 		gear.h \
@@ -167,6 +168,7 @@ xppaut_SOURCES = \
 		eig_list.c \
 		extra.c \
 		fftn.c \
+		find_fixedPoint.c \
 		flags.c \
 		form_ode.c \
 		gear.c \
@@ -209,72 +211,7 @@ xppaut_SOURCES = \
 		$(util_sources)
 
 libxpp_a_SOURCES = \
-		abort.c \
-		adj2.c \
-		aniparse.c \
-		arrayplot.c \
-		array_print.c \
-		autevd.c \
-		auto_nox.c \
-		auto_x11.c \
-		autpp.c \
-		axes2.c \
-		browse.c \
-		calc.c \
-		color.c \
-		comline.c \
-		dae_fun.c \
-		delay_handle.c \
-		del_stab.c \
-		derived.c \
-		dialog_box.c \
-		diagram.c \
-		do_fit.c \
-		dormpri.c \
-		edit_rhs.c \
-		eig_list.c \
-		extra.c \
-		fftn.c \
-		flags.c \
-		form_ode.c \
-		gear.c \
-		ggets.c \
-		gogoauto.c \
-		graf_par.c \
-		graphics.c \
-		histogram.c \
-		init_conds.c \
-		integrate.c \
-		kinescope.c \
-		load_eqn.c \
-		lunch-new.c \
-		main.c \
-		many_pops.c \
-		markov.c \
-		menu.c \
-		menudrive.c \
-		menus.c \
-		my_ps.c \
-		my_rhs.c \
-		my_svg.c \
-		nullcline.c \
-		numerics.c \
-		parserslow.c \
-		pop_list.c \
-		pp_shoot.c \
-		read_dir.c \
-		rubber.c \
-		scrngif.c \
-		simplenet.c \
-		stiff.c \
-		storage.c \
-		tabular.c \
-		torus.c \
-		txtread.c \
-		userbut.c \
-		volterra2.c \
-		$(solver_sources) \
-		$(util_sources)
+		$(xppaut_SOURCES)
 
 solver_sources = \
 		solver/adams.c \

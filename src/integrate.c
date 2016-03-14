@@ -37,6 +37,7 @@
 #include "delay_handle.h"
 #include "derived.h"
 #include "dormpri.h"
+#include "find_fixedPoint.h"
 #include "flags.h"
 #include "gear.h"
 #include "ggets.h"
@@ -122,6 +123,8 @@ static int set_array_ic(void);
 static int set_up_eq_range(void);
 static int set_up_range(void);
 static int set_up_range2(void);
+static void shoot_easy(double *x);
+static void shoot_this_now(void);
 static int stor_full(void);
 static void store_new_array_ic(char *new_char, int j1, int j2, char *formula);
 static int write_this_run(char *file, int i);
@@ -134,14 +137,21 @@ static ARRAY_IC ar_ic[NAR_IC];
 static FIXPTGUESS fixptguess;
 static FIXPTLIST fixptlist;
 
+
 double LastTime;
 double MyData[MAXODE],MyTime;
 int DelayErr;
 int MakePlotFlag=0;
 int MyStart;
 int RANGE_FLAG;
+double ShootIC[8][MAXODE];
+int ShootICFlag;
+int ShootIndex;
+int ShootType[8];
 int SuppressBounds=0;
 int SuppressOut=0;
+int StableManifoldColor=8;
+int UnstableManifoldColor=5;
 EQ_RANGE eq_range;
 RANGE range;
 XPPVEC xpv;
@@ -1690,15 +1700,6 @@ void shoot(double *x, double *xg, double *evec, int sgn) {
 }
 
 
-void shoot_easy(double *x) {
-	double t=0.0;
-	int i;
-	SuppressBounds=1;
-	integrate(&t,x,TEND,DELTA_T,1,NJMP,&i);
-	SuppressBounds=0;
-}
-
-
 void stop_integration(void) {
 	/*  set some global error here... */
 	if(DelayErr==0)
@@ -2585,6 +2586,46 @@ static int set_up_range2(void) {
 		return(1);
 	}
 	return(0);
+}
+
+
+static void shoot_easy(double *x) {
+	double t=0.0;
+	int i;
+	SuppressBounds=1;
+	integrate(&t,x,TEND,DELTA_T,1,NJMP,&i);
+	SuppressBounds=0;
+}
+
+
+/* this uses the current labeled saddle point stuff to integrate */
+static void shoot_this_now(void) {
+	int i,k,type,oldcol,dummy;
+	double x[MAXODE],olddt;
+	if(ShootIndex<1) {
+		return;
+}
+	olddt=DELTA_T;
+
+	for(k=0;k<ShootIndex;k++) {
+		for(i=0;i<NODE;i++) {
+			x[i]=ShootIC[k][i];
+		}
+		type=ShootType[k];
+		if(type>0) {
+			change_current_linestyle(UnstableManifoldColor,&oldcol);
+			DELTA_T=fabs(DELTA_T);
+			shoot_easy(x);
+			change_current_linestyle(oldcol,&dummy);
+		}
+		if(type<0) {
+			change_current_linestyle(StableManifoldColor,&oldcol);
+			DELTA_T=-fabs(DELTA_T);
+			shoot_easy(x);
+			change_current_linestyle(oldcol,&dummy);
+		}
+	}
+	DELTA_T=olddt;
 }
 
 
