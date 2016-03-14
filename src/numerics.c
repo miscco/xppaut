@@ -40,7 +40,7 @@
 #include "solver/heun.h"
 #include "solver/runge_kutta.h"
 #include "solver/symplect.h"
-#include "volterra2.h"
+#include "solver/volterra2.h"
 
 
 /*   This is numerics.c

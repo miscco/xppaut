@@ -27,7 +27,7 @@
 #include "pp_shoot.h"
 #include "storage.h"
 #include "struct.h"
-#include "volterra2.h"
+#include "solver/volterra2.h"
 #include "xpplim.h"
 
 /* --- Forward declarations --- */

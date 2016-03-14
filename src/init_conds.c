@@ -45,7 +45,7 @@
 #include "util/strutil.h"
 #include "tabular.h"
 #include "util/timeutil.h"
-#include "volterra2.h"
+#include "solver/volterra2.h"
 #include "xpplim.h"
 
 #include "bitmap/bc.bitmap"

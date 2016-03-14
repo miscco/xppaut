@@ -36,7 +36,7 @@
 #include "txtread.h"
 #include "userbut.h"
 #include "solver/runge_kutta.h"
-#include "volterra2.h"
+#include "solver/volterra2.h"
 #include "xpplim.h"
 
 /* --- Macros --- */

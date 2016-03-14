@@ -67,7 +67,7 @@
 #include "struct.h"
 #include "util/strutil.h"
 #include "tabular.h"
-#include "volterra2.h"
+#include "solver/volterra2.h"
 #include "xpplim.h"
 
 /* --- Macros --- */

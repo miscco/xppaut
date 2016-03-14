@@ -17,16 +17,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "delay_handle.h"
-#include "form_ode.h"
-#include "solver/gear.h"
-#include "ggets.h"
-#include "load_eqn.h"
-#include "markov.h"
-#include "parserslow.h"
-#include "util/matrixalgebra.h"
-#include "util/timeutil.h"
-#include "xpplim.h"
+#include "gear.h"
+#include "../delay_handle.h"
+#include "../form_ode.h"
+#include "../ggets.h"
+#include "../load_eqn.h"
+#include "../markov.h"
+#include "../parserslow.h"
+#include "../util/matrixalgebra.h"
+#include "../util/timeutil.h"
+#include "../xpplim.h"
 
 
 /* --- Forward declarations --- */
@@ -82,7 +82,7 @@ void alloc_v_memory(void) {/* allocate stuff for volterra equations */
 	for(i=0;i<NKernel;i++) {
 		kernel[i].k_n=0.0;
 		if(add_expr(kernel[i].expr,formula,&len)) {
-			plintf("Illegal kernel %s=%s\n",kernel[i].name,kernel[i].expr);
+			printf("Illegal kernel %s=%s\n",kernel[i].name,kernel[i].expr);
 			exit(0); /* fatal error ... */
 		}
 		kernel[i].formula=(int *)malloc((len+2)*sizeof(int));
@@ -91,7 +91,7 @@ void alloc_v_memory(void) {/* allocate stuff for volterra equations */
 		}
 		if(kernel[i].flag==CONV) {
 			if(add_expr(kernel[i].kerexpr,formula,&len)) {
-				plintf("Illegal convolution %s=%s\n",
+				printf("Illegal convolution %s=%s\n",
 					   kernel[i].name,kernel[i].kerexpr);
 				exit(0); /* fatal error ... */
 			}
@@ -127,7 +127,7 @@ void allocate_volterra(int npts, int flag) {
 		}
 	}
 	if(i<ntot&&flag==0) {
-		plintf("Not enough memory... make Maxpts smaller \n");
+		printf("Not enough memory... make Maxpts smaller \n");
 		exit(0);
 	}
 	if(i<ntot) {

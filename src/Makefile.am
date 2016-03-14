@@ -85,7 +85,6 @@ noinst_HEADERS = \
 		tutor.h \
 		txtread.h \
 		userbut.h \
-		volterra2.h \
 		xAuto.h \
 		xpplim.h \
 		$(bitmap_headers) \
@@ -129,7 +128,8 @@ solver_headers = \
 		solver/rosenbrock.h \
 		solver/runge_kutta.h \
 		solver/stiff.h \
-		solver/symplect.h
+		solver/symplect.h \
+		solver/volterra2.h
 
 util_headers = \
 		util/matrixalgebra.h \
@@ -202,7 +202,6 @@ xppaut_SOURCES = \
 		torus.c \
 		txtread.c \
 		userbut.c \
-		volterra2.c \
 		$(solver_sources) \
 		$(util_sources)
 
@@ -221,7 +220,8 @@ solver_sources = \
 		solver/rosenbrock.c \
 		solver/runge_kutta.c \
 		solver/stiff.c \
-		solver/symplect.c
+		solver/symplect.c \
+		solver/volterra2.c
 
 util_sources = \
 		util/matrixalgebra.c \
