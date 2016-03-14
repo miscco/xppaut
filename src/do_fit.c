@@ -76,7 +76,6 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 	double z;
 	double error[MAXODE];
 	double t=t0;
-#ifdef CVODE_YES
 	if(METHOD==METHOD_CVODE) {
 		cvode(istart,y,&t,NODE,t1,&kflag,&TOLER,&ATOLER);
 		if(kflag<0) {
@@ -86,7 +85,6 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 		stor_delay(y);
 		return 1;
 	}
-#endif
 	if(METHOD==METHOD_DP5 || METHOD==METHOD_DP83) {
 		dormpri(istart,y,&t,NODE,t1,&TOLER,&ATOLER,METHOD-METHOD_DP5,&kflag);
 		if(kflag!=1) {
@@ -308,10 +306,8 @@ static void get_fit_info(double *y, double *a, double *t0, int *flag, double eps
 			yfit[i+k0]=y[iv];
 		}
 	}
-#ifdef CVODE_YES
 	if(METHOD==METHOD_CVODE)
-		end_cv();
-#endif
+		end_cvode();
 	/*  Now we take the derivatives !!   */
 	for(l=0;l<npars;l++) {
 		istart=1;
@@ -365,11 +361,8 @@ static void get_fit_info(double *y, double *a, double *t0, int *flag, double eps
 			constants[-ip]=par;
 		}
 		evaluate_derived();
-#ifdef CVODE_YES
 		if(METHOD==METHOD_CVODE)
-			end_cv();
-#endif
-
+			end_cvode();
 	}
 	*flag=1;
 	for(i=0;i<NODE;i++) {

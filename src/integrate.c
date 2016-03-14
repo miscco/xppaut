@@ -7,7 +7,7 @@
  * cvode(command,y,t,n,tout,kflag,atol,rtol)
  * command =0 continue, 1 is start 2 finish
  * kflag is error < 0 is bad -- call cvode_err_msg(kflag)
- * call end_cv() to end it normally
+ * call end_cvode() to end it normally
  * on return y is new stuff, t is new time kflag is error if any
  * if kflag < 0 thats bad
  *
@@ -997,12 +997,11 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 				return(1);
 			}
 			break;
-#ifdef CVODE_YES
 		case METHOD_CVODE:
 			tout=tzero+dt*(icount+1);
 			if(fabs(dt)<fabs(HMIN)) {
 				LastTime=*t;
-				end_cv();
+				end_cvode();
 				return(1);
 			}
 			MSWTCH(xpv.x,x);
@@ -1026,7 +1025,6 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 				return(1);
 			}
 			break;
-#endif
 		case METHOD_DP5:
 		case METHOD_DP83:
 			tout=tzero+dt*(icount+1);
@@ -1362,11 +1360,9 @@ out:
 	}
 
 	LastTime=*t;
-#ifdef CVODE_YES
 	if(METHOD==METHOD_CVODE) {
-		end_cv();
+		end_cvode();
 	}
-#endif
 	return(rval);
 }
 
@@ -1423,7 +1419,6 @@ int ode_int(double *y, double *t, int *istart) {
 				return(0);
 			}
 			break;
-#ifdef CVODE_YES
 		case METHOD_CVODE:
 			cvode(istart,xpv.x,t,nodes,tout,&kflag,&TOLER,&ATOLER);
 			MSWTCH(y,xpv.x);
@@ -1431,9 +1426,8 @@ int ode_int(double *y, double *t, int *istart) {
 				cvode_err_msg(kflag);
 				return(0);
 			}
-			end_cv();
+			end_cvode();
 			break;
-#endif
 		case METHOD_DP5:
 		case METHOD_DP83:
 			dormpri(istart,xpv.x,t,nodes,tout,&TOLER,&ATOLER,METHOD-METHOD_DP5,&kflag);
