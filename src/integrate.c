@@ -1403,11 +1403,11 @@ out:
 }
 
 
-int ode_int(double *y, double *t, int *istart, int ishow) {
+int ode_int(double *y, double *t, int *istart) {
 	double error[MAXODE];
 	int kflag;
 	int nodes=xpv.node+xpv.nvec;
-	int nit,nout=NJMP;
+	int nit;
 	double tend=TEND;
 	double dt=DELTA_T,tout;
 	if(METHOD==0) {
@@ -1415,10 +1415,6 @@ int ode_int(double *y, double *t, int *istart, int ishow) {
 		dt=dt/fabs(dt);
 	} else {
 		nit=(tend+.1*fabs(dt))/fabs(dt);
-	}
-	if(ishow==1) {
-		integrate(t,y,tend,dt,1,nout,istart);
-		return(1);
 	}
 	MSWTCH(xpv.x,y);
 	evaluate_derived();

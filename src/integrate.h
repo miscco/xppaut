@@ -65,7 +65,7 @@ void init_ar_ic(void);
 int integrate(double *t, double *x, double tend, double dt, int count, int nout, int *start);
 void integrate_init_range(void);
 void integrate_setup_range(void);
-int ode_int(double *y, double *t, int *istart, int ishow);
+int ode_int(double *y, double *t, int *istart);
 void restore(int i1, int i2);
 void run_now(void);
 void send_halt(double *y, double t);

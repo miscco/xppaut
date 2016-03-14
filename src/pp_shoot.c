@@ -259,9 +259,13 @@ static void bvshoot(double *y, double *yend, double err, double eps, int maxit, 
 		if(iper) {
 			set_val(upar_names[ipar],y0[n]);
 		}
-		if(ode_int(y,&t,&istart,ishow)==0) {
-			*iret=BADINT;
-			goto bye;
+		if (ishow) {
+			integrate(&t, y, TEND, DELTA_T, 1, NJMP, &istart);
+		} else {
+			if (ode_int(y, &t, &istart) == 0) {
+				*iret=BADINT;
+				goto bye;
+			}
 		}
 		for(i=0;i<n;i++) {
 			y1[i]=y[i];
@@ -316,11 +320,10 @@ static void bvshoot(double *y, double *yend, double err, double eps, int maxit, 
 			}
 			t=t0;
 			istart=1;
-			if(ode_int(y,&t,&istart,0)==0) {
+			if (ode_int(y, &t, &istart) == 0) {
 				*iret=BADINT;
 				goto bye;
 			}
-
 			do_bc(y0,t0,y,t1,fdev,n);
 			if(iper) {
 				fdev[n]=y[ivar]-sect;
