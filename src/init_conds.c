@@ -23,7 +23,6 @@
 #include <X11/Xutil.h>
 
 #include "arrayplot.h"
-#include "browse.h"
 #include "calc.h"
 #include "delay_handle.h"
 #include "derived.h"
@@ -45,6 +44,7 @@
 #include "read_dir.h"
 #include "strutil.h"
 #include "tabular.h"
+#include "util/timeutil.h"
 #include "volterra2.h"
 #include "xpplim.h"
 

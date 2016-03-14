@@ -54,6 +54,8 @@
 #include "many_pops.h"
 #include "pop_list.h"
 #include "scrngif.h"
+#include "util/timeutil.h"
+
 #include "bitmap/array.bitmap"
 
 

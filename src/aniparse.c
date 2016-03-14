@@ -56,6 +56,7 @@ want to alter the ordering below
 #include "scrngif.h"
 #include "strutil.h"
 #include "toons.h"
+#include "util/timeutil.h"
 #include "bitmap/aniwin.bitmap"
 
 /* --- Macros --- */

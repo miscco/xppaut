@@ -40,6 +40,7 @@
 #include "torus.h"
 #include "tutor.h"
 #include "txtread.h"
+#include "util/timeutil.h"
 
 #include "bitmap/alert.bitmap"
 

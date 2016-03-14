@@ -26,6 +26,7 @@
 #include "parserslow.h"
 #include "pop_list.h"
 #include "storage.h"
+#include "util/matrixalgebra.h"
 #include "xpplim.h"
 
 /* --- Macros --- */

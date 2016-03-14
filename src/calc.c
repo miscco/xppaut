@@ -18,6 +18,7 @@
 #include "newpars.h"
 #include "parserslow.h"
 #include "pop_list.h"
+#include "util/timeutil.h"
 #include "xpplim.h"
 
 /* --- Types --- */

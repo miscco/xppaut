@@ -35,6 +35,7 @@
 #include "struct.h"
 #include "tabular.h"
 #include "txtread.h"
+#include "util/timeutil.h"
 #include "xpplim.h"
 
 #include "bitmap/graph.bitmap"

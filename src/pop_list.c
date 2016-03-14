@@ -14,6 +14,7 @@
 #include "many_pops.h"
 #include "markov.h"
 #include "menudrive.h"
+#include "util/timeutil.h"
 
 #include "bitmap/alert.bitmap"
 #include "bitmap/info.bitmap"

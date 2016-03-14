@@ -28,6 +28,7 @@
 #include "parserslow.h"
 #include "pop_list.h"
 #include "struct.h"
+#include "util/timeutil.h"
 #include "xpplim.h"
 
 

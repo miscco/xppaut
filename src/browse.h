@@ -55,7 +55,6 @@ float **get_browser_data(void);
 float *get_data_col(int c);
 void get_data_xyz(float *x, float *y, float *z, int i1, int i2, int i3, int off);
 int get_maxrow_browser(void);
-int gettimenow(void);
 void init_browser(void);
 void make_new_browser(void);
 void my_browse_button(XEvent ev);
@@ -65,7 +64,6 @@ void refresh_browser(int length);
 void reset_browser(void);
 void resize_my_browser(Window win);
 void set_browser_data(float **data, int col0);
-void waitasec(int msec);
 void wipe_rep(void);
 void write_mybrowser_data(FILE *fp);
 

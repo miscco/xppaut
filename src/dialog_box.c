@@ -10,12 +10,12 @@
 #include <X11/keysym.h>
 #include <X11/keysymdef.h>
 
-#include "browse.h"
 #include "ggets.h"
 #include "main.h"
 #include "many_pops.h"
 #include "pop_list.h"
 #include "struct.h"
+#include "util/timeutil.h"
 
 
 /* --- Forward declarations --- */

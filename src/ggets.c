@@ -12,7 +12,6 @@
 #include <X11/Xutil.h>
 
 #include "axes2.h"
-#include "browse.h"
 #include "calc.h"
 #include "color.h"
 #include "graphics.h"
@@ -24,6 +23,7 @@
 #include "newhome.h"
 #include "pop_list.h"
 #include "strutil.h"
+#include "util/timeutil.h"
 
 /* --- Forward declarations --- */
 static void clr_line_at(Window w, int col0, int pos, int n);

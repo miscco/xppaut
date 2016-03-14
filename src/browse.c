@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-#include <sys/time.h>
 #include <unistd.h>
 #include <X11/keysym.h>
 #include <X11/keysymdef.h>
@@ -37,6 +36,7 @@
 #include "pop_list.h"
 #include "storage.h"
 #include "strutil.h"
+#include "util/timeutil.h"
 #include "xpplim.h"
 
 #include "bitmap/browse.bitmap"
@@ -171,19 +171,6 @@ int get_maxrow_browser(void) {
 }
 
 
-/*Excerpt from the man (Section 2) for  gettimeofday:
-"The use of the timezone structure is obsolete; the tz argument should normally be spec-
-ified as NULL.  The tz_dsttime field has never been used under Linux; it has  not  been
-and will not be supported by libc or glibc.  Each and every occurrence of this field in
-the kernel source (other than the declaration) is a bug."
-*/
-int gettimenow(void) {
-	struct timeval now;
-	gettimeofday(&now,NULL);
-	return now.tv_usec;
-}
-
-
 void init_browser(void) {
 	my_browser.dataflag=0;
 	my_browser.data=storage;
@@ -275,23 +262,6 @@ void resize_my_browser(Window win) {
 void set_browser_data(float **data,int col0) {
 	my_browser.data=data;
 	my_browser.col0=col0;
-}
-
-
-void waitasec(int msec) {
-	struct timeval tim;
-	/*struct timezone tz;*/
-	double sec=(double)msec/1000;
-	double t1,t2;
-	gettimeofday(&tim,NULL);
-	t1=tim.tv_sec+(tim.tv_usec/1000000.0);
-	while(1)	{
-		gettimeofday(&tim,NULL);
-		t2=tim.tv_sec+(tim.tv_usec/1000000.0);
-		if((t2-t1)>sec) {
-			return;
-		}
-	}
 }
 
 

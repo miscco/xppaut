@@ -8,6 +8,8 @@
 #include "markov.h"
 #include "main.h"
 #include "numerics.h"
+#include "util/matrixalgebra.h"
+#include "util/timeutil.h"
 
 /* --- Macros --- */
 #define MAX(a,b) ((a)>(b)?(a):(b))

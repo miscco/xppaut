@@ -19,6 +19,7 @@
 #include "mykeydef.h"
 #include "pop_list.h"
 #include "scrngif.h"
+#include "util/timeutil.h"
 
 /* --- Macros --- */
 #define MAXFILM 250

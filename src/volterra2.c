@@ -24,6 +24,8 @@
 #include "load_eqn.h"
 #include "markov.h"
 #include "parserslow.h"
+#include "util/matrixalgebra.h"
+#include "util/timeutil.h"
 #include "xpplim.h"
 
 /* --- Macros --- */

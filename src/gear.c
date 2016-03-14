@@ -17,6 +17,8 @@
 #include "menudrive.h"
 #include "my_rhs.h"
 #include "numerics.h"
+#include "util/matrixalgebra.h"
+#include "util/timeutil.h"
 
 
 /* --- Forward declarations --- */

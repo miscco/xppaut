@@ -26,6 +26,7 @@
 #include "mykeydef.h"
 #include "numerics.h"
 #include "pop_list.h"
+#include "util/timeutil.h"
 
 #include "bitmap/txtview.bitmap"
 

@@ -26,8 +26,10 @@
 #include "parserslow.h"
 #include "pop_list.h"
 #include "rubber.h"
+#include "util/timeutil.h"
 #include "xAuto.h"
 #include "xpplim.h"
+
 #include "bitmap/auto.bitmap"
 
 /* --- Macros --- */

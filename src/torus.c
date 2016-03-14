@@ -13,6 +13,7 @@
 #include "main.h"
 #include "many_pops.h"
 #include "pop_list.h"
+#include "util/timeutil.h"
 
 #include "bitmap/info.bitmap"
 
