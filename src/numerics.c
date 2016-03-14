@@ -334,11 +334,7 @@ static void get_method(void) {
 					  "Rosen(2)3","sYmplectic"};
 	static char key[]="demragvbqsc582y";
 
-#ifdef CVODE_YES
-	nmeth=15;
-#else
-	nmeth=15;
-#endif
+	nmeth = sizeof(n) / sizeof(*n);
 	ch = (char)pop_up_list(&temp,"Method",n,key,nmeth,15,METHOD,10,DCURY+8,
 						   meth_hint,info_pop,info_message);
 	for(i=0;i<nmeth;i++)
