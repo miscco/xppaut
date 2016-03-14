@@ -110,23 +110,7 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 				 HMIN,WORK,&kflag,NEWT_ERR,METHOD,istart);
 		if(kflag) {
 			ping();
-			switch(kflag) {
-			case 2:
-				err_msg("Step size too small");
-				break;
-			case 3:
-				err_msg("Too many steps");
-				break;
-			case -1:
-				err_msg("singular jacobian encountered");
-				break;
-			case 1:
-				err_msg("stepsize is close to 0");
-				break;
-			case 4:
-				err_msg("exceeded MAXTRY in stiff");
-				break;
-			}
+			err_msg(adaptive_err_msg(kflag));
 			return(0);
 		}
 		stor_delay(y);
@@ -138,21 +122,7 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 		gear(NODE,&t,t1,y,HMIN,HMAX,TOLER,2,error,&kflag,istart,WORK,IWORK);
 		if(kflag<0) {
 			ping();
-			switch(kflag)
-			{
-			case -1:
-				err_msg("kflag=-1: minimum step too big");
-				break;
-			case -2:
-				err_msg("kflag=-2: required order too big");
-				break;
-			case -3:
-				err_msg("kflag=-3: minimum step too big");
-				break;
-			case -4:
-				err_msg("kflag=-4: tolerance too small");
-				break;
-			}
+			err_msg(gear_err_msg(kflag));
 			return(0);
 		}
 		stor_delay(y);

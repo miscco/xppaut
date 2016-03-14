@@ -71,6 +71,24 @@ int adaptive(double *ystart, int nvar, double *xs, double x2, double eps, double
 }
 
 
+const char *adaptive_err_msg(int kflag) {
+  switch (kflag) {
+  case -1:
+	return "singular jacobian encountered";
+  case 1:
+	return "stepsize is close to 0";
+  case 2:
+	return "Step size too small";
+  case 3:
+	return "Too many steps";
+  case 4:
+	return "exceeded MAXTRY in stiff";
+  default:
+	return "unknown Stiff error";
+  }
+}
+
+
 /* --- Static functions --- */
 static void jacobn(double x, double *y, double *dfdx, double *dermat, double eps,
 			double *work, int n) {
