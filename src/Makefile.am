@@ -2,12 +2,11 @@ AM_CFLAGS = -std=c99 -Wall -pedantic
 AM_CPPFLAGS = \
 		-D_XOPEN_SOURCE=600 \
 		-DAUTO \
-		-DCVODE_YES \
 		-DMYSTR1=$(MAJORVER) \
 		-DMYSTR2=$(MINORVER) \
 		-Iauto \
-		-Icvodesrc \
-		-Isolver
+		-Isolver \
+		-Isolver/cvodesrc
 
 bin_PROGRAMS = \
 		xppaut
@@ -123,6 +122,7 @@ bitmap_headers = \
 solver_headers = \
 		solver/adams.h \
 		solver/backeuler.h \
+		solver/cv2.h \
 		solver/discrete.h \
 		solver/dormpri.h \
 		solver/euler.h \
@@ -138,7 +138,7 @@ util_headers = \
 		util/timeutil.h
 
 xppaut_LDADD = \
-		cvodesrc/libcvode.a \
+		solver/cvodesrc/libcvode.a \
 		auto/libauto.a
 
 xppaut_SOURCES = \
@@ -214,6 +214,7 @@ libxpp_a_SOURCES = \
 solver_sources = \
 		solver/adams.c \
 		solver/backeuler.c \
+		solver/cv2.c \
 		solver/discrete.c \
 		solver/dormpri.c \
 		solver/euler.c \

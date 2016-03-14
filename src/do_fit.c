@@ -6,7 +6,6 @@
 #include <string.h>
 
 #include "browse.h"
-#include "cvodesrc/cv2.h"
 #include "delay_handle.h"
 #include "derived.h"
 #include "form_ode.h"
@@ -16,6 +15,7 @@
 #include "numerics.h"
 #include "parserslow.h"
 #include "pop_list.h"
+#include "solver/cv2.h"
 #include "solver/dormpri.h"
 #include "solver/gear.h"
 #include "solver/rosenbrock.h"
