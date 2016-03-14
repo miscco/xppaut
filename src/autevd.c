@@ -10,7 +10,7 @@
 #include "auto/auto_def2.h"
 #include "auto_nox.h"
 #include "diagram.h"
-#include "gear.h"
+#include "solver/gear.h"
 #include "xAuto.h"
 
 /* --- Macros --- */

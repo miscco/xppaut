@@ -46,7 +46,6 @@ noinst_HEADERS = \
 		find_fixedPoint.h \
 		flags.h \
 		form_ode.h \
-		gear.h \
 		ggets.h \
 		graf_par.h \
 		graphics.h \
@@ -127,6 +126,7 @@ solver_headers = \
 		solver/backeuler.h \
 		solver/discrete.h \
 		solver/euler.h \
+		solver/gear.h \
 		solver/heun.h \
 		solver/rosenbrock.h \
 		solver/runge_kutta.h \
@@ -171,7 +171,6 @@ xppaut_SOURCES = \
 		find_fixedPoint.c \
 		flags.c \
 		form_ode.c \
-		gear.c \
 		ggets.c \
 		gogoauto.c \
 		graf_par.c \
@@ -218,6 +217,7 @@ solver_sources = \
 		solver/backeuler.c \
 		solver/discrete.c \
 		solver/euler.c \
+		solver/gear.c \
 		solver/heun.c \
 		solver/rosenbrock.c \
 		solver/runge_kutta.c \

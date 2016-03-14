@@ -71,7 +71,7 @@ type =3 halt
 #include "derived.h"
 #include "dormpri.h"
 #include "form_ode.h"
-#include "gear.h"
+#include "solver/gear.h"
 #include "ggets.h"
 #include "init_conds.h"
 #include "integrate.h"
@@ -421,41 +421,6 @@ int one_flag_step(double *yold, double *ynew, int *istart, double told, double *
 
 
 /*  here are the ODE drivers */
-int one_flag_step_gear(int neq, double *t, double tout, double *y, double hmin, double hmax,
-					   double eps, int mf, double *error, int *kflag, int *jstart,
-					   double *work, int *iwork) {
-	double yold[MAXODE],told;
-	int i,hit;
-	double s;
-	int nstep=0;
-	while(1) {
-		for(i=0;i<neq;i++) {
-			yold[i]=y[i];
-		}
-		told=*t;
-		ggear(neq,t,tout,y, hmin,hmax,eps,mf,error,kflag,jstart,work,iwork);
-		if(*kflag<0) {
-			break;
-		}
-		if((hit=one_flag_step(yold,y,jstart,told,t,neq,&s ))==0) {
-			break;
-		}
-		/* Its a hit !! */
-		nstep++;
-		*jstart=0; /* for gear always reset  */
-		if(*t==tout) {
-			break;
-		}
-		if(nstep>(NFlags+2)) {
-			plintf(" Working too hard? ");
-			plintf("smin=%g\n",s);
-			break;
-		}
-	}
-	return 0;
-}
-
-
 int one_flag_step_dp(int *istart, double *y, double *t, int n, double tout,
 					 double *tol, double *atol, int flag, int *kflag) {
 	double yold[MAXODE],told;

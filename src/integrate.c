@@ -39,7 +39,7 @@
 #include "dormpri.h"
 #include "find_fixedPoint.h"
 #include "flags.h"
-#include "gear.h"
+#include "solver/gear.h"
 #include "ggets.h"
 #include "graf_par.h"
 #include "graphics.h"

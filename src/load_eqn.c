@@ -14,7 +14,7 @@
 #include "delay_handle.h"
 #include "derived.h"
 #include "extra.h"
-#include "gear.h"
+#include "solver/gear.h"
 #include "ggets.h"
 #include "graf_par.h"
 #include "graphics.h"

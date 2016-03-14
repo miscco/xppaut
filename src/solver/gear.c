@@ -4,21 +4,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "abort.h"
-#include "eig_list.h"
-#include "flags.h"
-#include "form_ode.h"
-#include "ggets.h"
-#include "graphics.h"
-#include "integrate.h"
-#include "load_eqn.h"
-#include "main.h"
-#include "markov.h"
-#include "menudrive.h"
-#include "my_rhs.h"
-#include "numerics.h"
-#include "util/matrixalgebra.h"
-#include "util/timeutil.h"
+#include "../abort.h"
+#include "../eig_list.h"
+#include "../flags.h"
+#include "../form_ode.h"
+#include "../ggets.h"
+#include "../graphics.h"
+#include "../integrate.h"
+#include "../load_eqn.h"
+#include "../main.h"
+#include "../markov.h"
+#include "../menudrive.h"
+#include "../my_rhs.h"
+#include "../numerics.h"
+#include "../util/matrixalgebra.h"
+#include "../util/timeutil.h"
+
+
+/* --- Forward declarations --- */
+static int ggear(int n, double *t, double tout, double *y, double hmin, double hmax, double eps, int mf, double *error, int *kflag, int *jstart, double *work, int *iwork);
+static int one_flag_step_gear(int neq, double *t, double tout, double *y, double hmin, double hmax, double eps, int mf, double *error, int *kflag, int *jstart, double *work, int *iwork);
+
 
 
 /* --- Data --- */
@@ -44,7 +50,7 @@ int gear(int n, double *t, double tout, double *y, double hmin, double hmax,
 }
 
 
-int ggear(int n, double *t, double tout, double *y, double hmin, double hmax,
+static int ggear(int n, double *t, double tout, double *y, double hmin, double hmax,
 		  double eps, int mf, double *error, int *kflag, int *jstart,
 		  double *work, int *iwork) {
 	int gear_pivot[MAXODE];
@@ -544,3 +550,40 @@ L860:
 	iwork[7]=iweval;
 	return(1);
 }
+
+
+static int one_flag_step_gear(int neq, double *t, double tout, double *y, double hmin, double hmax,
+					   double eps, int mf, double *error, int *kflag, int *jstart,
+					   double *work, int *iwork) {
+	double yold[MAXODE],told;
+	int i,hit;
+	double s;
+	int nstep=0;
+	while(1) {
+		for(i=0;i<neq;i++) {
+			yold[i]=y[i];
+		}
+		told=*t;
+		ggear(neq,t,tout,y, hmin,hmax,eps,mf,error,kflag,jstart,work,iwork);
+		if(*kflag<0) {
+			break;
+		}
+		if((hit=one_flag_step(yold,y,jstart,told,t,neq,&s ))==0) {
+			break;
+		}
+		/* Its a hit !! */
+		nstep++;
+		*jstart=0; /* for gear always reset  */
+		if(*t==tout) {
+			break;
+		}
+		if(nstep>(NFlags+2)) {
+			plintf(" Working too hard? ");
+			plintf("smin=%g\n",s);
+			break;
+		}
+	}
+	return 0;
+}
+
+

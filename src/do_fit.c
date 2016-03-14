@@ -11,7 +11,7 @@
 #include "derived.h"
 #include "dormpri.h"
 #include "form_ode.h"
-#include "gear.h"
+#include "solver/gear.h"
 #include "ggets.h"
 #include "load_eqn.h"
 #include "do_fit.h"

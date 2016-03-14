@@ -2,9 +2,9 @@
 
 #include <math.h>
 
+#include "gear.h"
 #include "../delay_handle.h"
 #include "../flags.h"
-#include "../gear.h"
 #include "../load_eqn.h"
 #include "../main.h"
 #include "../markov.h"

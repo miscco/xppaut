@@ -17,7 +17,7 @@
 #include "delay_handle.h"
 #include "flags.h"
 #include "form_ode.h"
-#include "gear.h"
+#include "solver/gear.h"
 #include "ggets.h"
 #include "graf_par.h"
 #include "integrate.h"

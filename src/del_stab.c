@@ -7,7 +7,8 @@
 
 #include "delay_handle.h"
 #include "eig_list.h"
-#include "gear.h"
+#include "find_fixedPoint.h"
+#include "solver/gear.h"
 #include "ggets.h"
 #include "main.h"
 #include "util/matrixalgebra.h"

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #include "flags.h"
-#include "gear.h"
+#include "solver/gear.h"
 #include "markov.h"
 #include "main.h"
 #include "numerics.h"

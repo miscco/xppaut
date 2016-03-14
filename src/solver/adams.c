@@ -1,10 +1,10 @@
 #include "adams.h"
 
+#include "runge_kutta.h"
 #include "../delay_handle.h"
 #include "../flags.h"
 #include "../main.h"
 #include "../markov.h"
-#include "runge_kutta.h"
 
 /* --- Data --- */
 static const double coefp[] = {6.875 / 3.00, -7.375 / 3.00, 4.625 / 3.00,

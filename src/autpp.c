@@ -4,7 +4,7 @@
 #include "auto/auto_f2c.h"
 #include "auto_nox.h"
 #include "derived.h"
-#include "gear.h"
+#include "solver/gear.h"
 #include "load_eqn.h"
 #include "main.h"
 #include "numerics.h"
