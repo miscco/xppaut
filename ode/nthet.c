@@ -33,7 +33,7 @@ double norm()
   }
 }
 
-void rhs(double g,double a, double sig, double tau, double dt,double st)
+void my_rhs(double g,double a, double sig, double tau, double dt,double st)
 {
   int i;
   for(i=0;i<N;i++){
@@ -53,7 +53,7 @@ void one_step(double g,double a, double sig, double tau, double dt,double *stot,
   /* try to reach a steady state */
   for(i=0;i<ntran;i++)
     {
-      rhs(g,a,sig,tau,dt,*stot);
+      my_rhs(g,a,sig,tau,dt,*stot);
 
     }
 }

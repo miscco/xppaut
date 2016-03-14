@@ -329,7 +329,7 @@ solvbv(integer *ifst, iap_type *iap, rap_type *rap, doublereal *par, integer *ic
     main_auto_storage.c = NULL;
 #endif
   } else {
-    setrhs(&ndim, &ips, &ntst, &ntst0, main_auto_storage.np, &ncol, &nbc, &nint, &
+    setmy_rhs(&ndim, &ips, &ntst, &ntst0, main_auto_storage.np, &ncol, &nbc, &nint, &
 	   nfpr, &nrc, &nrow, &nclm, &iam, &kwt, &ipar, funi, bcni, icni,
 	   ndxloc, iap, rap, par, icp, rds, ft, fc, rlcur, 
 	   rlold, rldot, ups, uoldps, udotps, upoldp, dups, dtm, thl, 
@@ -517,7 +517,7 @@ mypart(integer *iam, integer *np)
 
 /*     ---------- ------ */
 /* Subroutine */ int 
-setrhs(integer *ndim, integer *ips, integer *na, integer *ntst, integer *np, integer *ncol, integer *nbc, integer *nint, integer *ncb, integer *nrc, integer *nra, integer *nca, integer *iam, integer *kwt, logical *ipar, FUNI_TYPE((*funi)), BCNI_TYPE((*bcni)), ICNI_TYPE((*icni)), integer *ndxloc, iap_type *iap, rap_type *rap, doublereal *par, integer *icp, doublereal *rds, doublereal *fa, doublereal *fc, doublereal *rlcur, doublereal *rlold, doublereal *rldot, doublereal *ups, doublereal *uoldps, doublereal *udotps, doublereal *upoldp, doublereal *dups, doublereal *dtm, doublereal *thl, doublereal *thu, doublereal *p0, doublereal *p1)
+setmy_rhs(integer *ndim, integer *ips, integer *na, integer *ntst, integer *np, integer *ncol, integer *nbc, integer *nint, integer *ncb, integer *nrc, integer *nra, integer *nca, integer *iam, integer *kwt, logical *ipar, FUNI_TYPE((*funi)), BCNI_TYPE((*bcni)), ICNI_TYPE((*icni)), integer *ndxloc, iap_type *iap, rap_type *rap, doublereal *par, integer *icp, doublereal *rds, doublereal *fa, doublereal *fc, doublereal *rlcur, doublereal *rlold, doublereal *rldot, doublereal *ups, doublereal *uoldps, doublereal *udotps, doublereal *upoldp, doublereal *dups, doublereal *dtm, doublereal *thl, doublereal *thu, doublereal *p0, doublereal *p1)
 {
   /* System generated locals */
   integer ups_dim1, dups_dim1, uoldps_dim1, 
@@ -797,9 +797,9 @@ brbd(doublereal *a, doublereal *b, doublereal *c, doublereal *d, doublereal *fa,
   }
 
   if (*nllv == 0) {
-    conrhs(nov, na, nra, nca, a, nbc, nrc, c, fa, fc, 
+    conmy_rhs(nov, na, nra, nca, a, nbc, nrc, c, fa, fc, 
 	   irf, icf, iam);
-    cpyrhs(na, nov, nra, faa, fa, irf);
+    cpymy_rhs(na, nov, nra, faa, fa, irf);
   } else {
 #ifdef RANDY_FIX
     /* The faa array needs to be intialized as well, since it 
@@ -813,7 +813,7 @@ brbd(doublereal *a, doublereal *b, doublereal *c, doublereal *d, doublereal *fa,
     setzero(fa, fc, na, nra, nrc);
 #else
     setzero(fa, fc, na, nra, nrc);
-    cpyrhs(na, nov, nra, faa, fa, irf);
+    cpymy_rhs(na, nov, nra, faa, fa, irf);
 #endif
   }
 
@@ -824,7 +824,7 @@ brbd(doublereal *a, doublereal *b, doublereal *c, doublereal *d, doublereal *fa,
   }
 
   if (*nllv == 0) {
-    redrhs(iam, kwt, par, a1, a2, cc, faa, fc, na, 
+    redmy_rhs(iam, kwt, par, a1, a2, cc, faa, fc, na, 
 	   nov, ncb, nrc, ca1, icf1, icf2, icf11, ipr,nbc);
   }
 
@@ -877,7 +877,7 @@ setzero(doublereal *fa, doublereal *fc, integer *na, integer *nra, integer *nrc)
 
 /*     ---------- ------ */
 /* Subroutine */ int 
-conrhs(integer *nov, integer *na, integer *nra, integer *nca, doublereal *a, integer *nbc, integer *nrc, doublereal *c, doublereal *fa, doublereal *fc, integer *irf, integer *icf, integer *iam)
+conmy_rhs(integer *nov, integer *na, integer *nra, integer *nca, doublereal *a, integer *nbc, integer *nrc, doublereal *c, doublereal *fa, doublereal *fc, integer *irf, integer *icf, integer *iam)
 {
   /* System generated locals */
   integer icf_dim1, irf_dim1, a_dim1, a_dim2, c_dim1, c_dim2, fa_dim1;
@@ -1000,7 +1000,7 @@ copycp(integer *iam, integer *kwt, integer *na, integer *nov, integer *nra, inte
 
 /*     ---------- ------ */
 /* Subroutine */ int 
-cpyrhs(integer *na, integer *nov, integer *nra, doublereal *faa, doublereal *fa, integer *irf)
+cpymy_rhs(integer *na, integer *nov, integer *nra, doublereal *faa, doublereal *fa, integer *irf)
 {
   /* System generated locals */
   integer irf_dim1, fa_dim1, faa_dim1;
@@ -1777,7 +1777,7 @@ e.*/
 
 /*     ---------- ------ */
 /* Subroutine */ int 
-redrhs(integer *iam, integer *kwt, logical *par, doublereal *a1, doublereal *a2, doublereal *cc, doublereal *faa, doublereal *fc, integer *na, integer *nov, integer *ncb, integer *nrc, doublereal *ca1, integer *icf1, integer *icf2, integer *icf11, integer *ipr, integer *nbc)
+redmy_rhs(integer *iam, integer *kwt, logical *par, doublereal *a1, doublereal *a2, doublereal *cc, doublereal *faa, doublereal *fc, integer *na, integer *nov, integer *ncb, integer *nrc, doublereal *ca1, integer *icf1, integer *icf2, integer *icf11, integer *ipr, integer *nbc)
 {
   /* System generated locals */
   integer icf1_dim1, icf2_dim1, icf11_dim1, 

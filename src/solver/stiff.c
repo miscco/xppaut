@@ -6,8 +6,8 @@
 #include "gear.h"
 #include "../flags.h"
 #include "../markov.h"
-#include "../main.h"
 #include "../numerics.h"
+#include "../my_rhs.h"
 #include "../util/matrixalgebra.h"
 #include "../util/timeutil.h"
 
@@ -79,10 +79,10 @@ static void jacobn(double x, double *y, double *dfdx, double *dermat, double eps
 	double *yval,*ynew,ytemp;
 	yval=work;
 	ynew=work+n;
-	rhs(x,y,yval,n);
+	my_rhs(x,y,yval,n);
 
 	r=eps*MAX(eps,fabs(x));
-	rhs(x+r,y,ynew,n);
+	my_rhs(x+r,y,ynew,n);
 	for(i=0;i<n;i++) {
 		dfdx[i]=(ynew[i]-yval[i])/r;
 	}
@@ -90,7 +90,7 @@ static void jacobn(double x, double *y, double *dfdx, double *dermat, double eps
 		ytemp=y[i];
 		r=eps*MAX(eps,fabs(ytemp));
 		y[i]=ytemp+r;
-		rhs(x,y,ynew,n);
+		my_rhs(x,y,ynew,n);
 		for(j=0;j<n;j++) {
 			dermat[j*n+i]=(ynew[j]-yval[j])/r;
 		}
@@ -118,7 +118,7 @@ static int gadaptive(double *ystart, int nvar, double *xs, double x2, double eps
 		y[i]=ystart[i];
 	}
 	for(nstp=1;nstp<=MAXSTP;nstp++) {
-		rhs(x,y,dydx,nvar);
+		my_rhs(x,y,dydx,nvar);
 		for(i=0;i<nvar;i++) {
 			if(iflag==STIFF) {
 				yscal[i]=MAX(1,fabs(y[i]));
@@ -215,24 +215,24 @@ static void rkck(double *y, double *dydx, int n, double x, double h, double *you
 	for (i=0;i<n;i++) {
 		ytemp[i]=y[i]+b21*h*dydx[i];
 	}
-	rhs(x+a2*h,ytemp,ak2,n);
+	my_rhs(x+a2*h,ytemp,ak2,n);
 	for (i=0;i<n;i++) {
 		ytemp[i]=y[i]+h*(b31*dydx[i]+b32*ak2[i]);
 	}
-	rhs(x+a3*h,ytemp,ak3,n);
+	my_rhs(x+a3*h,ytemp,ak3,n);
 	for (i=0;i<n;i++) {
 		ytemp[i]=y[i]+h*(b41*dydx[i]+b42*ak2[i]+b43*ak3[i]);
 	}
-	rhs(x+a4*h,ytemp,ak4,n);
+	my_rhs(x+a4*h,ytemp,ak4,n);
 	for (i=0;i<n;i++) {
 		ytemp[i]=y[i]+h*(b51*dydx[i]+b52*ak2[i]+b53*ak3[i]+b54*ak4[i]);
 	}
-	rhs(x+a5*h,ytemp,ak5,n);
+	my_rhs(x+a5*h,ytemp,ak5,n);
 	for (i=0;i<n;i++) {
 		ytemp[i]=y[i]+h*(b61*dydx[i]+b62*ak2[i]+b63*ak3[i]+
 						 b64*ak4[i]+b65*ak5[i]);
 	}
-	rhs(x+a6*h,ytemp,ak6,n);
+	my_rhs(x+a6*h,ytemp,ak6,n);
 	for (i=0;i<n;i++) {
 		yout[i]=y[i]+h*(c1*dydx[i]+c3*ak3[i]+c4*ak4[i]+c6*ak6[i]);
 	}
@@ -334,7 +334,7 @@ static int stiff(double y[], double dydx[], int n, double *x, double htry, doubl
 			y[i]=ysav[i]+A21*g1[i];
 		}
 		*x=xsav+A2X*h;
-		rhs(*x,y,dydx,n);
+		my_rhs(*x,y,dydx,n);
 		for (i=0;i<n;i++) {
 			g2[i]=dydx[i]+h*C2X*dfdx[i]+C21*g1[i]/h;
 		}
@@ -343,7 +343,7 @@ static int stiff(double y[], double dydx[], int n, double *x, double htry, doubl
 			y[i]=ysav[i]+A31*g1[i]+A32*g2[i];
 		}
 		*x=xsav+A3X*h;
-		rhs(*x,y,dydx,n);
+		my_rhs(*x,y,dydx,n);
 		for (i=0;i<n;i++) {
 			g3[i]=dydx[i]+h*C3X*dfdx[i]+(C31*g1[i]+C32*g2[i])/h;
 		}

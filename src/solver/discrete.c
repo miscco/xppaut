@@ -2,8 +2,8 @@
 
 #include "../delay_handle.h"
 #include "../flags.h"
-#include "../main.h"
 #include "../markov.h"
+#include "../my_rhs.h"
 
 /* --- Forward declarations --- */
 static int one_flag_step_discrete(double *y, double dt, double *work, int neq, double *tim, int *istart);
@@ -58,7 +58,7 @@ static int one_flag_step_discrete(double *y, double dt, double *work, int neq, d
 static void one_step_discrete(double *y, double dt, double *yp, int neq, double *t) {
 	int j;
 	set_wieners(dt,y,*t);
-	rhs(*t,y,yp,neq);
+	my_rhs(*t,y,yp,neq);
 	*t=*t+dt;
 	for(j=0;j<neq;j++) {
 		y[j]=yp[j];

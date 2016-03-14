@@ -6,8 +6,8 @@
 #include "../delay_handle.h"
 #include "../flags.h"
 #include "../load_eqn.h"
-#include "../main.h"
 #include "../markov.h"
+#include "../my_rhs.h"
 #include "../numerics.h"
 #include "../util/matrixalgebra.h"
 
@@ -54,14 +54,14 @@ static int one_step_backeuler(double *y, double *t, double dt, int neq, double *
 	int ml=cv_bandlower,mr=cv_bandupper,mt=ml+mr+1;
 	set_wieners(dt,y,*t);
 	*t=*t+dt;
-	rhs(*t,y,yp2,neq);
+	my_rhs(*t,y,yp2,neq);
 	for(i=0;i<neq;i++) {
 		yg[i]=y[i];
 	}
 	while(1) {
 		err1=0.0;
 		err=0.0;
-		rhs(*t,yg,yp,neq);
+		my_rhs(*t,yg,yp,neq);
 		for(i=0;i<neq;i++) {
 			errvec[i]=yg[i]-.5*dt*(yp[i]+yp2[i])-y[i];
 			err1+=fabs(errvec[i]);

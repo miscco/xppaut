@@ -3,8 +3,8 @@
 #include "runge_kutta.h"
 #include "../delay_handle.h"
 #include "../flags.h"
-#include "../main.h"
 #include "../markov.h"
+#include "../my_rhs.h"
 
 /* --- Data --- */
 static const double coefp[] = {6.875 / 3.00, -7.375 / 3.00, 4.625 / 3.00,
@@ -39,14 +39,14 @@ int adams(double *y, double *tim, double dt, int nstep, int neq, int *ist, doubl
 	goto n400;
 n20:
 	x0=xst;
-	rhs(x0,y,y_p[3],neq);
+	my_rhs(x0,y,y_p[3],neq);
 	for(k=1;k<4;k++) {
 		runge_kutta(y,&x0,dt,1,neq,&irk,work1);
 		stor_delay(y);
 		for(i=0;i<neq;i++) {
 			y_s[3-k][i]=y[i];
 		}
-		rhs(x0,y,y_p[3-k],neq);
+		my_rhs(x0,y,y_p[3-k],neq);
 	}
 	istpst=3;
 	if(istpst<=nstep) {
@@ -115,7 +115,7 @@ static int abmpc(double *y, double *t, double dt, int neq) {
 		}
 	}
 	x1=x0+dt;
-	rhs(x1,ypred,y_p[0],neq);
+	my_rhs(x1,ypred,y_p[0],neq);
 	for(i=0;i<neq;i++) {
 		ypred[i]=0;
 		for(k=0;k<4;k++) {
@@ -124,6 +124,6 @@ static int abmpc(double *y, double *t, double dt, int neq) {
 		y[i]=y[i]+dt*ypred[i];
 	}
 	*t=x1;
-	rhs(x1,y,y_p[0],neq);
+	my_rhs(x1,y,y_p[0],neq);
 	return(1);
 }

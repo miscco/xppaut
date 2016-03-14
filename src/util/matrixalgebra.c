@@ -2,8 +2,8 @@
 
 #include <math.h>
 
-#include "../main.h"
 #include "../markov.h"
+#include "../my_rhs.h"
 #include "../numerics.h"
 
 
@@ -167,7 +167,7 @@ void getjac(double *x, double *y, double *yp, double *xp, double eps,
 			double *dermat, int n) {
 	int i,j,k;
 	double r;
-	rhs(0.0,x,y,n);
+	my_rhs(0.0,x,y,n);
 	if(METHOD==0) {
 		for(i=0;i<n;i++) {y[i]=y[i]-x[i];
 		}
@@ -178,7 +178,7 @@ void getjac(double *x, double *y, double *yp, double *xp, double eps,
 		}
 		r=eps*MAX(eps,fabs(x[i]));
 		xp[i]=xp[i]+r;
-		rhs(0.0,xp,yp,n);
+		my_rhs(0.0,xp,yp,n);
 
 		if(METHOD==0) {
 			for(j=0;j<n;j++) {
@@ -195,14 +195,14 @@ void getjac(double *x, double *y, double *yp, double *xp, double eps,
 void getjactrans(double *x,double *y,double *yp,double *xp, double eps, double *dermat, int n) {
 	int i,j,k;
 	double r;
-	rhs(0.0,x,y,n);
+	my_rhs(0.0,x,y,n);
 	for(i=0;i<n;i++) {
 		for(k=0;k<n;k++) {
 			xp[k]=x[k];
 		}
 		r=eps*MAX(eps,fabs(x[i]));
 		xp[i]=xp[i]+r;
-		rhs(0.0,xp,yp,n);
+		my_rhs(0.0,xp,yp,n);
 
 		for(j=0;j<n;j++) {
 			dermat[j+n*i]=(yp[j]-y[j])/r;
@@ -223,7 +223,7 @@ void get_the_jac(double t, double *y, double *yp, double *ypnew, double *dfdy, i
 			dsy=scal/del;
 			yold=y[i];
 			y[i]=y[i]+del;
-			rhs(t,y,ypnew,neq);
+			my_rhs(t,y,ypnew,neq);
 			for(j=0;j<neq;j++) {
 				dfdy[j*neq+i]=dsy*(ypnew[j]-yp[j]);
 			}
@@ -362,7 +362,7 @@ static void get_band_jac(double *a, double *y, double t, double *ypnew, double *
 		dy=eps*(eps+fabs(yhat));
 		dsy=scal/dy;
 		y[i] += dy;
-		rhs(t,y,ypnew,n);
+		my_rhs(t,y,ypnew,n);
 		for(j=-ml;j<=mr;j++) {
 			k=i-j;
 			if(k<0 || k>n1) {

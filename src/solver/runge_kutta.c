@@ -2,8 +2,8 @@
 
 #include "../delay_handle.h"
 #include "../flags.h"
-#include "../main.h"
 #include "../markov.h"
+#include "../my_rhs.h"
 
 
 /* --- Forward declarations --- */
@@ -68,24 +68,24 @@ static void one_step_rk4(double *y, double dt, double *yval[3], int neq, double 
 	int i;
 	double t=*tim,t1,t2;
 	set_wieners(dt,y,t);
-	rhs(t,y,yval[1],neq);
+	my_rhs(t,y,yval[1],neq);
 	for(i=0;i<neq;i++) {
 		yval[0][i]=y[i]+dt*yval[1][i]/6.00;
 		yval[2][i]=y[i]+dt*yval[1][i]*0.5;
 	}
 	t1=t+.5*dt;
-	rhs(t1,yval[2],yval[1],neq);
+	my_rhs(t1,yval[2],yval[1],neq);
 	for(i=0;i<neq;i++) {
 		yval[0][i]=yval[0][i]+dt*yval[1][i]/3.00;
 		yval[2][i]=y[i]+.5*dt*yval[1][i];
 	}
-	rhs(t1,yval[2],yval[1],neq);
+	my_rhs(t1,yval[2],yval[1],neq);
 	for(i=0;i<neq;i++) {
 		yval[0][i]=yval[0][i]+dt*yval[1][i]/3.000;
 		yval[2][i]=y[i]+dt*yval[1][i];
 	}
 	t2=t+dt;
-	rhs(t2,yval[2],yval[1],neq);
+	my_rhs(t2,yval[2],yval[1],neq);
 	for(i=0;i<neq;i++) {
 		y[i]=yval[0][i]+dt*yval[1][i]/6.00;
 	}

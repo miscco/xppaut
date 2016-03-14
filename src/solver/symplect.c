@@ -2,7 +2,7 @@
 
 #include "../delay_handle.h"
 #include "../flags.h"
-#include "../main.h"
+#include "../my_rhs.h"
 
 /* --- Forward declarations --- */
 static int one_flag_step_symp(double *y, double dt, double *work, int neq, double *tim, int *istart);
@@ -63,7 +63,7 @@ static void one_step_symp(double *y, double h, double *f, int n, double *t) {
 		for(j=0;j<n;j+=2) {
 			y[j]+=(h*symp_b[s]*y[j+1]);
 		}
-		rhs(*t,y,f,n);
+		my_rhs(*t,y,f,n);
 		for(j=0;j<n;j+=2) {
 			y[j+1]+=(h*symp_B[s]*f[j+1]);
 		}

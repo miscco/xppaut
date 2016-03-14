@@ -2,8 +2,8 @@
 
 #include "../delay_handle.h"
 #include "../flags.h"
-#include "../main.h"
 #include "../markov.h"
+#include "../my_rhs.h"
 #include "../util/matrixalgebra.h"
 
 /* --- Forward declarations --- */
@@ -60,7 +60,7 @@ static int one_flag_step_euler(double *y, double dt, double *work, int neq, doub
 static void one_step_euler(double *y, double dt, double *yp, int neq, double *t) {
 	int j;
 	set_wieners(dt,y,*t);
-	rhs(*t,y,yp,neq);
+	my_rhs(*t,y,yp,neq);
 	*t+=dt;
 	for(j=0;j<neq;j++) {
 		y[j]=y[j]+dt*yp[j];

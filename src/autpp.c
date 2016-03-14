@@ -7,6 +7,7 @@
 #include "solver/gear.h"
 #include "load_eqn.h"
 #include "main.h"
+#include "my_rhs.h"
 #include "numerics.h"
 #include "parserslow.h"
 #include "pp_shoot.h"
@@ -25,7 +26,7 @@ int func(integer ndim, double *u, integer *icp, double *par, integer ijac,
 		constants[Auto_index_to_array[i]]=par[i];
 	}
 	evaluate_derived();
-	rhs(0.0,u,f,ndim);
+	my_rhs(0.0,u,f,ndim);
 	if(ijac==1) {
 		getjactrans(u,y,yp,xp,NEWT_ERR,dfdu,ndim);
 	}
@@ -37,7 +38,7 @@ int func(integer ndim, double *u, integer *icp, double *par, integer ijac,
 		for(j=0;j<ndim;j++) {
 			zz[j]=f[j];
 		}
-		rhs(0.0,zz,f,ndim);
+		my_rhs(0.0,zz,f,ndim);
 	}
 	return 0;
 }

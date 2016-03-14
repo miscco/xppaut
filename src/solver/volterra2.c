@@ -23,6 +23,7 @@
 #include "../ggets.h"
 #include "../load_eqn.h"
 #include "../markov.h"
+#include "../my_rhs.h"
 #include "../parserslow.h"
 #include "../util/matrixalgebra.h"
 #include "../util/timeutil.h"

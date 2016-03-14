@@ -12,7 +12,6 @@
 #include "../graphics.h"
 #include "../integrate.h"
 #include "../load_eqn.h"
-#include "../main.h"
 #include "../markov.h"
 #include "../menudrive.h"
 #include "../my_rhs.h"
@@ -149,7 +148,7 @@ L120:
 		goto L140;
 	}
 	nq=1;
-	rhs(*t,ytable[0],save11,n);
+	my_rhs(*t,ytable[0],save11,n);
 	for(i=0;i<n;i++) {
 		ytable[1][i]=save11[i]*h;
 		ymax[i]=1.00;
@@ -246,7 +245,7 @@ L330:
 		error[i]=0.0;
 	}
 	for(l=0;l<3;l++) {
-		rhs(*t,ytable[0],save11,n);
+		my_rhs(*t,ytable[0],save11,n);
 		if(iweval<1) {
 			/*  plintf("iweval=%d \n",iweval);
 		 for(i=0;i<n;i++)printf("up piv = %d \n",gear_pivot[i]);*/
@@ -260,7 +259,7 @@ L330:
 			r=eps*MAX(eps,fabs(save9[j]));
 			ytable[0][j]=ytable[0][j]+r;
 			d=a[0]*h/r;
-			rhs(*t,ytable[0],save12,n);
+			my_rhs(*t,ytable[0],save12,n);
 			for(i=0;i<n;i++) {
 				dermat[n*i+j]=(save12[i]-save11[i])*d;
 			}
@@ -477,7 +476,7 @@ L790:
 	if(nq==1) {
 		goto L850;
 	}
-	rhs(*t,ytable[0],save11,n);
+	my_rhs(*t,ytable[0],save11,n);
 	r=h/hold;
 	for(i=0;i<n;i++) {
 		ytable[0][i]=save[0][i];
