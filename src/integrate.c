@@ -977,7 +977,7 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 				return(1);
 			}
 			MSWTCH(xpv.x,x);
-			gear(nodes,t,tout,xpv.x,HMIN,HMAX,TOLER,2,error,&kflag,start,WORK,IWORK);
+			gear(nodes,t,tout,xpv.x,HMIN,HMAX,TOLER,2,error,&kflag,start,WORK);
 			MSWTCH(x,xpv.x);
 			stor_delay(x);
 			if(DelayErr) {
@@ -1389,7 +1389,7 @@ int ode_int(double *y, double *t, int *istart) {
 			*istart=0;
 		}
 		gear(nodes,t,tout,xpv.x,HMIN,HMAX,TOLER,2,error,
-			 &kflag,istart,WORK,IWORK);
+			 &kflag,istart,WORK);
 		MSWTCH(y,xpv.x);
 		if(kflag<0) {
 			ping();

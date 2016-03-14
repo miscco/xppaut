@@ -117,7 +117,7 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 	/* cvode(command,y,t,n,tout,kflag,atol,rtol)
  command =0 continue, 1 is start 2 finish   */
 	if(METHOD==METHOD_GEAR) {
-		gear(NODE,&t,t1,y,HMIN,HMAX,TOLER,2,error,&kflag,istart,WORK,IWORK);
+		gear(NODE,&t,t1,y,HMIN,HMAX,TOLER,2,error,&kflag,istart,WORK);
 		if(kflag<0) {
 			ping();
 			err_msg(gear_err_msg(kflag));

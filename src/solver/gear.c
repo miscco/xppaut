@@ -19,10 +19,15 @@
 #include "../util/matrixalgebra.h"
 #include "../util/timeutil.h"
 
+/* --- Types --- */
+typedef struct {
+	int iwork[8];
+} GearSolver;
+
 
 /* --- Forward declarations --- */
-static int ggear(int n, double *t, double tout, double *y, double hmin, double hmax, double eps, int mf, double *error, int *kflag, int *jstart, double *work, int *iwork);
-static int one_flag_step_gear(int neq, double *t, double tout, double *y, double hmin, double hmax, double eps, int mf, double *error, int *kflag, int *jstart, double *work, int *iwork);
+static int ggear(int n, double *t, double tout, double *y, double hmin, double hmax, double eps, int mf, double *error, int *kflag, int *jstart, double *work);
+static int one_flag_step_gear(int neq, double *t, double tout, double *y, double hmin, double hmax, double eps, int mf, double *error, int *kflag, int *jstart, double *work);
 
 
 /* --- Data --- */
@@ -33,18 +38,19 @@ static double pertst[7][2][3]={{{2,3,1},{2,12,1}},
 							   {{13.7,15.98,.04133},{53.33,70.08,.3157}},
 							   {{17.15,1,.008267},{70.08,87.97,.07407}},
 							   {{1,1,1},{87.97,1,.0139}}};
+static GearSolver solver;
 
 
 /* --- Functions --- */
 int gear(int n, double *t, double tout, double *y, double hmin, double hmax,
 		 double eps, int mf, double *error, int *kflag, int *jstart,
-		 double *work, int *iwork) {
+		 double *work) {
 	if(NFlags==0) {
 		return(ggear( n,t, tout,y, hmin, hmax,eps,
-					  mf,error,kflag,jstart,work,iwork));
+					  mf,error,kflag,jstart,work));
 	}
 	return(one_flag_step_gear(n,t, tout,y, hmin,
-							  hmax,eps,mf,error,kflag,jstart,work,iwork));
+							  hmax,eps,mf,error,kflag,jstart,work));
 }
 
 
@@ -66,7 +72,7 @@ const char* gear_err_msg(int kflag) {
 /* --- Static functions --- */
 static int ggear(int n, double *t, double tout, double *y, double hmin, double hmax,
 				 double eps, int mf, double *error, int *kflag, int *jstart,
-				 double *work, int *iwork) {
+				 double *work) {
 	int gear_pivot[MAXODE];
 	double deltat=0.0,hnew=0.0,hold=0.0,h=0.0,racum=0.0,told=0.0,r=0.0,d=0.0;
 	double *a,pr1,pr2,pr3,r1;
@@ -89,16 +95,16 @@ static int ggear(int n, double *t, double tout, double *y, double hmin, double h
 	a=work+21*n+n*n;
 	work2=work+21*n+n*n+10;
 	if(*jstart!=0) {
-		k=iwork[0];
-		nq=iwork[1];
-		nqold=iwork[2];
-		idoub=iwork[3];
+		k=solver.iwork[0];
+		nq=solver.iwork[1];
+		nqold=solver.iwork[2];
+		idoub=solver.iwork[3];
+		iret1=solver.iwork[4];
+		iret=solver.iwork[5];
+		newq=solver.iwork[6];
+		iweval=solver.iwork[7];
 		maxder=6;
 		mtyp=1;
-		iret1=iwork[4];
-		iret=iwork[5];
-		newq=iwork[6];
-		iweval=iwork[7];
 		hold=work2[1];
 		h=work2[0];
 		hnew=work2[2];
@@ -541,9 +547,14 @@ L860:
 	for(i=0;i<n;i++) {
 		y[i]=ytable[0][i];
 	}
-	iwork[0]=k;
-	iwork[1]=nq;
-	iwork[2]=nqold;
+	solver.iwork[0]=k;
+	solver.iwork[1]=nq;
+	solver.iwork[2]=nqold;
+	solver.iwork[3]=idoub;
+	solver.iwork[4]=iret1;
+	solver.iwork[5]=iret;
+	solver.iwork[6]=newq;
+	solver.iwork[7]=iweval;
 	work2[0]=h;
 	work2[1]=hold;
 	work2[2]=hnew;
@@ -557,18 +568,13 @@ L860:
 	work2[10]=edwn;
 	work2[11]=eup;
 	work2[12]=bnd;
-	iwork[3]=idoub;
-	iwork[4]=iret1;
-	iwork[5]=iret;
-	iwork[6]=newq;
-	iwork[7]=iweval;
 	return(1);
 }
 
 
 static int one_flag_step_gear(int neq, double *t, double tout, double *y, double hmin, double hmax,
 							  double eps, int mf, double *error, int *kflag, int *jstart,
-							  double *work, int *iwork) {
+							  double *work) {
 	double yold[MAXODE],told;
 	int i,hit;
 	double s;
@@ -578,7 +584,7 @@ static int one_flag_step_gear(int neq, double *t, double tout, double *y, double
 			yold[i]=y[i];
 		}
 		told=*t;
-		ggear(neq,t,tout,y, hmin,hmax,eps,mf,error,kflag,jstart,work,iwork);
+		ggear(neq,t,tout,y, hmin,hmax,eps,mf,error,kflag,jstart,work);
 		if(*kflag<0) {
 			break;
 		}
