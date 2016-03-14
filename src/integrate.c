@@ -930,10 +930,6 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 	LastTime=*t;
 	evaluate_derived();
 
-
-	if((METHOD==METHOD_GEAR) && (*start==1)) {
-		*start=0;
-	}
 	if(METHOD==METHOD_DISCRETE) {
 		nit=tend;
 		dt=dt/fabs(dt);
@@ -975,6 +971,9 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 			if(fabs(dt)<fabs(HMIN)) {
 				LastTime=*t;
 				return(1);
+			}
+			if (*start == 1) {
+				*start = 0;
 			}
 			MSWTCH(xpv.x,x);
 			gear(nodes,t,tout,xpv.x,HMIN,HMAX,TOLER,2,error,&kflag,start,WORK);
