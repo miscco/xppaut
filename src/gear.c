@@ -22,7 +22,6 @@
 
 
 /* --- Data --- */
-static int gear_pivot[MAXODE];
 static double pertst[7][2][3]={{{2,3,1},{2,12,1}},
 						{{4.5,6,1},{12,24,1}},
 						{{7.333,9.167,.5},{24,37.89,2}},
@@ -48,6 +47,7 @@ int gear(int n, double *t, double tout, double *y, double hmin, double hmax,
 int ggear(int n, double *t, double tout, double *y, double hmin, double hmax,
 		  double eps, int mf, double *error, int *kflag, int *jstart,
 		  double *work, int *iwork) {
+	int gear_pivot[MAXODE];
 	double deltat=0.0,hnew=0.0,hold=0.0,h=0.0,racum=0.0,told=0.0,r=0.0,d=0.0;
 	double *a,pr1,pr2,pr3,r1;
 	double *dermat,*save[8],*save9,*save10,*save11,*save12;
