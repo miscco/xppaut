@@ -344,11 +344,13 @@ nfcnRead    Number of function calls.
 
 */
 
-#include <stdio.h>
+#ifndef XPPAUT_SOLVER_DORMPRI_H
+#define XPPAUT_SOLVER_DORMPRI_H
+
 #include <limits.h>
 
 /* --- functions --- */
-int dormprin(int *istart, double *y, double *t, int n, double tout, double *tol, double *atol, int flag, int *kflag);
-int dp(int *istart, double *y, double *t, int n, double tout, double *tol, double *atol, int flag, int *kflag);
-void dp_err(int k);
+int dormpri(int *istart, double *y, double *t, int n, double tout, double *tol, double *atol, int flag, int *kflag);
+void dormpri_err(int k);
 
+#endif /* XPPAUT_SOLVER_DORMPRI_H */

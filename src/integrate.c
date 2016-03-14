@@ -36,7 +36,7 @@
 #include "del_stab.h"
 #include "delay_handle.h"
 #include "derived.h"
-#include "dormpri.h"
+#include "solver/dormpri.h"
 #include "find_fixedPoint.h"
 #include "flags.h"
 #include "solver/gear.h"
@@ -1051,7 +1051,7 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 				return(1);
 			}
 			MSWTCH(xpv.x,x);
-			dp(start,xpv.x,t,nodes,tout,&TOLER,&ATOLER,METHOD-DP5,&kflag);
+			dormpri(start,xpv.x,t,nodes,tout,&TOLER,&ATOLER,METHOD-DP5,&kflag);
 			MSWTCH(x,xpv.x);
 			stor_delay(x);
 			if(DelayErr) {
@@ -1065,7 +1065,7 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 					LastTime=*t;
 					return(1);
 				}
-				dp_err(kflag);
+				dormpri_err(kflag);
 				LastTime=*t;
 				return(1);
 			}
@@ -1485,13 +1485,13 @@ int ode_int(double *y, double *t, int *istart, int ishow) {
 #endif
 		case DP5:
 		case DP83:
-			dp(istart,xpv.x,t,nodes,tout,&TOLER,&ATOLER,METHOD-DP5,&kflag);
+			dormpri(istart,xpv.x,t,nodes,tout,&TOLER,&ATOLER,METHOD-DP5,&kflag);
 			MSWTCH(y,xpv.x);
 			if(kflag<0) {
 				if(RANGE_FLAG) {
 					return(0);
 				}
-				dp_err(kflag);
+				dormpri_err(kflag);
 				return 0;
 			}
 

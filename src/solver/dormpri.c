@@ -6,10 +6,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "flags.h"
-#include "ggets.h"
-#include "my_rhs.h"
-#include "storage.h"
+#include "../flags.h"
+#include "../ggets.h"
+#include "../my_rhs.h"
+#include "../storage.h"
+#include "../xpplim.h"
 
 
 /* --- Types --- */
@@ -73,7 +74,9 @@ static int dopri5 (
  double *work
  );
 
-static void dprhs(unsigned n, double t, double *y, double *f);
+static int dormprin(int *istart, double *y, double *t, int n, double tout, double *tol, double *atol, int flag, int *kflag);
+static void dormpri_rhs(unsigned n, double t, double *y, double *f);
+static int one_flag_step_dormpri(int *istart, double *y, double *t, int n, double tout, double *tol, double *atol, int flag, int *kflag);
 
 
 /* --- Data --- */
@@ -86,43 +89,13 @@ static double    *rcont5, *rcont6, *rcont7, *rcont8;
 
 
 /* --- Functions --- */
-/* this is the basic routine  */
-/* flag=0 for dopri5
- * flag=1 for dopri83
- * kflag = 1  for good integration
- * istart=1 for first time
- * istart=0 for continuation
- */
-int dormprin(int *istart, double *y, double *t, int n, double tout,
-			 double *tol, double *atol, int flag, int *kflag) {
-	double hg=0.0;
-	if(*istart==0) {
-		hg=hout;
-	}
-	*istart=0;
-	switch(flag) {
-	case 0:
-		*kflag=dopri5(n,dprhs,*t,y,tout,tol,atol,0,(SolTrait)NULL,0,stdout,0.0,
-					  0.0,0.0,0.0,0.0,0.0,hg,0,0,1,0,NULL,0,WORK);
-		*t=tout;
-		return 1;
-	case 1:
-		*kflag=dop853(n,dprhs,*t,y,tout,tol,atol,0,(SolTrait)NULL,0,stdout,0.0,
-					  0.0,0.0,0.0,0.0,0.0,hg,0,0,1,0,NULL,0,WORK);
-		*t=tout;
-		return 1;
-	}
-	return(-1);
-}
-
-
-int dp(int *istart, double *y, double *t, int n, double tout, double *tol,
+int dormpri(int *istart, double *y, double *t, int n, double tout, double *tol,
 	   double *atol, int flag, int *kflag) {
 	int err=0;
 	if(NFlags==0) {
 		return(dormprin(istart,y,t,n,tout,tol,atol,flag,kflag));
 	}
-	err=one_flag_step_dp(istart,y,t,n,tout,tol,atol,flag,kflag);
+	err=one_flag_step_dormpri(istart,y,t,n,tout,tol,atol,flag,kflag);
 	if(err==1) {
 		*kflag=-9;
 	}
@@ -130,7 +103,7 @@ int dp(int *istart, double *y, double *t, int n, double tout, double *tol,
 }
 
 
-void dp_err(int k) {
+void dormpri_err(int k) {
 	ping();
 	switch(k) {
 	case -1:
@@ -149,7 +122,7 @@ void dp_err(int k) {
 }
 
 /* --- Static functions --- */
-static void dprhs(unsigned n, double t, double *y, double *f) {
+static void dormpri_rhs(unsigned n, double t, double *y, double *f) {
 	my_rhs(t,y,f,n);
 }
 
@@ -1440,3 +1413,69 @@ static int dopri5 (unsigned n, FcnEqDiff fcn, double x, double* y, double xend, 
 	}
 	return idid;
 } /* dopri5 */
+
+
+/* this is the basic routine  */
+/* flag=0 for dopri5
+ * flag=1 for dopri83
+ * kflag = 1  for good integration
+ * istart=1 for first time
+ * istart=0 for continuation
+ */
+int dormprin(int *istart, double *y, double *t, int n, double tout,
+			 double *tol, double *atol, int flag, int *kflag) {
+	double hg=0.0;
+	if(*istart==0) {
+		hg=hout;
+	}
+	*istart=0;
+	switch(flag) {
+	case 0:
+		*kflag=dopri5(n,dormpri_rhs,*t,y,tout,tol,atol,0,(SolTrait)NULL,0,stdout,0.0,
+					  0.0,0.0,0.0,0.0,0.0,hg,0,0,1,0,NULL,0,WORK);
+		*t=tout;
+		return 1;
+	case 1:
+		*kflag=dop853(n,dormpri_rhs,*t,y,tout,tol,atol,0,(SolTrait)NULL,0,stdout,0.0,
+					  0.0,0.0,0.0,0.0,0.0,hg,0,0,1,0,NULL,0,WORK);
+		*t=tout;
+		return 1;
+	}
+	return(-1);
+}
+
+
+static int one_flag_step_dormpri(int *istart, double *y, double *t, int n, double tout,
+					 double *tol, double *atol, int flag, int *kflag) {
+	double yold[MAXODE],told;
+	int i,hit;
+	double s;
+	int nstep=0;
+	while(1) {
+		for(i=0;i<n;i++) {
+			yold[i]=y[i];
+		}
+		told=*t;
+		dormprin(istart,y,t,n,tout,tol,atol,flag,kflag);
+		if(*kflag!=1) {
+			break;
+		}
+		if((hit=one_flag_step(yold,y,istart,told,t,n,&s ))==0) {
+			break;
+		}
+		/* Its a hit !! */
+		nstep++;
+
+		if(*t==tout) {
+			break;
+		}
+
+		if(nstep>(NFlags+2)) {
+			plintf(" Working too hard? ");
+			plintf("smin=%g\n",s);
+			return 1;
+		}
+	}
+	return 0;
+}
+

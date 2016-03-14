@@ -9,15 +9,15 @@
 #include "cvodesrc/cv2.h"
 #include "delay_handle.h"
 #include "derived.h"
-#include "dormpri.h"
 #include "form_ode.h"
-#include "solver/gear.h"
 #include "ggets.h"
 #include "load_eqn.h"
 #include "do_fit.h"
 #include "numerics.h"
 #include "parserslow.h"
 #include "pop_list.h"
+#include "solver/dormpri.h"
+#include "solver/gear.h"
 #include "solver/rosenbrock.h"
 #include "stiff.h"
 #include "storage.h"
@@ -88,9 +88,9 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 	}
 #endif
 	if(METHOD==DP5 || METHOD==DP83) {
-		dp(istart,y,&t,NODE,t1,&TOLER,&ATOLER,METHOD-DP5,&kflag);
+		dormpri(istart,y,&t,NODE,t1,&TOLER,&ATOLER,METHOD-DP5,&kflag);
 		if(kflag!=1) {
-			dp_err(kflag);
+			dormpri_err(kflag);
 			return(0);
 		}
 		stor_delay(y);

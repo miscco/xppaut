@@ -69,7 +69,7 @@ type =3 halt
 
 #include "cv2.h"
 #include "derived.h"
-#include "dormpri.h"
+#include "solver/dormpri.h"
 #include "form_ode.h"
 #include "solver/gear.h"
 #include "ggets.h"
@@ -421,40 +421,6 @@ int one_flag_step(double *yold, double *ynew, int *istart, double told, double *
 
 
 /*  here are the ODE drivers */
-int one_flag_step_dp(int *istart, double *y, double *t, int n, double tout,
-					 double *tol, double *atol, int flag, int *kflag) {
-	double yold[MAXODE],told;
-	int i,hit;
-	double s;
-	int nstep=0;
-	while(1) {
-		for(i=0;i<n;i++) {
-			yold[i]=y[i];
-		}
-		told=*t;
-		dormprin(istart,y,t,n,tout,tol,atol,flag,kflag);
-		if(*kflag!=1) {
-			break;
-		}
-		if((hit=one_flag_step(yold,y,istart,told,t,n,&s ))==0) {
-			break;
-		}
-		/* Its a hit !! */
-		nstep++;
-
-		if(*t==tout) {
-			break;
-		}
-
-		if(nstep>(NFlags+2)) {
-			plintf(" Working too hard? ");
-			plintf("smin=%g\n",s);
-			return 1;
-		}
-	}
-	return 0;
-}
-
 #ifdef CVODE_YES
 int one_flag_step_cvode(command,y,t,n,tout,kflag,atol,rtol)
 /* command =0 continue, 1 is start 2 finish */
