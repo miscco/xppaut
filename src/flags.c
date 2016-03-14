@@ -78,7 +78,7 @@ type =3 halt
 #include "solver/cv2.h"
 #include "solver/dormpri.h"
 #include "solver/gear.h"
-#include "stiff.h"
+#include "solver/stiff.h"
 
 
 /* --- Macros --- */
@@ -417,41 +417,4 @@ int one_flag_step(double *yold, double *ynew, int *istart, double told, double *
 	}
 	*s=smin;
 	return(1);
-}
-
-
-/*  here are the ODE drivers */
-int one_flag_step_adap(double *y, int neq, double *t, double tout, double eps,
-					   double *hguess, double hmin, double *work, int *ier,
-					   double epjac, int iflag, int *jstart) {
-	double yold[MAXODE],told;
-	int i,hit;
-	double s;
-	int nstep=0;
-	while(1) {
-		for(i=0;i<neq;i++) {
-			yold[i]=y[i];
-		}
-		told=*t;
-		gadaptive(y,neq,t,tout,eps,
-				  hguess,hmin,work,ier,epjac,iflag,jstart);
-		if(*ier) {
-			break;
-		}
-		if((hit=one_flag_step(yold,y,jstart,told,t,neq,&s ))==0) {
-			break;
-		}
-		/* Its a hit !! */
-		nstep++;
-
-		if(*t==tout) {
-			break;
-		}
-		if(nstep>(NFlags+2)) {
-			plintf(" Working too hard? ");
-			plintf("smin=%g\n",s);
-			break;
-		}
-	}
-	return 0;
 }

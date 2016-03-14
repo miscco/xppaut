@@ -23,6 +23,7 @@
 #undef HMAX
 
 #include "../flags.h"
+#include "../ggets.h"
 #include "../load_eqn.h"
 #include "../my_rhs.h"
 #include "../numerics.h"
@@ -175,8 +176,8 @@ static int one_flag_step_cvode(int *command, double *y, double *t, int n,
 			break;
 		}
 		if(nstep>(NFlags+2)) {
-			plintf(" Working too hard? ");
-			plintf("smin=%g\n",s);
+			printf(" Working too hard? ");
+			printf("smin=%g\n",s);
 			return 1;
 			break;
 		}

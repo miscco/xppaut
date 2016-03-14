@@ -19,7 +19,7 @@
 #include "solver/dormpri.h"
 #include "solver/gear.h"
 #include "solver/rosenbrock.h"
-#include "stiff.h"
+#include "solver/stiff.h"
 #include "storage.h"
 #include "util/matrixalgebra.h"
 

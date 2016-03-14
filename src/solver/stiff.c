@@ -3,13 +3,13 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "flags.h"
-#include "solver/gear.h"
-#include "markov.h"
-#include "main.h"
-#include "numerics.h"
-#include "util/matrixalgebra.h"
-#include "util/timeutil.h"
+#include "gear.h"
+#include "../flags.h"
+#include "../markov.h"
+#include "../main.h"
+#include "../numerics.h"
+#include "../util/matrixalgebra.h"
+#include "../util/timeutil.h"
 
 /* --- Macros --- */
 #define SAFETY 0.9
@@ -52,6 +52,8 @@
 
 /* --- Forward declarations --- */
 static void jacobn(double x, double *y, double *dfdx, double *dermat, double eps, double *work, int n);
+static int gadaptive(double *ystart, int nvar, double *xs, double x2, double eps, double *hguess, double hmin, double *work, int *ier, double epjac, int iflag, int *jstart);
+static int one_flag_step_adap(double *y, int neq, double *t, double tout, double eps, double *hguess, double hmin, double *work, int *ier, double epjac, int iflag, int *jstart);
 static void rkck(double *y, double *dydx, int n, double x, double h, double *yout, double *yerr, double *work);
 static int rkqs(double *y, double *dydx, int n, double *x, double htry, double eps, double *yscal, double *hdid, double *hnext, double *work, int *ier);
 static int stiff(double y[], double dydx[], int n, double *x, double htry, double eps, double yscal[], double *hdid, double *hnext, double *work, double epjac, int *ier);
@@ -69,7 +71,35 @@ int adaptive(double *ystart, int nvar, double *xs, double x2, double eps, double
 }
 
 
-int gadaptive(double *ystart, int nvar, double *xs, double x2, double eps, double *hguess,
+/* --- Static functions --- */
+static void jacobn(double x, double *y, double *dfdx, double *dermat, double eps,
+			double *work, int n) {
+	int i,j;
+	double r;
+	double *yval,*ynew,ytemp;
+	yval=work;
+	ynew=work+n;
+	rhs(x,y,yval,n);
+
+	r=eps*MAX(eps,fabs(x));
+	rhs(x+r,y,ynew,n);
+	for(i=0;i<n;i++) {
+		dfdx[i]=(ynew[i]-yval[i])/r;
+	}
+	for(i=0;i<n;i++) {
+		ytemp=y[i];
+		r=eps*MAX(eps,fabs(ytemp));
+		y[i]=ytemp+r;
+		rhs(x,y,ynew,n);
+		for(j=0;j<n;j++) {
+			dermat[j*n+i]=(ynew[j]-yval[j])/r;
+		}
+		y[i]=ytemp;
+	}
+}
+
+
+static int gadaptive(double *ystart, int nvar, double *xs, double x2, double eps, double *hguess,
 			  double hmin, double *work, int *ier, double epjac, int iflag, int *jstart) {
 	double h1=*hguess;
 	int nstp,i;
@@ -126,31 +156,39 @@ int gadaptive(double *ystart, int nvar, double *xs, double x2, double eps, doubl
 }
 
 
-/* --- Static functions --- */
-static void jacobn(double x, double *y, double *dfdx, double *dermat, double eps,
-			double *work, int n) {
-	int i,j;
-	double r;
-	double *yval,*ynew,ytemp;
-	yval=work;
-	ynew=work+n;
-	rhs(x,y,yval,n);
-
-	r=eps*MAX(eps,fabs(x));
-	rhs(x+r,y,ynew,n);
-	for(i=0;i<n;i++) {
-		dfdx[i]=(ynew[i]-yval[i])/r;
-	}
-	for(i=0;i<n;i++) {
-		ytemp=y[i];
-		r=eps*MAX(eps,fabs(ytemp));
-		y[i]=ytemp+r;
-		rhs(x,y,ynew,n);
-		for(j=0;j<n;j++) {
-			dermat[j*n+i]=(ynew[j]-yval[j])/r;
+static int one_flag_step_adap(double *y, int neq, double *t, double tout, double eps,
+					   double *hguess, double hmin, double *work, int *ier,
+					   double epjac, int iflag, int *jstart) {
+	double yold[MAXODE],told;
+	int i,hit;
+	double s;
+	int nstep=0;
+	while(1) {
+		for(i=0;i<neq;i++) {
+			yold[i]=y[i];
 		}
-		y[i]=ytemp;
+		told=*t;
+		gadaptive(y,neq,t,tout,eps,
+				  hguess,hmin,work,ier,epjac,iflag,jstart);
+		if(*ier) {
+			break;
+		}
+		if((hit=one_flag_step(yold,y,jstart,told,t,neq,&s ))==0) {
+			break;
+		}
+		/* Its a hit !! */
+		nstep++;
+
+		if(*t==tout) {
+			break;
+		}
+		if(nstep>(NFlags+2)) {
+			printf(" Working too hard? ");
+			printf("smin=%g\n",s);
+			break;
+		}
 	}
+	return 0;
 }
 
 

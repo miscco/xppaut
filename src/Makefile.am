@@ -77,7 +77,6 @@ noinst_HEADERS = \
 		rubber.h \
 		scrngif.h \
 		simplenet.h \
-		stiff.h \
 		storage.h \
 		struct.h \
 		tabular.h \
@@ -92,7 +91,6 @@ noinst_HEADERS = \
 		$(bitmap_headers) \
 		$(solver_headers) \
 		$(util_headers)
-
 
 bitmap_headers = \
 		bitmap/alert.bitmap \
@@ -130,6 +128,7 @@ solver_headers = \
 		solver/heun.h \
 		solver/rosenbrock.h \
 		solver/runge_kutta.h \
+		solver/stiff.h \
 		solver/symplect.h
 
 util_headers = \
@@ -198,7 +197,6 @@ xppaut_SOURCES = \
 		rubber.c \
 		scrngif.c \
 		simplenet.c \
-		stiff.c \
 		storage.c \
 		tabular.c \
 		torus.c \
@@ -222,6 +220,7 @@ solver_sources = \
 		solver/heun.c \
 		solver/rosenbrock.c \
 		solver/runge_kutta.c \
+		solver/stiff.c \
 		solver/symplect.c
 
 util_sources = \

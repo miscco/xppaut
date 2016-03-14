@@ -62,7 +62,7 @@
 #include "solver/cv2.h"
 #include "solver/dormpri.h"
 #include "solver/rosenbrock.h"
-#include "stiff.h"
+#include "solver/stiff.h"
 #include "storage.h"
 #include "struct.h"
 #include "util/strutil.h"
