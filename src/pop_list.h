@@ -46,7 +46,7 @@ Window make_window(Window root, int x, int y, int width, int height, int bw);
 void make_scrbox_lists(void);
 void message_box(Window *w, int x, int y, char *message);
 int pop_up_list(Window *root, char *title, char **list, char *key, int n, int max, int def, int x, int y, char **hints, Window hwin, char *httxt);
-void respond_box(char *button, char *message);
+void respond_box(const char *button, const char *message);
 void set_window_title(Window win, char *string);
 int two_choice(char *choice1, char *choice2, char *string, char *key, int x, int y, Window w,char *title);
 int yes_no_box(void);

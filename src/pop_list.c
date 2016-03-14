@@ -66,7 +66,7 @@ typedef struct {
 static void bin_prnt_byte(int x,int *arr);
 static void draw_pop_up(POP_UP p, Window w);
 static void expose_choice(char *choice1, char *choice2, char *msg, Window c1, Window c2, Window wm, Window w);
-static void expose_resp_box(char *button, char *message, Window wb, Window wm, Window w);
+static void expose_resp_box(const char *button, const char *message, Window wb, Window wm, Window w);
 static int get_x_coord_win(Window win);
 static void make_string_box_windows(STRING_BOX *sb, int row, int col, char *title, int maxchar);
 static Window make_unmapped_icon_window(Window root,int x,int y,int width,int height,int bw,int icx,int icy,unsigned char* icdata);
@@ -421,7 +421,7 @@ void message_box(Window *w, int x, int y, char *message) {
 }
 
 
-void respond_box(char *button, char *message) {
+void respond_box(const char *button, const char *message) {
 	int l1=strlen(message);
 	int l2=strlen(button);
 	int width;
@@ -718,7 +718,7 @@ static void expose_choice(char *choice1, char *choice2, char *msg, Window c1, Wi
 }
 
 
-static void expose_resp_box(char *button, char *message, Window wb, Window wm, Window w) {
+static void expose_resp_box(const char *button, const char *message, Window wb, Window wm, Window w) {
 	if(w==wb) {
 		Ftext(0,0,button,wb);
 	}
