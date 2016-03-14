@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include "newpars.h"
-#include "strutil.h"
+#include "util/strutil.h"
 #include "xpplim.h"
 
 /* --- Macros --- */

@@ -82,7 +82,6 @@ noinst_HEADERS = \
 		stiff.h \
 		storage.h \
 		struct.h \
-		strutil.h \
 		tabular.h \
 		toons.h \
 		torus.h \
@@ -134,6 +133,7 @@ solver_headers = \
 
 util_headers = \
 		util/matrixalgebra.h \
+		util/strutil.h \
 		util/timeutil.h
 
 xppaut_LDADD = \
@@ -200,7 +200,6 @@ xppaut_SOURCES = \
 		simplenet.c \
 		stiff.c \
 		storage.c \
-		strutil.c \
 		tabular.c \
 		torus.c \
 		txtread.c \
@@ -269,7 +268,6 @@ libxpp_a_SOURCES = \
 		simplenet.c \
 		stiff.c \
 		storage.c \
-		strutil.c \
 		tabular.c \
 		torus.c \
 		txtread.c \
@@ -290,4 +288,5 @@ solver_sources = \
 
 util_sources = \
 		util/matrixalgebra.c \
+		util/strutil.c \
 		util/timeutil.c

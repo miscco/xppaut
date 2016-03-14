@@ -42,7 +42,7 @@
 #include "parserslow.h"
 #include "pop_list.h"
 #include "read_dir.h"
-#include "strutil.h"
+#include "util/strutil.h"
 #include "tabular.h"
 #include "util/timeutil.h"
 #include "volterra2.h"

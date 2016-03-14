@@ -26,7 +26,7 @@
 #include "parserslow.h"
 #include "pop_list.h"
 #include "storage.h"
-#include "strutil.h"
+#include "util/strutil.h"
 #include "util/matrixalgebra.h"
 
 /* --- Forward Declarations --- */

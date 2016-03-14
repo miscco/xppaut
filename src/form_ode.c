@@ -27,7 +27,7 @@
 #include "parserslow.h"
 #include "read_dir.h"
 #include "simplenet.h"
-#include "strutil.h"
+#include "util/strutil.h"
 #include "xpplim.h"
 
 /* --- Macros --- */

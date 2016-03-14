@@ -54,7 +54,7 @@ want to alter the ordering below
 #include "parserslow.h"
 #include "pop_list.h"
 #include "scrngif.h"
-#include "strutil.h"
+#include "util/strutil.h"
 #include "toons.h"
 #include "util/timeutil.h"
 #include "bitmap/aniwin.bitmap"

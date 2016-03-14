@@ -31,7 +31,7 @@
 #include "parserslow.h"
 #include "read_dir.h"
 #include "storage.h"
-#include "strutil.h"
+#include "util/strutil.h"
 #include "tabular.h"
 #include "txtread.h"
 #include "userbut.h"

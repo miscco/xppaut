@@ -22,7 +22,7 @@
 #include "mykeydef.h"
 #include "newhome.h"
 #include "pop_list.h"
-#include "strutil.h"
+#include "util/strutil.h"
 #include "util/timeutil.h"
 
 /* --- Forward declarations --- */

@@ -23,7 +23,7 @@ void de_space(char *s) {
 			j++;
 		}
 	}
-	s[j]="\0";
+	s[j]=0;
 }
 
 

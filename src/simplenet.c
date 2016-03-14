@@ -132,7 +132,7 @@ including derived parameters but XPP takes care of this so start at 0
 #include "ggets.h"
 #include "markov.h"
 #include "parserslow.h"
-#include "strutil.h"
+#include "util/strutil.h"
 #include "tabular.h"
 
 /* --- Macros --- */

@@ -16,7 +16,7 @@
 #include "ggets.h"
 #include "markov.h"
 #include "simplenet.h"
-#include "strutil.h"
+#include "util/strutil.h"
 #include "tabular.h"
 #include "volterra2.h"
 #include "xpplim.h"

@@ -64,7 +64,7 @@
 #include "stiff.h"
 #include "storage.h"
 #include "struct.h"
-#include "strutil.h"
+#include "util/strutil.h"
 #include "tabular.h"
 #include "volterra2.h"
 #include "xpplim.h"
