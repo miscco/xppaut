@@ -57,44 +57,41 @@ int cvode(int *command, double *y, double *t, int n, double tout, int *kflag, do
 
 
 void cvode_err_msg(int kflag) {
-	char s[DEFAULT_STRING_LENGTH];
-	strcpy(s,"");
+	ping();
+	char *s = "";
 	switch(kflag) {
-	case 0:
-		strcpy(s,"");
-		break;
 	case -1:
-		strcpy(s,"No memory allocated");
+		s = "No memory allocated";
 		break;
 	case -2:
-		strcpy(s,"Bad input to CVode");
+		s = "Bad input to CVode";
 		break;
 	case -3:
-		strcpy(s,"Too much work -- try smaller DT");
+		s = "Too much work -- try smaller DT";
 		break;
 	case -4:
 		sprintf(s,"Tolerance too low-- try TOL=%g ATOL=%g",
 				TOLER*cv_ropt[TOLSF],ATOLER*cv_ropt[TOLSF]);
 		break;
 	case -5:
-		strcpy(s,"Error test failure too frequent ??");
+		s = "Error test failure too frequent ??";
 		break;
 	case -6:
-		strcpy(s,"Converg. failure -- oh well!");
+		s = "Converg. failure -- oh well!";
 		break;
 	case -7:
-		strcpy(s,"Setup failed for linsolver in CVODE ???");
+		s = "Setup failed for linsolver in CVODE ???";
 		break;
 	case -8:
-		strcpy(s,"Singular matrix encountered. Hmmm?");
+		s = "Singular matrix encountered. Hmmm?";
 		break;
 	case -9:
-		strcpy(s,"Flags error...");
+		s = "Flags error...";
 		break;
+	default:
+		s = "Unknown cvode error";
 	}
-	if(strlen(s)>0) {
-		err_msg(s);
-	}
+	err_msg(s);
 }
 
 

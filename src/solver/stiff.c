@@ -5,6 +5,7 @@
 
 #include "gear.h"
 #include "../flags.h"
+#include "../ggets.h"
 #include "../markov.h"
 #include "../numerics.h"
 #include "../my_rhs.h"
@@ -71,27 +72,35 @@ int adaptive(double *ystart, int nvar, double *xs, double x2, double eps, double
 }
 
 
-const char *adaptive_err_msg(int kflag) {
-  switch (kflag) {
-  case -1:
-	return "singular jacobian encountered";
-  case 1:
-	return "stepsize is close to 0";
-  case 2:
-	return "Step size too small";
-  case 3:
-	return "Too many steps";
-  case 4:
-	return "exceeded MAXTRY in stiff";
-  default:
-	return "unknown Stiff error";
-  }
+void adaptive_err_msg(int kflag) {
+	ping();
+	char *s;
+	switch (kflag) {
+	case -1:
+		s = "singular jacobian encountered";
+		break;
+	case 1:
+		s = "stepsize is close to 0";
+		break;
+	case 2:
+		s = "Step size too small";
+		break;
+	case 3:
+		s = "Too many steps";
+		break;
+	case 4:
+		s = "exceeded MAXTRY in stiff";
+		break;
+	default:
+		s = "unknown Stiff error";
+	}
+	err_msg(s);
 }
 
 
 /* --- Static functions --- */
 static void jacobn(double x, double *y, double *dfdx, double *dermat, double eps,
-			double *work, int n) {
+				   double *work, int n) {
 	int i,j;
 	double r;
 	double *yval,*ynew,ytemp;
@@ -118,7 +127,7 @@ static void jacobn(double x, double *y, double *dfdx, double *dermat, double eps
 
 
 static int gadaptive(double *ystart, int nvar, double *xs, double x2, double eps, double *hguess,
-			  double hmin, double *work, int *ier, double epjac, int iflag, int *jstart) {
+					 double hmin, double *work, int *ier, double epjac, int iflag, int *jstart) {
 	double h1=*hguess;
 	int nstp,i;
 	double x1=*xs;
@@ -175,8 +184,8 @@ static int gadaptive(double *ystart, int nvar, double *xs, double x2, double eps
 
 
 static int one_flag_step_adap(double *y, int neq, double *t, double tout, double eps,
-					   double *hguess, double hmin, double *work, int *ier,
-					   double epjac, int iflag, int *jstart) {
+							  double *hguess, double hmin, double *work, int *ier,
+							  double epjac, int iflag, int *jstart) {
 	double yold[MAXODE],told;
 	int i,hit;
 	double s;
@@ -212,7 +221,7 @@ static int one_flag_step_adap(double *y, int neq, double *t, double tout, double
 
 /* This takes one step of Cash-Karp RK method */
 static void rkck(double *y, double *dydx, int n, double x, double h, double *yout,
-		  double *yerr, double *work) {
+				 double *yerr, double *work) {
 	int i;
 	static double a2=0.2,a3=0.3,a4=0.6,a5=1.0,a6=0.875,b21=0.2,
 			b31=3.0/40.0,b32=9.0/40.0,b41=0.3,b42 = -0.9,b43=1.2,
@@ -262,7 +271,7 @@ static void rkck(double *y, double *dydx, int n, double x, double h, double *you
 
 
 static int rkqs(double *y, double *dydx, int n, double *x, double htry, double eps,
-		 double *yscal, double *hdid, double *hnext, double *work, int *ier) {
+				double *yscal, double *hdid, double *hnext, double *work, int *ier) {
 	int i;
 	double errmax,h,htemp,xnew,*yerr,*ytemp;
 	double *work2;
@@ -308,7 +317,7 @@ static int rkqs(double *y, double *dydx, int n, double *x, double htry, double e
 /*  Need work size of 2n^2+12n  */
 /*  This will integrate a maximum of htry and actually do hmin  */
 static int stiff(double y[], double dydx[], int n, double *x, double htry, double eps,
-		  double yscal[], double *hdid, double *hnext, double *work, double epjac, int *ier) {
+				 double yscal[], double *hdid, double *hnext, double *work, double epjac, int *ier) {
 	int i,j,jtry,indx[700];
 	int info;
 	double errmax,h,xsav,*a,*dfdx,*dfdy,*dysav,*err;

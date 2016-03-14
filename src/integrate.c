@@ -987,12 +987,11 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 				return(1);
 			}
 			if(kflag<0) {
-				ping();
 				if(RANGE_FLAG || SuppressBounds) {
 					LastTime=*t;
 					return(1);
 				}
-				err_msg(gear_err_msg(kflag));
+				gear_err_msg(kflag);
 				LastTime=*t;
 				return(1);
 			}
@@ -1047,7 +1046,7 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 					LastTime=*t;
 					return(1);
 				}
-				dormpri_err(kflag);
+				dormpri_err_msg(kflag);
 				LastTime=*t;
 				return(1);
 			}
@@ -1097,12 +1096,11 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 				return(1);
 			}
 			if(kflag) {
-				ping();
 				if(RANGE_FLAG || SuppressBounds) {
 					LastTime=*t;
 					return(1);
 				}
-				err_msg(adaptive_err_msg(kflag));
+				adaptive_err_msg(kflag);
 				LastTime=*t;
 				return(1);
 			}
@@ -1391,12 +1389,11 @@ int ode_int(double *y, double *t, int *istart) {
 			 &kflag,istart,WORK);
 		MSWTCH(y,xpv.x);
 		if(kflag<0) {
-			ping();
 			if(RANGE_FLAG) {
-				return(0);
+				return 0;
 			}
-			err_msg(gear_err_msg(kflag));
-			return(0);
+			gear_err_msg(kflag);
+			return 0;
 		}
 		break;
 	case METHOD_CVODE:
@@ -1404,7 +1401,7 @@ int ode_int(double *y, double *t, int *istart) {
 		MSWTCH(y,xpv.x);
 		if(kflag<0) {
 			cvode_err_msg(kflag);
-			return(0);
+			return 0;
 		}
 		end_cvode();
 		break;
@@ -1414,9 +1411,9 @@ int ode_int(double *y, double *t, int *istart) {
 		MSWTCH(y,xpv.x);
 		if(kflag<0) {
 			if(RANGE_FLAG) {
-				return(0);
+				return 0;
 			}
-			dormpri_err(kflag);
+			dormpri_err_msg(kflag);
 			return 0;
 		}
 
@@ -1427,7 +1424,7 @@ int ode_int(double *y, double *t, int *istart) {
 		if(kflag<0) {
 			ping();
 			if(RANGE_FLAG) {
-				return(0);
+				return 0;
 			}
 			err_msg("Step size too small");
 			return 0;
@@ -1439,16 +1436,16 @@ int ode_int(double *y, double *t, int *istart) {
 				 HMIN,WORK,&kflag,NEWT_ERR,METHOD,istart);
 		MSWTCH(y,xpv.x);
 		if(kflag) {
-			ping();
 			if(RANGE_FLAG) {
-				return(0);
+				return 0;
 			}
-			err_msg(adaptive_err_msg(kflag));
-			return(0);
+			adaptive_err_msg(kflag);
+			return 0;
 		}
 		break;
 	case METHOD_SYMPLECT:
 	case METHOD_VOLTERRA:
+		ping();
 		err_msg("Method not implemented");
 		return 0;
 	default:
@@ -1457,7 +1454,7 @@ int ode_int(double *y, double *t, int *istart) {
 		if(kflag<0) {
 			ping();
 			if(RANGE_FLAG) {
-				return(0);
+				return 0;
 			}
 			switch(kflag)	{
 			case -1:
@@ -1467,7 +1464,7 @@ int ode_int(double *y, double *t, int *istart) {
 				err_msg("Too many iterates");
 				break;
 			}
-			return(0);
+			return 0;
 		}
 	}
 	return(1);
@@ -2224,7 +2221,7 @@ static int range_item(void) {
 		if(i<=-1) {
 			sprintf(bob," %s is not a parameter or variable !",range.item);
 			err_msg(bob);
-			return(0);
+			return 0;
 		}
 		range.type=ICBOX;
 		range.index=i;
@@ -2245,7 +2242,7 @@ static int range_item2(void) {
 		if(i<=-1) {
 			sprintf(bob," %s is not a parameter or variable !",range.item2);
 			err_msg(bob);
-			return(0);
+			return 0;
 		}
 		range.type2=ICBOX;
 		range.index2=i;
@@ -2344,7 +2341,7 @@ static int set_up_eq_range(void) {
 		i=find_user_name(PARAMBOX,eq_range.item);
 		if(i<0) {
 			err_msg("No such parameter");
-			return(0);
+			return 0;
 		}
 
 		eq_range.steps=atoi(values[1]);
@@ -2374,7 +2371,7 @@ static int set_up_eq_range(void) {
 		}
 		return(1);
 	}
-	return(0);
+	return 0;
 }
 
 
@@ -2433,7 +2430,7 @@ static int set_up_range(void) {
 		RANGE_FLAG=1;
 		return(1);
 	}
-	return(0);
+	return 0;
 }
 
 
@@ -2515,7 +2512,7 @@ static int set_up_range2(void) {
 		RANGE_FLAG=1;
 		return(1);
 	}
-	return(0);
+	return 0;
 }
 
 
@@ -2568,7 +2565,7 @@ static int stor_full(void) {
 	}
 	if(!Xup) {
 		plintf(" Storage full -- increase maxstor \n");
-		return(0);
+		return 0;
 	}
 	if(FOREVER) {
 		goto ov;
@@ -2581,7 +2578,7 @@ ov:
 		storind=0;
 		return(1);
 	}
-	return(0);
+	return 0;
 }
 
 

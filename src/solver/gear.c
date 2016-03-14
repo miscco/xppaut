@@ -54,19 +54,26 @@ int gear(int n, double *t, double tout, double *y, double hmin, double hmax,
 }
 
 
-const char* gear_err_msg(int kflag) {
+void gear_err_msg(int kflag) {
+	ping();
+	char *s;
 	switch (kflag) {
 	case -1:
-		return "kflag=-1: minimum step too big";
+		s = "kflag=-1: minimum step too big";
+		break;
 	case -2:
-		return "kflag=-2: required order too big";
+		s = "kflag=-2: required order too big";
+		break;
 	case -3:
-		return "kflag=-3: minimum step too big";
+		s = "kflag=-3: minimum step too big";
+		break;
 	case -4:
-		return "kflag=-4: tolerance too small";
+		s = "kflag=-4: tolerance too small";
+		break;
 	default:
-		return "unknown gear error";
+		s = "Unknown gear error";
 	}
+	err_msg(s);
 }
 
 /* --- Static functions --- */

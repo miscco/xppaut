@@ -20,59 +20,59 @@ typedef void (*SolTrait)(long nr, double xold, double x, double* y, unsigned n, 
 /* --- Forward declarations --- */
 static int dop853 (
 		unsigned n,      /* dimension of the system <= UINT_MAX-1*/
- FcnEqDiff fcn,   /* function computing the value of f(x,y) */
- double x,        /* initial x-value */
- double* y,       /* initial values for y */
- double xend,     /* final x-value (xend-x may be positive or negative) */
- double* rtoler,  /* relative error tolerance */
- double* atoler,  /* absolute error tolerance */
- int itoler,      /* switch for rtoler and atoler */
- SolTrait solout, /* function providing the numerical solution during integration */
- int iout,        /* switch for calling solout */
- FILE* fileout,   /* messages stream */
- double uround,   /* rounding unit */
- double safe,     /* safety factor */
- double fac1,     /* parameters for step size selection */
- double fac2,
- double beta,     /* for stabilized step size control */
- double hmax,     /* maximal step size */
- double h,        /* initial step size */
- long nmax,       /* maximal number of allowed steps */
- int meth,        /* switch for the choice of the coefficients */
- long nstiff,     /* test for stiffness */
- unsigned nrdens, /* number of components for which dense outpout is required */
- unsigned* icont, /* indexes of components for which dense output is required, >= nrdens */
- unsigned licont,  /* declared length of icon */
- double *work
- );
+		FcnEqDiff fcn,   /* function computing the value of f(x,y) */
+		double x,        /* initial x-value */
+		double* y,       /* initial values for y */
+		double xend,     /* final x-value (xend-x may be positive or negative) */
+		double* rtoler,  /* relative error tolerance */
+		double* atoler,  /* absolute error tolerance */
+		int itoler,      /* switch for rtoler and atoler */
+		SolTrait solout, /* function providing the numerical solution during integration */
+		int iout,        /* switch for calling solout */
+		FILE* fileout,   /* messages stream */
+		double uround,   /* rounding unit */
+		double safe,     /* safety factor */
+		double fac1,     /* parameters for step size selection */
+		double fac2,
+		double beta,     /* for stabilized step size control */
+		double hmax,     /* maximal step size */
+		double h,        /* initial step size */
+		long nmax,       /* maximal number of allowed steps */
+		int meth,        /* switch for the choice of the coefficients */
+		long nstiff,     /* test for stiffness */
+		unsigned nrdens, /* number of components for which dense outpout is required */
+		unsigned* icont, /* indexes of components for which dense output is required, >= nrdens */
+		unsigned licont,  /* declared length of icon */
+		double *work
+		);
 
 static int dopri5 (
 		unsigned n,      /* dimension of the system <= UINT_MAX-1*/
- FcnEqDiff fcn,   /* function computing the value of f(x,y) */
- double x,        /* initial x-value */
- double* y,       /* initial values for y */
- double xend,     /* final x-value (xend-x may be positive or negative) */
- double* rtoler,  /* relative error tolerance */
- double* atoler,  /* absolute error tolerance */
- int itoler,      /* switch for rtoler and atoler */
- SolTrait solout, /* function providing the numerical solution during integration */
- int iout,        /* switch for calling solout */
- FILE* fileout,   /* messages stream */
- double uround,   /* rounding unit */
- double safe,     /* safety factor */
- double fac1,     /* parameters for step size selection */
- double fac2,
- double beta,     /* for stabilized step size control */
- double hmax,     /* maximal step size */
- double h,        /* initial step size */
- long nmax,       /* maximal number of allowed steps */
- int meth,        /* switch for the choice of the coefficients */
- long nstiff,     /* test for stiffness */
- unsigned nrdens, /* number of components for which dense outpout is required */
- unsigned* icont, /* indexes of components for which dense output is required, >= nrdens */
- unsigned licont , /* declared length of icon */
- double *work
- );
+		FcnEqDiff fcn,   /* function computing the value of f(x,y) */
+		double x,        /* initial x-value */
+		double* y,       /* initial values for y */
+		double xend,     /* final x-value (xend-x may be positive or negative) */
+		double* rtoler,  /* relative error tolerance */
+		double* atoler,  /* absolute error tolerance */
+		int itoler,      /* switch for rtoler and atoler */
+		SolTrait solout, /* function providing the numerical solution during integration */
+		int iout,        /* switch for calling solout */
+		FILE* fileout,   /* messages stream */
+		double uround,   /* rounding unit */
+		double safe,     /* safety factor */
+		double fac1,     /* parameters for step size selection */
+		double fac2,
+		double beta,     /* for stabilized step size control */
+		double hmax,     /* maximal step size */
+		double h,        /* initial step size */
+		long nmax,       /* maximal number of allowed steps */
+		int meth,        /* switch for the choice of the coefficients */
+		long nstiff,     /* test for stiffness */
+		unsigned nrdens, /* number of components for which dense outpout is required */
+		unsigned* icont, /* indexes of components for which dense output is required, >= nrdens */
+		unsigned licont , /* declared length of icon */
+		double *work
+		);
 
 static int dormprin(int *istart, double *y, double *t, int n, double tout, double *tol, double *atol, int flag, int *kflag);
 static void dormpri_rhs(unsigned n, double t, double *y, double *f);
@@ -90,7 +90,7 @@ static double    *rcont5, *rcont6, *rcont7, *rcont8;
 
 /* --- Functions --- */
 int dormpri(int *istart, double *y, double *t, int n, double tout, double *tol,
-	   double *atol, int flag, int *kflag) {
+			double *atol, int flag, int *kflag) {
 	int err=0;
 	if(NFlags==0) {
 		return(dormprin(istart,y,t,n,tout,tol,atol,flag,kflag));
@@ -103,23 +103,29 @@ int dormpri(int *istart, double *y, double *t, int n, double tout, double *tol,
 }
 
 
-void dormpri_err(int k) {
+void dormpri_err_msg(int kflag) {
 	ping();
-	switch(k) {
+	char *s;
+	switch(kflag) {
 	case -1:
-		err_msg("Input is not consistent");
+		s = "Input is not consistent";
 		break;
 	case -2:
-		err_msg("Larger nmax needed");
+		s = "Larger nmax needed";
 		break;
 	case -3:
-		err_msg("Step size too small");
+		s = "Step size too small";
 		break;
 	case -4:
-		err_msg("Problem became stiff");
+		s = "Problem became stiff";
+		break;
+	default:
+		s = "Unknown dormpri error";
 		break;
 	}
+	err_msg(s);
 }
+
 
 /* --- Static functions --- */
 static void dormpri_rhs(unsigned n, double t, double *y, double *f) {
@@ -744,9 +750,9 @@ static int dopcor (unsigned n, FcnEqDiff fcn, double x, double* y, double xend,
 
 /* front-end */
 static int dop853(unsigned n, FcnEqDiff fcn, double x, double* y, double xend, double* rtoler,
-		   double* atoler, int itoler, SolTrait solout, int iout, FILE* fileout, double uround,
-		   double safe, double fac1, double fac2, double beta, double hmax, double h,
-		   long nmax, int meth, long nstiff, unsigned nrdens, unsigned* icont, unsigned licont,double *work) {
+				  double* atoler, int itoler, SolTrait solout, int iout, FILE* fileout, double uround,
+				  double safe, double fac1, double fac2, double beta, double hmax, double h,
+				  long nmax, int meth, long nstiff, unsigned nrdens, unsigned* icont, unsigned licont,double *work) {
 	int       arret, idid;
 	unsigned  i;
 
@@ -1255,9 +1261,9 @@ static int dopcor5 (unsigned n, FcnEqDiff fcn, double x, double* y, double xend,
 
 /* front-end */
 static int dopri5 (unsigned n, FcnEqDiff fcn, double x, double* y, double xend, double* rtoler,
- double* atoler, int itoler, SolTrait solout, int iout, FILE* fileout, double uround,
- double safe, double fac1, double fac2, double beta, double hmax, double h,
- long nmax, int meth, long nstiff, unsigned nrdens, unsigned* icont, unsigned licont, double *work) {
+				   double* atoler, int itoler, SolTrait solout, int iout, FILE* fileout, double uround,
+				   double safe, double fac1, double fac2, double beta, double hmax, double h,
+				   long nmax, int meth, long nstiff, unsigned nrdens, unsigned* icont, unsigned licont, double *work) {
 	int       arret, idid;
 	unsigned  i;
 
@@ -1446,7 +1452,7 @@ int dormprin(int *istart, double *y, double *t, int n, double tout,
 
 
 static int one_flag_step_dormpri(int *istart, double *y, double *t, int n, double tout,
-					 double *tol, double *atol, int flag, int *kflag) {
+								 double *tol, double *atol, int flag, int *kflag) {
 	double yold[MAXODE],told;
 	int i,hit;
 	double s;

@@ -85,9 +85,8 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 	case METHOD_GEAR:
 		gear(NODE,&t,t1,y,HMIN,HMAX,TOLER,2,error,&kflag,istart,WORK);
 		if(kflag<0) {
-			ping();
-			err_msg(gear_err_msg(kflag));
-			return(0);
+			gear_err_msg(kflag);
+			return 0;
 		}
 		stor_delay(y);
 		break;
@@ -96,9 +95,8 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 		adaptive(y,NODE,&t,t1,TOLER,&dt,
 				 HMIN,WORK,&kflag,NEWT_ERR,METHOD,istart);
 		if(kflag) {
-			ping();
-			err_msg(adaptive_err_msg(kflag));
-			return(0);
+			adaptive_err_msg(kflag);
+			return 0;
 		}
 		stor_delay(y);
 		break;
@@ -109,7 +107,7 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 		cvode(istart,y,&t,NODE,t1,&kflag,&TOLER,&ATOLER);
 		if(kflag<0) {
 			cvode_err_msg(kflag);
-			return(0);
+			return 0;
 		}
 		stor_delay(y);
 		break;
@@ -117,8 +115,8 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 	case METHOD_DP83:
 		dormpri(istart,y,&t,NODE,t1,&TOLER,&ATOLER,METHOD-METHOD_DP5,&kflag);
 		if(kflag!=1) {
-			dormpri_err(kflag);
-			return(0);
+			dormpri_err_msg(kflag);
+			return 0;
 		}
 		stor_delay(y);
 		break;
@@ -126,7 +124,7 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 		rb23(y,&t,t1,istart,NODE,WORK,&kflag);
 		if(kflag<0) {
 			err_msg("Step size too small");
-			return(0);
+			return 0;
 		}
 		stor_delay(y);
 		break;
@@ -136,12 +134,12 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 		kflag=solver(y,&t,dt,nit,NODE,istart,WORK);
 
 		if(kflag<0)
-			return(0);
+			return 0;
 		if((dt<0 && t>t1) || (dt>0 && t<t1)) {
 			dt=t1-t;
 			kflag=solver(y,&t,dt,1,NODE,istart,WORK);
 			if(kflag<0)
-				return(0);
+				return 0;
 		}
 	}
 	return 1;
@@ -400,7 +398,7 @@ static int get_fit_params(void) {
 		sprintf(fin.parlist2,"%s",values[7]);
 		return 1;
 	}
-	return(0);
+	return 0;
 }
 
 
@@ -445,7 +443,7 @@ static int marlevstep(double *t0, double *y0, double *y, double *sig, double *a,
 		if(mrqcof(t0,y0,y,sig,a,npts,nvars,npars,
 				  ivar,ipar,alpha,chisq,beta,
 				  yderv,yfit,eps)==0) {
-			return(0);
+			return 0;
 		}
 		for(i=0;i<npars;i++) {
 			atry[i]=a[i];
@@ -462,7 +460,7 @@ static int marlevstep(double *t0, double *y0, double *y, double *sig, double *a,
 	sgefa(covar,npars,npars,ipivot,&ierr);
 	if(ierr!=-1) {
 		err_msg(" Singular matrix encountered...");
-		return(0);
+		return 0;
 	}
 
 	sgesl(covar,npars,npars,ipivot,oneda,0);
@@ -494,7 +492,7 @@ static int marlevstep(double *t0, double *y0, double *y, double *sig, double *a,
 	if(mrqcof(t0,y0,y,sig,atry,npts,nvars,npars,
 			  ivar,ipar,covar,chisq,da,
 			  yderv,yfit,eps)==0)
-		return(0);
+		return 0;
 
 	if(*chisq<*ochisq) {
 		/* *ochisq=*chisq; */
@@ -524,7 +522,7 @@ static int mrqcof(double *t0, double *y0, double *y, double *sig, double *a,
 	get_fit_info(y0,a,t0,&flag,eps,yfit,yderv,npts,npars,nvars,ivar,ipar);
 	if(flag==0) {
 		err_msg(" Integration error ...\n");
-		return(0);
+		return 0;
 	}
 	for(i=0;i<npars;i++) {
 		beta[i]=0.0;
@@ -694,7 +692,7 @@ static int run_fit(char *filename, int npts, int npars, int nvars, int maxiter, 
 
 	if((fp=fopen(filename,"r"))==NULL) {
 		err_msg("No such file...");
-		return(0);
+		return 0;
 	}
 	t0=(double *)malloc((npts+1)*sizeof(double));
 	y=(double *)malloc((npts+1)*nvars*sizeof(double));
@@ -770,7 +768,7 @@ static int run_fit(char *filename, int npts, int npars, int nvars, int maxiter, 
 		free(covar);
 		free(t0);
 		free(y);
-		return(0);
+		return 0;
 	}
 	if(niter>=maxiter) {
 		err_msg("Max iterations exceeded...");

@@ -351,6 +351,6 @@ nfcnRead    Number of function calls.
 
 /* --- functions --- */
 int dormpri(int *istart, double *y, double *t, int n, double tout, double *tol, double *atol, int flag, int *kflag);
-void dormpri_err(int k);
+void dormpri_err_msg(int k);
 
 #endif /* XPPAUT_SOLVER_DORMPRI_H */
