@@ -181,12 +181,9 @@ void loadeqn_load_xpprc(void) {
 void extract_action(char *ptr) {
 	char name[XPP_MAX_NAME],value[XPP_MAX_NAME];
 	char tmp[2048];
-	char *junk,*mystring, *toksave;
+	char *mystring, *toksave;
 	strcpy(tmp,ptr);
-	junk = strtok_r(tmp," ", &toksave);
-	if(junk == NULL) {
-		/*No more tokens--should this throw an error?*/
-	}
+	strtok_r(tmp," ", &toksave);
 
 	while((mystring=strtok_r(NULL, " ,;\n", &toksave))!=NULL) {
 		split_apart(mystring,name,value);
@@ -417,7 +414,7 @@ void set_internopts(OptionsSet *mask) {
 
 void set_internopts_comline(void) {
 	int i;
-	char *ptr,name[20],value[80],*junk,*mystring, *toksave;
+	char *ptr,name[20],value[80],*mystring, *toksave;
 	if(Nopts==0) {
 		return;
 	}
@@ -428,39 +425,29 @@ void set_internopts_comline(void) {
 	for(i=0;i<Nopts;i++) {
 		strcpy(intrnoptcpy,interopt[i]);
 		ptr=intrnoptcpy;
-		junk=strtok_r(ptr," ,", &toksave);
-		if(junk == NULL) {
-			/*No more tokens.  Should this throw an error?*/
-		}
+		strtok_r(ptr," ,", &toksave);
 		while((mystring=strtok_r(NULL, " ,\n\r", &toksave))!=NULL) {
 			split_apart(mystring,name,value);
 			strupr(name);
 
-			if(strlen(name)==5) {
-				strupr(name);
-				if(strcmp(name,"QUIET")==0)	{
-					set_option(name,value,0,NULL);
-				}
-			} else if(strlen(name)==7)	{
-				strupr(name);
-
-				if(strcmp(name,"LOGFILE")==0) {
-					set_option(name,value,0,NULL);
-				}
+			if(strcmp(name,"QUIET")==0)	{
+				set_option(name,value,0,NULL);
+			} else if (strcmp(name,"LOGFILE")==0) {
+				set_option(name,value,0,NULL);
 			}
 		}
 	}
 
 	/*We make a BOOLEAN MASK using the current OptionsSet*/
 	/*This allows options to be overwritten multiple times within .xpprc
-  but prevents overwriting across comline, .xpprc etc.
-  */
+	 * but prevents overwriting across comline, .xpprc etc.
+	 */
 	OptionsSet *tempNAS = (OptionsSet*)malloc(sizeof(OptionsSet));
 	*tempNAS = notAlreadySet;
 
 	for(i=0;i<Nopts;i++) {
 		ptr=interopt[i];
-		junk=strtok_r(ptr," ,", &toksave);
+		strtok_r(ptr," ,", &toksave);
 		while((mystring=strtok_r(NULL, " ,\n\r", &toksave))!=NULL) {
 			split_apart(mystring,name,value);
 			if(strlen(name)>0 && strlen(value)>0)	{
