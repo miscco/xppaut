@@ -186,7 +186,6 @@ int find_char(char *s1, char *s2, int i0, int *i1) {
 
 int get_eqn(FILE *fptr) {
 	char bob[MAXEXPLEN];
-	/*char filename[DEFAULT_STRING_LENGTH];*/
 	char filename[XPP_MAX_NAME];
 	int done=1,nn,i;
 	int flag;
@@ -708,8 +707,7 @@ static int compiler(char *bob, FILE *fptr) {
 	ptr=bob;
 	done=1;
 	if(bob[0]=='@') {
-		/* printf("Storing opts from formode \n"); */
-		stor_internopts(bob);
+		loadeqn_set_internopt(bob);
 		if(ConvertStyle) {
 			fprintf(convertf,"%s\n",bob);
 		}
@@ -2164,21 +2162,17 @@ static int parse_a_string(char *s1, VAR_INFO *v) {
 		return 0;
 	}
 	if(s1[0]=='@') {
-		/*    printf("internopts from parse string\n"); */
-		stor_internopts(s1);
+		loadeqn_set_internopt(s1);
 		return 0;
 	}
 	remove_blanks(s1);
 
 	strcpy(s1old,s1);
 	strupr(s1);
-	/*   plintf(" <%s> \n",s1);   */
 	if(strlen(s1)<1) {
-		/*   plintf(" Empty line \n"); */
 		return 0;
 	}
-	if(s1[0]=='0' && s1[1]=='=') { /*  || (s1[1]==' ' && s1[2]=='='))) */
-		/* plintf("DAE --- \n");  */
+	if(s1[0]=='0' && s1[1]=='=') {
 		type2=DAE;
 		sprintf(lhs,"0=");
 		strpiece(rhs,s1,2,n1);
@@ -2188,7 +2182,6 @@ static int parse_a_string(char *s1, VAR_INFO *v) {
 		goto good_type;
 	}
 	if(s1[0]=='#') {
-		/*  plintf("Comment! \n"); */
 		return 0;
 	}
 

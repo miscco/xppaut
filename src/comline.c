@@ -300,10 +300,10 @@ static int parse_one(int argc, char **argv) {
 			setfilename[sizeof(setfilename)-1] = '\0';
 		}
 		else if (!strcmp(argv[0],"-smallfont")) {
-			set_option("SMALLFONT", argv[1], 1, NULL);
+			set_option("SMALLFONT", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-bigfont")) {
-			set_option("BIGFONT", argv[1], 1, NULL);
+			set_option("BIGFONT", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-parfile")) {
 			snprintf(parfilename, sizeof(parfilename), "!load %s", argv[1]);
@@ -319,31 +319,31 @@ static int parse_one(int argc, char **argv) {
 			icfilename[sizeof(icfilename)-1] = '\0';
 		}
 		else if (!strcmp(argv[0],"-forecolor")) {
-			set_option("FORECOLOR", argv[1], 1, NULL);
+			set_option("FORECOLOR", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-backcolor")) {
-			set_option("BACKCOLOR", argv[1], 1, NULL);
+			set_option("BACKCOLOR", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-backimage")) {
-			set_option("BACKIMAGE", argv[1], 1, NULL);
+			set_option("BACKIMAGE", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-grads")) {
-			set_option("GRADS", argv[1], 1, NULL);
+			set_option("GRADS", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-width")) {
-			set_option("WIDTH", argv[1], 1, NULL);
+			set_option("WIDTH", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-height")) {
-			set_option("HEIGHT", argv[1], 1, NULL);
+			set_option("HEIGHT", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-mwcolor")) {
-			set_option("MWCOLOR", argv[1], 1, NULL);
+			set_option("MWCOLOR", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-dwcolor")) {
-			set_option("DWCOLOR", argv[1], 1, NULL);
+			set_option("DWCOLOR", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-bell")) {
-			set_option("BELL", argv[1], 1, NULL);
+			set_option("BELL", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-internset")) {
 			use_intern_sets = atoi(argv[1]);
@@ -360,22 +360,22 @@ static int parse_one(int argc, char **argv) {
 			NincludedFiles++;
 		}
 		else if (!strcmp(argv[0],"-quiet")) {
-			set_option("QUIET", argv[1], 1, NULL);
+			set_option("QUIET", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-logfile")) {
-			set_option("LOGFILE", argv[1], 1, NULL);
+			set_option("LOGFILE", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-anifile")) {
 			strcpy(anifile, argv[1]);
 		}
 		else if (!strcmp(argv[0],"-plotfmt")) {
-			set_option("PLOTFMT", argv[1], 1, NULL);
+			set_option("PLOTFMT", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-dfdraw")) {
-			set_option("DFDRAW", argv[1], 1, NULL);
+			set_option("DFDRAW", argv[1]);
 		}
 		else if (!strcmp(argv[0],"-ncdraw")) {
-			set_option("NCDRAW", argv[1], 1, NULL);
+			set_option("NCDRAW", argv[1]);
 		} else {
 			plintf("Problem reading option %s\n", argv[0]);
 			show_help();
