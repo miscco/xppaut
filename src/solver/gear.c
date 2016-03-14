@@ -25,15 +25,14 @@ static int ggear(int n, double *t, double tout, double *y, double hmin, double h
 static int one_flag_step_gear(int neq, double *t, double tout, double *y, double hmin, double hmax, double eps, int mf, double *error, int *kflag, int *jstart, double *work, int *iwork);
 
 
-
 /* --- Data --- */
 static double pertst[7][2][3]={{{2,3,1},{2,12,1}},
-						{{4.5,6,1},{12,24,1}},
-						{{7.333,9.167,.5},{24,37.89,2}},
-						{{10.42,12.5,.1667},{37.89,53.33,1}},
-						{{13.7,15.98,.04133},{53.33,70.08,.3157}},
-						{{17.15,1,.008267},{70.08,87.97,.07407}},
-						{{1,1,1},{87.97,1,.0139}}};
+							   {{4.5,6,1},{12,24,1}},
+							   {{7.333,9.167,.5},{24,37.89,2}},
+							   {{10.42,12.5,.1667},{37.89,53.33,1}},
+							   {{13.7,15.98,.04133},{53.33,70.08,.3157}},
+							   {{17.15,1,.008267},{70.08,87.97,.07407}},
+							   {{1,1,1},{87.97,1,.0139}}};
 
 
 /* --- Functions --- */
@@ -49,9 +48,25 @@ int gear(int n, double *t, double tout, double *y, double hmin, double hmax,
 }
 
 
+const char* gear_err_msg(int kflag) {
+	switch (kflag) {
+	case -1:
+		return "kflag=-1: minimum step too big";
+	case -2:
+		return "kflag=-2: required order too big";
+	case -3:
+		return "kflag=-3: minimum step too big";
+	case -4:
+		return "kflag=-4: tolerance too small";
+	default:
+		return "unknown gear error";
+	}
+}
+
+/* --- Static functions --- */
 static int ggear(int n, double *t, double tout, double *y, double hmin, double hmax,
-		  double eps, int mf, double *error, int *kflag, int *jstart,
-		  double *work, int *iwork) {
+				 double eps, int mf, double *error, int *kflag, int *jstart,
+				 double *work, int *iwork) {
 	int gear_pivot[MAXODE];
 	double deltat=0.0,hnew=0.0,hold=0.0,h=0.0,racum=0.0,told=0.0,r=0.0,d=0.0;
 	double *a,pr1,pr2,pr3,r1;
@@ -552,8 +567,8 @@ L860:
 
 
 static int one_flag_step_gear(int neq, double *t, double tout, double *y, double hmin, double hmax,
-					   double eps, int mf, double *error, int *kflag, int *jstart,
-					   double *work, int *iwork) {
+							  double eps, int mf, double *error, int *kflag, int *jstart,
+							  double *work, int *iwork) {
 	double yold[MAXODE],told;
 	int i,hit;
 	double s;

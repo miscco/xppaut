@@ -971,7 +971,6 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 	while(1) {
 		switch(METHOD) {
 		case GEAR:
-		{
 			tout=tzero+dt*(icount+1);
 			if(fabs(dt)<fabs(HMIN)) {
 				LastTime=*t;
@@ -993,24 +992,9 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 					LastTime=*t;
 					return(1);
 				}
-				switch(kflag)
-				{
-				case -1:
-					err_msg("kflag=-1: minimum step too big");
-					break;
-				case -2:
-					err_msg("kflag=-2: required order too big");
-					break;
-				case -3:
-					err_msg("kflag=-3: minimum step too big");
-					break;
-				case -4:
-					err_msg("kflag=-4: tolerance too small");
-					break;
-				}
+				err_msg(gear_err_msg(kflag));
 				LastTime=*t;
 				return(1);
-			}
 		}
 			break;
 #ifdef CVODE_YES
@@ -1451,20 +1435,7 @@ int ode_int(double *y, double *t, int *istart) {
 				if(RANGE_FLAG) {
 					return(0);
 				}
-				switch(kflag) {
-				case -1:
-					err_msg("kflag=-1: minimum step too big");
-					break;
-				case -2:
-					err_msg("kflag=-2: required order too big");
-					break;
-				case -3:
-					err_msg("kflag=-3: minimum step too big");
-					break;
-				case -4:
-					err_msg("kflag=-4: tolerance too small");
-					break;
-				}
+				err_msg(gear_err_msg(kflag));
 				return(0);
 			}
 			break;
@@ -2600,7 +2571,7 @@ static void shoot_this_now(void) {
 	double x[MAXODE],olddt;
 	if(ShootIndex<1) {
 		return;
-}
+	}
 	olddt=DELTA_T;
 
 	for(k=0;k<ShootIndex;k++) {
