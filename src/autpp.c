@@ -30,7 +30,7 @@ int func(integer ndim, double *u, integer *icp, double *par, integer ijac,
 	if(ijac==1) {
 		getjactrans(u,y,yp,xp,NEWT_ERR,dfdu,ndim);
 	}
-	if(METHOD>0||NJMP==1) {
+	if(METHOD != METHOD_DISCRETE || NJMP==1) {
 		return 0;
 	}
 

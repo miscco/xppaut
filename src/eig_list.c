@@ -267,10 +267,10 @@ void draw_eq_list(Window w) {
 			if(i>=NEQ) {
 				break;
 			}
-			if(i<NODE && METHOD>0) {
+			if(i<NODE && METHOD != METHOD_DISCRETE) {
 				strcpy(fstr,"d%s/dT=%s");
 			}
-			if(i<NODE && METHOD==0) {
+			if(i<NODE && METHOD == METHOD_DISCRETE) {
 				strcpy(fstr,"%s(n+1)=%s");
 			}
 			if(i<NODE && EqType[i]==1) {

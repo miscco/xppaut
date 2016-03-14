@@ -86,7 +86,7 @@ void do_lunch(int f) {
 			return;
 		}
 		io_numerics(f,fp);
-		if(METHOD==VOLTERRA) {
+		if(METHOD==METHOD_VOLTERRA) {
 			io_int(&temp,fp,f," ");
 			allocate_volterra(temp,1);
 			MyStart=1;
@@ -117,7 +117,7 @@ void do_lunch(int f) {
 	io_int(&NEQ,fp,f,"Number of equations and auxiliaries");
 	io_int(&NUPAR,fp,f,"Number of parameters");
 	io_numerics(f,fp);
-	if(METHOD==VOLTERRA) {
+	if(METHOD==METHOD_VOLTERRA) {
 		io_int(&MaxPoints,fp,f,"Max points for volterra");
 	}
 	io_exprs(f,fp);
@@ -259,7 +259,7 @@ int read_lunch(FILE *fp) {
 		return 0;
 	}
 	io_numerics(f,fp);
-	if(METHOD==VOLTERRA) {
+	if(METHOD==METHOD_VOLTERRA) {
 		io_int(&temp,fp,f," ");
 		allocate_volterra(temp,1);
 		MyStart=1;
@@ -280,6 +280,7 @@ int read_lunch(FILE *fp) {
 /* --- Static functions --- */
 static void do_info(FILE *fp) {
 	int i;
+	/* Must match enum Method. */
 	static char *method[]={"Discrete","Euler","Mod. Euler",
 						   "Runge-Kutta","Adams","Gear","Volterra","BackEul","QualRK",
 						   "Stiff","CVode","DoPri5","DoPri8(3)","Rosenbrock","Symplectic"};
@@ -290,10 +291,10 @@ static void do_info(FILE *fp) {
 	char fstr[15];
 	fprintf(fp,"File: %s \n\n Equations... \n",this_file);
 	for(i=0;i<NEQ;i++) {
-		if(i<NODE && METHOD>0) {
+		if(i<NODE && METHOD != METHOD_DISCRETE) {
 			strcpy(fstr,"d%s/dT=%s\n");
 		}
-		if(i<NODE && METHOD==0) {
+		if(i<NODE && METHOD == METHOD_DISCRETE) {
 			strcpy(fstr,"%s(n+1)=%s\n");
 		}
 		if(i>=NODE) {
@@ -385,10 +386,10 @@ static void dump_eqn(FILE *fp) {
 	char fstr[15];
 	fprintf(fp,"RHS etc ...\n");
 	for(i=0;i<NEQ;i++) {
-		if(i<NODE && METHOD>0) {
+		if(i<NODE && METHOD != METHOD_DISCRETE) {
 			strcpy(fstr,"d%s/dT=%s\n");
 		}
-		if(i<NODE && METHOD==0) {
+		if(i<NODE && METHOD == METHOD_DISCRETE) {
 			strcpy(fstr,"%s(n+1)=%s\n");
 		}
 		if(i>=NODE) {
@@ -675,6 +676,7 @@ static void io_int(int *i, FILE *fp, int f, char *ss) {
 
 
 static void io_numerics(int f, FILE *fp) {
+	int im = METHOD;
 	char *method[]={"Discrete","Euler","Mod. Euler",
 					"Runge-Kutta","Adams","Gear","Volterra","BackEul",
 					"Qual RK","Stiff","CVode","DorPrin5","DorPri8(3)"};
@@ -690,7 +692,7 @@ static void io_numerics(int f, FILE *fp) {
 	}
 	io_int(&NJMP,fp,f," nout");
 	io_int(&NMESH,fp,f," nullcline mesh");
-	io_int(&METHOD,fp,f,method[METHOD]);
+	io_int(&im,fp,f,method[METHOD]);
 	if(f==READEM) {
 		do_meth();
 		alloc_meth();

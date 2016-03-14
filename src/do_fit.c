@@ -77,7 +77,7 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 	double error[MAXODE];
 	double t=t0;
 #ifdef CVODE_YES
-	if(METHOD==CVODE) {
+	if(METHOD==METHOD_CVODE) {
 		cvode(istart,y,&t,NODE,t1,&kflag,&TOLER,&ATOLER);
 		if(kflag<0) {
 			cvode_err_msg(kflag);
@@ -87,8 +87,8 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 		return 1;
 	}
 #endif
-	if(METHOD==DP5 || METHOD==DP83) {
-		dormpri(istart,y,&t,NODE,t1,&TOLER,&ATOLER,METHOD-DP5,&kflag);
+	if(METHOD==METHOD_DP5 || METHOD==METHOD_DP83) {
+		dormpri(istart,y,&t,NODE,t1,&TOLER,&ATOLER,METHOD-METHOD_DP5,&kflag);
 		if(kflag!=1) {
 			dormpri_err(kflag);
 			return(0);
@@ -96,7 +96,7 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 		stor_delay(y);
 		return 1;
 	}
-	if(METHOD==RB23) {
+	if(METHOD==METHOD_RB23) {
 		rb23(y,&t,t1,istart,NODE,WORK,&kflag);
 		if(kflag<0) {
 			err_msg("Step size too small");
@@ -105,7 +105,7 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 		stor_delay(y);
 		return 1;
 	}
-	if(METHOD==RKQS || METHOD==STIFF) {
+	if(METHOD==METHOD_RKQS || METHOD==METHOD_STIFF) {
 		adaptive(y,NODE,&t,t1,TOLER,&dt,
 				 HMIN,WORK,&kflag,NEWT_ERR,METHOD,istart);
 		if(kflag) {
@@ -118,7 +118,7 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 	}
 	/* cvode(command,y,t,n,tout,kflag,atol,rtol)
  command =0 continue, 1 is start 2 finish   */
-	if(METHOD==GEAR) {
+	if(METHOD==METHOD_GEAR) {
 		gear(NODE,&t,t1,y,HMIN,HMAX,TOLER,2,error,&kflag,istart,WORK,IWORK);
 		if(kflag<0) {
 			ping();
@@ -128,7 +128,7 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 		stor_delay(y);
 		return(1);
 	}
-	if(METHOD==0) {
+	if(METHOD==METHOD_DISCRETE) {
 		nit=fabs(t0-t1);
 		dt=dt/fabs(dt);
 		kflag=solver(y,&t,dt,nit,NODE,istart,WORK);
@@ -309,7 +309,7 @@ static void get_fit_info(double *y, double *a, double *t0, int *flag, double eps
 		}
 	}
 #ifdef CVODE_YES
-	if(METHOD==CVODE)
+	if(METHOD==METHOD_CVODE)
 		end_cv();
 #endif
 	/*  Now we take the derivatives !!   */
@@ -366,7 +366,7 @@ static void get_fit_info(double *y, double *a, double *t0, int *flag, double eps
 		}
 		evaluate_derived();
 #ifdef CVODE_YES
-		if(METHOD==CVODE)
+		if(METHOD==METHOD_CVODE)
 			end_cv();
 #endif
 

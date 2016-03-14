@@ -311,7 +311,7 @@ void do_init_data(int com) {
 			T0=LastTime;
 			MyTime=T0;
 		}
-		if(METHOD==VOLTERRA && oldstart==0) {
+		if(METHOD==METHOD_VOLTERRA && oldstart==0) {
 			ch=(char)TwoChoice("No","Yes","Reset integrals?","ny");
 			if(ch=='n') {
 				MyStart=oldstart;
@@ -931,10 +931,10 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 	evaluate_derived();
 
 
-	if((METHOD==GEAR) && (*start==1)) {
+	if((METHOD==METHOD_GEAR) && (*start==1)) {
 		*start=0;
 	}
-	if(METHOD==0) {
+	if(METHOD==METHOD_DISCRETE) {
 		nit=tend;
 		dt=dt/fabs(dt);
 	} else {
@@ -970,7 +970,7 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 	stor_delay(x);
 	while(1) {
 		switch(METHOD) {
-		case GEAR:
+		case METHOD_GEAR:
 			tout=tzero+dt*(icount+1);
 			if(fabs(dt)<fabs(HMIN)) {
 				LastTime=*t;
@@ -995,10 +995,10 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 				err_msg(gear_err_msg(kflag));
 				LastTime=*t;
 				return(1);
-		}
+			}
 			break;
 #ifdef CVODE_YES
-		case CVODE:
+		case METHOD_CVODE:
 			tout=tzero+dt*(icount+1);
 			if(fabs(dt)<fabs(HMIN)) {
 				LastTime=*t;
@@ -1027,15 +1027,15 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 			}
 			break;
 #endif
-		case DP5:
-		case DP83:
+		case METHOD_DP5:
+		case METHOD_DP83:
 			tout=tzero+dt*(icount+1);
 			if(fabs(dt)<fabs(HMIN)) {
 				LastTime=*t;
 				return(1);
 			}
 			MSWTCH(xpv.x,x);
-			dormpri(start,xpv.x,t,nodes,tout,&TOLER,&ATOLER,METHOD-DP5,&kflag);
+			dormpri(start,xpv.x,t,nodes,tout,&TOLER,&ATOLER,METHOD-METHOD_DP5,&kflag);
 			MSWTCH(x,xpv.x);
 			stor_delay(x);
 			if(DelayErr) {
@@ -1054,7 +1054,7 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 				return(1);
 			}
 			break;
-		case RB23:
+		case METHOD_RB23:
 			tout=tzero+dt*(icount+1);
 			if(fabs(dt)<fabs(HMIN)) {
 				LastTime=*t;
@@ -1080,8 +1080,8 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 				return(1);
 			}
 			break;
-		case RKQS:
-		case STIFF:
+		case METHOD_RKQS:
+		case METHOD_STIFF:
 			tout=tzero+dt*(icount+1);
 			if(fabs(dt)<fabs(HMIN)) {
 				LastTime=*t;
@@ -1104,23 +1104,7 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 					LastTime=*t;
 					return(1);
 				}
-				switch(kflag) {
-				case 2:
-					err_msg("Step size too small");
-					break;
-				case 3:
-					err_msg("Too many steps");
-					break;
-				case -1:
-					err_msg("singular jacobian encountered");
-					break;
-				case 1:
-					err_msg("stepsize is close to 0");
-					break;
-				case 4:
-					err_msg("exceeded MAXTRY in stiff");
-					break;
-				}
+				err_msg(adaptive_err_msg(kflag));
 				LastTime=*t;
 				return(1);
 			}
@@ -1379,7 +1363,7 @@ out:
 
 	LastTime=*t;
 #ifdef CVODE_YES
-	if(METHOD==CVODE) {
+	if(METHOD==METHOD_CVODE) {
 		end_cv();
 	}
 #endif
@@ -1394,7 +1378,7 @@ int ode_int(double *y, double *t, int *istart) {
 	int nit;
 	double tend=TEND;
 	double dt=DELTA_T,tout;
-	if(METHOD==0) {
+	if(METHOD==METHOD_DISCRETE) {
 		nit=tend;
 		dt=dt/fabs(dt);
 	} else {
@@ -1402,7 +1386,7 @@ int ode_int(double *y, double *t, int *istart) {
 	}
 	MSWTCH(xpv.x,y);
 	evaluate_derived();
-	if(METHOD<GEAR  || METHOD==BACKEUL) {
+	if(METHOD<METHOD_GEAR  || METHOD==METHOD_BACKEUL) {
 		kflag=solver(xpv.x,t,dt,nit,nodes,istart,WORK);
 		MSWTCH(y,xpv.x);
 		if(kflag<0) {
@@ -1423,7 +1407,7 @@ int ode_int(double *y, double *t, int *istart) {
 	} else {
 		tout=*t+tend*dt/fabs(dt);
 		switch(METHOD) {
-		case GEAR:
+		case METHOD_GEAR:
 			if(*istart==1) {
 				*istart=0;
 			}
@@ -1440,7 +1424,7 @@ int ode_int(double *y, double *t, int *istart) {
 			}
 			break;
 #ifdef CVODE_YES
-		case CVODE:
+		case METHOD_CVODE:
 			cvode(istart,xpv.x,t,nodes,tout,&kflag,&TOLER,&ATOLER);
 			MSWTCH(y,xpv.x);
 			if(kflag<0) {
@@ -1450,9 +1434,9 @@ int ode_int(double *y, double *t, int *istart) {
 			end_cv();
 			break;
 #endif
-		case DP5:
-		case DP83:
-			dormpri(istart,xpv.x,t,nodes,tout,&TOLER,&ATOLER,METHOD-DP5,&kflag);
+		case METHOD_DP5:
+		case METHOD_DP83:
+			dormpri(istart,xpv.x,t,nodes,tout,&TOLER,&ATOLER,METHOD-METHOD_DP5,&kflag);
 			MSWTCH(y,xpv.x);
 			if(kflag<0) {
 				if(RANGE_FLAG) {
@@ -1463,7 +1447,7 @@ int ode_int(double *y, double *t, int *istart) {
 			}
 
 			break;
-		case RB23:
+		case METHOD_RB23:
 			rb23(xpv.x,t,tout,istart,nodes,WORK,&kflag);
 			MSWTCH(y,xpv.x);
 			if(kflag<0) {
@@ -1475,8 +1459,8 @@ int ode_int(double *y, double *t, int *istart) {
 				return 0;
 			}
 			break;
-		case RKQS:
-		case STIFF:
+		case METHOD_RKQS:
+		case METHOD_STIFF:
 			adaptive(xpv.x,nodes,t,tout,TOLER,&dt,
 					 HMIN,WORK,&kflag,NEWT_ERR,METHOD,istart);
 			MSWTCH(y,xpv.x);
@@ -1489,6 +1473,9 @@ int ode_int(double *y, double *t, int *istart) {
 				return(0);
 			}
 			break;
+		default:
+			err_msg("Unknown method");
+			return 0;
 		}
 	}
 	return(1);

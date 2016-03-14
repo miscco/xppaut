@@ -289,7 +289,7 @@ void loadeqn_init_options(void) {
 	solver=runge_kutta;
 	PLOT_3D=0;
 
-	METHOD=3;
+	METHOD=METHOD_RK4;
 	MY_XLO=0.0;
 	MY_XHI=20.0;
 	MY_YLO=-1;
@@ -410,6 +410,7 @@ void set_option(char *s1, char *s2) {
 	int i,j;
 	char xx[4],yy[4],zz[4];
 	char xxl[6],xxh[6],yyl[6],yyh[6];
+	/* Must match enum Method. */
 	static char mkey[]="demragvbqsc582y";
 	static char Mkey[]="DEMRAGVBQSC582Y";
 	strupr(s1);
@@ -1143,7 +1144,7 @@ static void init_X_vals(void) {
 /* --- Static functions --- */
 static void check_volterra(void) {
 	if (NKernel>0) {
-		METHOD=VOLTERRA;
+		METHOD=METHOD_VOLTERRA;
 	}
 }
 

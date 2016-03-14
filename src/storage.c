@@ -33,18 +33,20 @@ void alloc_meth(void) {
 	int nn=xpv.node+xpv.nvec;
 	int sz=30*nn;
 	switch(METHOD) {
-	case STIFF:
+	case METHOD_STIFF:
 		sz=2*nn*nn+13*nn+100;
 		break;
-	case GEAR:
+	case METHOD_GEAR:
 		sz=30*nn+nn*nn+100;
 		break;
-	case BACKEUL:
-	case VOLTERRA:
+	case METHOD_BACKEUL:
+	case METHOD_VOLTERRA:
 		sz=10*nn+nn*nn+100;
 		break;
-	case RB23:
+	case METHOD_RB23:
 		sz=12*nn+100+nn*nn;
+		break;
+	default:
 		break;
 	}
 	if(WORK) {

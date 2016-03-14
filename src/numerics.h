@@ -1,24 +1,33 @@
 #ifndef XPPAUT_NUMERICS_H
 #define XPPAUT_NUMERICS_H
 
-/* --- Macros --- */
-#define VOLTERRA 6
-#define BACKEUL 7
-#define RKQS 8
-#define STIFF 9
-#define CVODE 10
-#define GEAR 5
-#define DP5 11
-#define DP83 12
-#define RB23 13
-#define SYMPLECT 14
+/* --- Types --- */
+typedef enum {
+	METHOD_DISCRETE = 0,
+	METHOD_EULER,
+	METHOD_MODEULER,
+	METHOD_RK4,
+	METHOD_ADAMS,
+	METHOD_GEAR,
+	METHOD_VOLTERRA,
+	METHOD_BACKEUL,
+	METHOD_RKQS,
+	METHOD_STIFF,
+	METHOD_CVODE,
+	METHOD_DP5,
+	METHOD_DP83,
+	METHOD_RB23,
+	METHOD_SYMPLECT,
+
+	NUM_METHODS
+} Method;
 
 
 /* --- Data --- */
 extern int cv_bandflag;
 extern int cv_bandlower;
 extern int cv_bandupper;
-extern int METHOD;
+extern Method METHOD;
 
 /* --- Functions --- */
 void check_delay(void);

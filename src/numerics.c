@@ -57,7 +57,7 @@ int (*solver)();
 
 
 /* --- Data --- */
-int METHOD;
+Method METHOD;
 int cv_bandflag=0,cv_bandupper=1,cv_bandlower=1;
 
 
@@ -76,45 +76,46 @@ void check_delay(void) {
 
 void do_meth(void) {
 	if(NKernel>0) {
-		METHOD=VOLTERRA;
+		METHOD=METHOD_VOLTERRA;
 	}
 	switch(METHOD) {
-	case 0:
+	case METHOD_DISCRETE:
 		solver=discrete;
 		DELTA_T=1;
 		break;
-	case 1:
+	case METHOD_EULER:
 		solver=euler;
 		break;
-	case 2:
+	case METHOD_MODEULER:
 		solver=heun;
 		break;
-	case 3:
+	case METHOD_RK4:
 		solver=runge_kutta;
 		break;
-	case 4:
+	case METHOD_ADAMS:
 		solver=adams;
 		break;
-	case 5:
+	case METHOD_GEAR:
 		NJMP=1;
 		break;
-	case 6:
+	case METHOD_VOLTERRA:
 		solver=volterra;
 		break;
-	case SYMPLECT:
+	case METHOD_SYMPLECT:
 		solver=symplect3;
 		break;
-	case BACKEUL:
+	case METHOD_BACKEUL:
 		solver=backwards_euler;
 		break;
-	case RKQS:
-	case STIFF:
-	case CVODE:
-	case DP5:
-	case DP83:
-	case RB23:
+	case METHOD_RKQS:
+	case METHOD_STIFF:
+	case METHOD_CVODE:
+	case METHOD_DP5:
+	case METHOD_DP83:
+	case METHOD_RB23:
 		NJMP=1; break;
-	default: solver=runge_kutta;
+	default:
+		solver=runge_kutta;
 	}
 }
 
@@ -200,44 +201,45 @@ void get_num_par(int ch) {
 	case 'm':
 		/* method */
 		get_method();
-		if(METHOD==VOLTERRA && NKernel==0) {
+		if(METHOD==METHOD_VOLTERRA && NKernel==0) {
 			err_msg("Volterra only for integral eqns");
-			METHOD=4;
+			METHOD=METHOD_ADAMS;
 		}
 		if(NKernel>0) {
-			METHOD=VOLTERRA;
+			METHOD=METHOD_VOLTERRA;
 		}
-		if(METHOD==GEAR || METHOD==RKQS || METHOD==STIFF) {
+		if(METHOD==METHOD_GEAR || METHOD==METHOD_RKQS || METHOD==METHOD_STIFF) {
 			new_float("Tolerance :",&TOLER);
 			new_float("minimum step :",&HMIN);
 			new_float("maximum step :",&HMAX);
 		}
-		if(METHOD==CVODE || METHOD==DP5 || METHOD==DP83 || METHOD==RB23)  {
+		if(METHOD==METHOD_CVODE || METHOD==METHOD_DP5 ||
+		   METHOD==METHOD_DP83 || METHOD==METHOD_RB23)  {
 			new_float("Relative tol:",&TOLER);
 			new_float("Abs. Toler:",&ATOLER);
 		}
 
-		if(METHOD==BACKEUL || METHOD==VOLTERRA) {
+		if(METHOD==METHOD_BACKEUL || METHOD==METHOD_VOLTERRA) {
 			new_float("Tolerance :",&EulTol);
 			new_int("MaxIter :",&MaxEulIter);
 		}
-		if(METHOD==VOLTERRA) {
+		if(METHOD==METHOD_VOLTERRA) {
 			tmp=MaxPoints;
 			new_int("MaxPoints:",&tmp);
 			new_int("AutoEval(1=yes) :",&AutoEvaluate);
 			allocate_volterra(tmp,1);
 		}
-		if(METHOD==CVODE || METHOD==RB23) {
+		if(METHOD==METHOD_CVODE || METHOD==METHOD_RB23) {
 			new_int("Banded system(0/1)?",&cv_bandflag);
 			if(cv_bandflag==1) {
 				new_int("Lower band:",&cv_bandlower);
 				new_int("Upper band:",&cv_bandupper);
 			}
 		}
-		if(METHOD==SYMPLECT) {
+		if(METHOD==METHOD_SYMPLECT) {
 			if((NODE%2)!=0) {
 				err_msg("Symplectic is only for even dimensions");
-				METHOD=4;
+				METHOD=METHOD_ADAMS;
 			}
 		}
 		break;
@@ -328,6 +330,7 @@ static void get_method(void) {
 	int nmeth;
 
 	Window temp=main_win;
+	/* This must match enum Method. */
 	static char *n[]={"(D)iscrete","(E)uler","(M)od. Euler",
 					  "(R)unge-Kutta","(A)dams","(G)ear","(V)olterra","(B)ackEul",
 					  "(Q)ualst.RK4","(S)tiff","(C)Vode","DoPri(5)","DoPri(8)3",
@@ -335,7 +338,7 @@ static void get_method(void) {
 	static char key[]="demragvbqsc582y";
 
 	nmeth = sizeof(n) / sizeof(*n);
-	ch = (char)pop_up_list(&temp,"Method",n,key,nmeth,15,METHOD,10,DCURY+8,
+	ch = (char)pop_up_list(&temp,"Method",n,key,nmeth,nmeth,METHOD,10,DCURY+8,
 						   meth_hint,info_pop,info_message);
 	for(i=0;i<nmeth;i++)
 		if(ch==key[i]) {

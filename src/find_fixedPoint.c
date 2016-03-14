@@ -100,7 +100,7 @@ void do_sing(double *x, double eps, double err, double big, int maxit, int n, in
 		if(pr==1) {
 			printf(" %f  +  i  %f \n",real,imag);
 		}
-		if(METHOD==0) {
+		if(METHOD == METHOD_DISCRETE) {
 			real=real*real+imag*imag-1.00;
 		}
 		if(fabs(imag)<.00000001) {
@@ -310,7 +310,7 @@ void do_sing_info(double *x, double eps, double err, double big,
 		er[i]=real;
 		em[i]=imag;
 
-		if(METHOD==0) {
+		if(METHOD == METHOD_DISCRETE) {
 			real=real*real+imag*imag-1.00;
 		}
 		if(fabs(imag)<.00000001) {
@@ -433,7 +433,7 @@ void rooter(double *x, double err, double eps, double big, double *work, int *ie
 		}
 		if(r<err) {
 			getjac(x,y,yp,xp,eps,dermat,n);
-			if(METHOD==0) {
+			if(METHOD == METHOD_DISCRETE) {
 				for(i=0;i<n;i++) {
 					dermat[i*(n+1)]+=1.0;
 				}

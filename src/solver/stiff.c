@@ -138,7 +138,7 @@ static int gadaptive(double *ystart, int nvar, double *xs, double x2, double eps
 	for(nstp=1;nstp<=MAXSTP;nstp++) {
 		my_rhs(x,y,dydx,nvar);
 		for(i=0;i<nvar;i++) {
-			if(iflag==STIFF) {
+			if(iflag==METHOD_STIFF) {
 				yscal[i]=MAX(1,fabs(y[i]));
 			} else {
 				yscal[i]=fabs(y[i])+fabs(dydx[i]*h)+TINY;
@@ -147,7 +147,7 @@ static int gadaptive(double *ystart, int nvar, double *xs, double x2, double eps
 		if ((x+h-x2)*(x+h-x1) > 0.0) {
 			h=x2-x;
 		}
-		if(iflag==STIFF) {
+		if(iflag==METHOD_STIFF) {
 			stiff(y,dydx,nvar,&x,h,eps,yscal,&hdid,&hnext,work2,epjac,ier);
 		} else {
 			rkqs(y,dydx,nvar,&x,h,eps,yscal,&hdid,&hnext,work2,ier);

@@ -82,7 +82,6 @@ int TypeOfCalc=0;
 #define FR_P 10  /* freq vs par   */
 #define AV_P 11 /* ubar vs par */
 
-#define DISCRETE 0
 
 /* --- Types --- */
 typedef struct {
@@ -1983,7 +1982,7 @@ static void auto_start_choice(void) {
 	static  char key[]="spbhe";
 	char ch;
 	HomoFlag=0;
-	if(METHOD==DISCRETE) {
+	if(METHOD== METHOD_DISCRETE) {
 		auto_new_discrete();
 		return;
 	}
@@ -2088,7 +2087,7 @@ static void hopf_choice(void) {
 	static char *m[]={"Periodic","Extend","New Point","Two Param"};
 	static  char key[]="pent";
 	char ch;
-	if(METHOD==DISCRETE) {
+	if(METHOD==METHOD_DISCRETE) {
 		auto_2p_hopf();
 		return;
 	}
@@ -2190,7 +2189,7 @@ NICP=2, ISW=2 at Hopf
 static void auto_start_diff_ss(void) {
 	TypeOfCalc=EQ1;
 	Auto.ips=1;
-	if(METHOD==DISCRETE) {
+	if(METHOD==METHOD_DISCRETE) {
 		Auto.ips=-1;
 	}
 	Auto.irs=0;
@@ -2308,7 +2307,7 @@ static void auto_extend_ss(void) {
 	Auto.ilp=1;
 	Auto.isw=1;
 	Auto.ips=1;
-	if(METHOD==DISCRETE) {
+	if(METHOD==METHOD_DISCRETE) {
 		Auto.ips=-1;
 	}
 	Auto.isp=1;
@@ -2437,7 +2436,7 @@ static void auto_switch_ss(void) {
 	Auto.isw=-1;
 	Auto.isp=1;
 	Auto.ips=1;
-	if(METHOD==DISCRETE) {
+	if(METHOD==METHOD_DISCRETE) {
 		Auto.ips=-1;
 	}
 	AutoTwoParam=0;
@@ -2530,7 +2529,7 @@ static void auto_2p_branch(int ips) {
 	}
 
 	Auto.ips=ipsuse;
-	if(METHOD==DISCRETE) {
+	if(METHOD==METHOD_DISCRETE) {
 		Auto.ips=-1;
 	}
 	AutoTwoParam=BR2;
@@ -2571,7 +2570,7 @@ static void auto_2p_hopf(void) {
 	Auto.isw=2;
 	Auto.isp=0;
 	Auto.ips=1;
-	if(METHOD==DISCRETE) {
+	if(METHOD==METHOD_DISCRETE) {
 		Auto.ips=-1;
 	}
 	AutoTwoParam=HB2;
