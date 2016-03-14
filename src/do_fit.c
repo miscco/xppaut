@@ -76,34 +76,23 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 	double z;
 	double error[MAXODE];
 	double t=t0;
-	if(METHOD==METHOD_CVODE) {
-		cvode(istart,y,&t,NODE,t1,&kflag,&TOLER,&ATOLER);
+	switch(METHOD) {
+	case METHOD_DISCRETE:
+		nit=fabs(t0-t1);
+		dt=dt/fabs(dt);
+		kflag=solver(y,&t,dt,nit,NODE,istart,WORK);
+		break;
+	case METHOD_GEAR:
+		gear(NODE,&t,t1,y,HMIN,HMAX,TOLER,2,error,&kflag,istart,WORK);
 		if(kflag<0) {
-			cvode_err_msg(kflag);
+			ping();
+			err_msg(gear_err_msg(kflag));
 			return(0);
 		}
 		stor_delay(y);
-		return 1;
-	}
-	if(METHOD==METHOD_DP5 || METHOD==METHOD_DP83) {
-		dormpri(istart,y,&t,NODE,t1,&TOLER,&ATOLER,METHOD-METHOD_DP5,&kflag);
-		if(kflag!=1) {
-			dormpri_err(kflag);
-			return(0);
-		}
-		stor_delay(y);
-		return 1;
-	}
-	if(METHOD==METHOD_RB23) {
-		rb23(y,&t,t1,istart,NODE,WORK,&kflag);
-		if(kflag<0) {
-			err_msg("Step size too small");
-			return(0);
-		}
-		stor_delay(y);
-		return 1;
-	}
-	if(METHOD==METHOD_RKQS || METHOD==METHOD_STIFF) {
+		break;
+	case METHOD_RKQS:
+	case METHOD_STIFF:
 		adaptive(y,NODE,&t,t1,TOLER,&dt,
 				 HMIN,WORK,&kflag,NEWT_ERR,METHOD,istart);
 		if(kflag) {
@@ -112,39 +101,50 @@ int one_step_int(double *y, double t0, double t1, int *istart) {
 			return(0);
 		}
 		stor_delay(y);
-		return(1);
-	}
-	/* cvode(command,y,t,n,tout,kflag,atol,rtol)
- command =0 continue, 1 is start 2 finish   */
-	if(METHOD==METHOD_GEAR) {
-		gear(NODE,&t,t1,y,HMIN,HMAX,TOLER,2,error,&kflag,istart,WORK);
+		break;
+	case METHOD_CVODE:
+		/* cvode(command,y,t,n,tout,kflag,atol,rtol)
+		 * command = 0 continue, 1 is start 2 finish
+		 */
+		cvode(istart,y,&t,NODE,t1,&kflag,&TOLER,&ATOLER);
 		if(kflag<0) {
-			ping();
-			err_msg(gear_err_msg(kflag));
+			cvode_err_msg(kflag);
 			return(0);
 		}
 		stor_delay(y);
-		return(1);
-	}
-	if(METHOD==METHOD_DISCRETE) {
-		nit=fabs(t0-t1);
-		dt=dt/fabs(dt);
+		break;
+	case METHOD_DP5:
+	case METHOD_DP83:
+		dormpri(istart,y,&t,NODE,t1,&TOLER,&ATOLER,METHOD-METHOD_DP5,&kflag);
+		if(kflag!=1) {
+			dormpri_err(kflag);
+			return(0);
+		}
+		stor_delay(y);
+		break;
+	case METHOD_RB23:
+		rb23(y,&t,t1,istart,NODE,WORK,&kflag);
+		if(kflag<0) {
+			err_msg("Step size too small");
+			return(0);
+		}
+		stor_delay(y);
+		break;
+	default:
+		z=(t1-t0)/dt;
+		nit=(int)z;
 		kflag=solver(y,&t,dt,nit,NODE,istart,WORK);
-		return(1);
-	}
-	z=(t1-t0)/dt;
-	nit=(int)z;
-	kflag=solver(y,&t,dt,nit,NODE,istart,WORK);
 
-	if(kflag<0)
-		return(0);
-	if((dt<0 && t>t1) || (dt>0 && t<t1)) {
-		dt=t1-t;
-		kflag=solver(y,&t,dt,1,NODE,istart,WORK);
 		if(kflag<0)
 			return(0);
+		if((dt<0 && t>t1) || (dt>0 && t<t1)) {
+			dt=t1-t;
+			kflag=solver(y,&t,dt,1,NODE,istart,WORK);
+			if(kflag<0)
+				return(0);
+		}
 	}
-	return(1);
+	return 1;
 }
 
 
@@ -398,7 +398,7 @@ static int get_fit_params(void) {
 		sprintf(fin.parlist1,"%s",values[2]);
 		sprintf(fin.collist,"%s",values[6]);
 		sprintf(fin.parlist2,"%s",values[7]);
-		return(1);
+		return 1;
 	}
 	return(0);
 }
@@ -484,7 +484,7 @@ static int marlevstep(double *t0, double *y0, double *y, double *sig, double *a,
 				covar[j+k*npars]=oneda[k];
 			}
 		}
-		return(1);
+		return 1;
 	}
 	for(j=0;j<npars;j++) {
 		atry[j]=a[j]+da[j];
@@ -510,7 +510,7 @@ static int marlevstep(double *t0, double *y0, double *y, double *sig, double *a,
 		*alambda *= 10.0;
 		/* *chisq=*ochisq; */
 	}
-	return(1);
+	return 1;
 }
 
 
@@ -554,7 +554,7 @@ static int mrqcof(double *t0, double *y0, double *y, double *sig, double *a,
 */
 		}
 	}
-	return(1);
+	return 1;
 }
 
 
@@ -785,7 +785,7 @@ static int run_fit(char *filename, int npts, int npars, int nvars, int maxiter, 
 		free(t0);
 		free(y);
 
-		return(1);
+		return 1;
 	}
 	ictrl=2;
 	marlevstep(t0,y0,y,sig,a,npts,nvars,npars,
@@ -811,5 +811,5 @@ static int run_fit(char *filename, int npts, int npars, int nvars, int maxiter, 
 	free(t0);
 	free(y);
 
-	return(1);
+	return 1;
 }

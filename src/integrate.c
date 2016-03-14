@@ -1107,7 +1107,7 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 				return(1);
 			}
 			break;
-		default: {
+		default:
 			MSWTCH(xpv.x,x);
 			kflag=solver(xpv.x,t,dt,nout,nodes,start,WORK);
 			MSWTCH(x,xpv.x);
@@ -1128,7 +1128,6 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 				LastTime=*t;
 				return(1);
 			}
-		}
 		}
 		/*   START POST INTEGRATE STUFF */
 		extra(x,*t,NODE,NEQ);
