@@ -14,7 +14,6 @@
 #include <string.h>
 
 #include "browse.h"
-#include "do_fit.h"
 #include "form_ode.h"
 #include "ggets.h"
 #include "histogram.h"

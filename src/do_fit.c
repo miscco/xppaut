@@ -10,6 +10,7 @@
 #include "derived.h"
 #include "form_ode.h"
 #include "ggets.h"
+#include "integrate.h"
 #include "load_eqn.h"
 #include "do_fit.h"
 #include "numerics.h"
@@ -66,83 +67,6 @@ void init_fit_info(void) {
 	fin.npts=0;
 	fin.maxiter=20;
 	fin.file[0]=0;
-}
-
-
-int one_step_int(double *y, double t0, double t1, int *istart) {
-	int nit;
-	int kflag;
-	double dt=DELTA_T;
-	double z;
-	double error[MAXODE];
-	double t=t0;
-	switch(METHOD) {
-	case METHOD_DISCRETE:
-		nit=fabs(t0-t1);
-		dt=dt/fabs(dt);
-		kflag=solver(y,&t,dt,nit,NODE,istart,WORK);
-		break;
-	case METHOD_GEAR:
-		gear(NODE,&t,t1,y,HMIN,HMAX,TOLER,2,error,&kflag,istart,WORK);
-		if(kflag<0) {
-			gear_err_msg(kflag);
-			return 0;
-		}
-		stor_delay(y);
-		break;
-	case METHOD_RKQS:
-	case METHOD_STIFF:
-		adaptive(y,NODE,&t,t1,TOLER,&dt,
-				 HMIN,WORK,&kflag,NEWT_ERR,METHOD,istart);
-		if(kflag) {
-			adaptive_err_msg(kflag);
-			return 0;
-		}
-		stor_delay(y);
-		break;
-	case METHOD_CVODE:
-		/* cvode(command,y,t,n,tout,kflag,atol,rtol)
-		 * command = 0 continue, 1 is start 2 finish
-		 */
-		cvode(istart,y,&t,NODE,t1,&kflag,&TOLER,&ATOLER);
-		if(kflag<0) {
-			cvode_err_msg(kflag);
-			return 0;
-		}
-		stor_delay(y);
-		break;
-	case METHOD_DP5:
-	case METHOD_DP83:
-		dormpri(istart,y,&t,NODE,t1,&TOLER,&ATOLER,METHOD-METHOD_DP5,&kflag);
-		if(kflag!=1) {
-			dormpri_err_msg(kflag);
-			return 0;
-		}
-		stor_delay(y);
-		break;
-	case METHOD_RB23:
-		rb23(y,&t,t1,istart,NODE,WORK,&kflag);
-		if(kflag<0) {
-			err_msg("Step size too small");
-			return 0;
-		}
-		stor_delay(y);
-		break;
-	default:
-		z=(t1-t0)/dt;
-		nit=(int)z;
-		kflag=solver(y,&t,dt,nit,NODE,istart,WORK);
-
-		if(kflag<0)
-			return 0;
-		if((dt<0 && t>t1) || (dt>0 && t<t1)) {
-			dt=t1-t;
-			kflag=solver(y,&t,dt,1,NODE,istart,WORK);
-			if(kflag<0)
-				return 0;
-		}
-	}
-	return 1;
 }
 
 

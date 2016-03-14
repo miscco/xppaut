@@ -66,6 +66,7 @@ int integrate(double *t, double *x, double tend, double dt, int count, int nout,
 void integrate_init_range(void);
 void integrate_setup_range(void);
 int ode_int(double *y, double *t, int *istart);
+int one_step_int(double *y, double t0, double t1, int *istart);
 void restore(int i1, int i2);
 void run_now(void);
 void send_halt(double *y, double t);
