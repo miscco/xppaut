@@ -748,7 +748,7 @@ static void io_parameters(int f, FILE *fp) {
 			io_double(&z,fp,f," ");
 			set_val(upar_names[i],z);
 			if(!XPPBatch) {
-				index=find_user_name(PARAMBOX,upar_names[i]);
+				index=find_user_name(PARAMETER_BOX,upar_names[i]);
 				if(index>=0) {
 					sprintf(junk,"%.16g",z);
 					set_edit_params(&ParamBox,index,junk);

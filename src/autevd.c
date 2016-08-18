@@ -5,21 +5,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "autlim.h"
-#include "auto/auto_c.h"
-#include "auto/auto_def2.h"
 #include "auto_nox.h"
 #include "diagram.h"
 #include "solver/gear.h"
 #include "xAuto.h"
 
 /* --- Macros --- */
-#define SPECIAL 5
-#define SPER 3
-#define UPER 4
-#define SEQ 1
-#define UEQ 2
-
 #define MAXDIMHET 12
 #define MAXDIMHOM 24
 
@@ -130,20 +121,20 @@ void send_mult(int ibr, int ntot, int n, doublecomplex *ev) {
 /* Only unit 8,3 or q.prb is important; all others are unnecesary */
 int get_bif_type(int ibr, int ntot, int lab) {
 
-	int type=SEQ;
+	int type=STABLE_EQUILIBRIUM;
 	if(ibr<0 && ntot<0) {
-		type=SPER;
+		type=STABLE_PERIODIC;
 	}
 	if(ibr<0 && ntot>0) {
-		type=UPER;
+		type=UNSTABLE_PERIODIC;
 	}
 	if(ibr>0 && ntot>0) {
-		type=UEQ;
+		type=UNSTABLE_EQUILIBRIUM;
 	}
 	if(ibr>0 && ntot<0) {
-		type=SEQ;
+		type=STABLE_EQUILIBRIUM;
 	}
-	return(type);
+	return type;
 }
 
 

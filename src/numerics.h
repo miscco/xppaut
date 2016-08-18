@@ -18,7 +18,6 @@ typedef enum {
 	METHOD_DP83,
 	METHOD_RB23,
 	METHOD_SYMPLECT,
-
 	NUM_METHODS
 } Method;
 

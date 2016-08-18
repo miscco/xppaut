@@ -28,6 +28,7 @@
 #include "menu.h"
 #include "menudrive.h"
 #include "menus.h"
+#include "mykeydef.h"
 #include "parserslow.h"
 #include "pop_list.h"
 #include "pp_shoot.h"
@@ -286,7 +287,7 @@ void get_num_par(int ch) {
 		/*lookup table */
 		new_lookup();
 		break;
-	case 27:
+	case ESC:
 		do_meth();
 		TEND=fabs(TEND);
 		alloc_meth();

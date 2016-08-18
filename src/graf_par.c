@@ -10,6 +10,7 @@
 
 #include "aniparse.h"
 #include "arrayplot.h"
+#include "auto_nox.h"
 #include "auto_x11.h"
 #include "axes2.h"
 #include "browse.h"
@@ -37,11 +38,12 @@
 #include "xpplim.h"
 
 /* --- Macros --- */
-#define lsSEQ 0
-#define lsUEQ 1
-#define lsSPER 8
-#define lsUPER 9
-
+enum xppLineStyle {
+	lsSTABLE_EQUILIBRIUM = 0,
+	lsUNSTABLE_EQUILIBRIUM,
+	lsSTABLE_PERIODIC = 8,
+	lsUNSTABLE_PERIODIC = 9
+};
 
 /* --- Types --- */
 typedef struct {
@@ -545,15 +547,15 @@ static void add_bd_crv(float *x, float *y, int len, int type, int ncrv) {
 		my_bd.y[ncrv][i]=y[i];
 	}
 	my_bd.npts[ncrv]=len;
-	i=lsSEQ;
-	if(type==UPER) {
-		i=lsUPER;
+	i=lsSTABLE_EQUILIBRIUM;
+	if(type==UNSTABLE_PERIODIC) {
+		i=lsUNSTABLE_PERIODIC;
 	}
-	if(type==SPER) {
-		i=lsSPER;
+	if(type==STABLE_PERIODIC) {
+		i=lsSTABLE_PERIODIC;
 	}
-	if(type==CUEQ) {
-		i=lsUEQ;
+	if(type==UNSTABLE_EQUILIBRIUM) {
+		i=lsUNSTABLE_EQUILIBRIUM;
 	}
 	my_bd.color[ncrv]=i;
 }
@@ -1278,7 +1280,7 @@ static void read_bd(FILE *fp) {
 		} else {
 			add_bd_crv(x,ylo,len,oldtype,ncrv);
 			ncrv++;
-			if(oldtype==UPER || oldtype==SPER) {
+			if(oldtype==UNSTABLE_PERIODIC || oldtype==STABLE_PERIODIC) {
 				add_bd_crv(x,yhi,len,oldtype,ncrv);
 				ncrv++;
 			}
@@ -1298,7 +1300,7 @@ static void read_bd(FILE *fp) {
 	if(len>1) {
 		add_bd_crv(x,ylo,len,oldtype,ncrv);
 		ncrv++;
-		if(oldtype==UPER || oldtype==SPER) {
+		if(oldtype==UNSTABLE_PERIODIC || oldtype==STABLE_PERIODIC) {
 			add_bd_crv(x,yhi,len,oldtype,ncrv);
 			ncrv++;
 		}

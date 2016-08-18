@@ -8,6 +8,14 @@
 /* --- Macros --- */
 #define MAX_AUT_PER 10
 
+enum BifurcationType {
+	STABLE_EQUILIBRIUM = 1,
+	UNSTABLE_EQUILIBRIUM,
+	STABLE_PERIODIC,
+	UNSTABLE_PERIODIC,
+	SPECIAL
+};
+
 /* --- Types --- */
 typedef struct {
 	int irot;

@@ -230,7 +230,7 @@ static void txtview_keypress(XEvent ev) {
 			txtview_press(txtview.pgup,0,0);
 			return;
 		}
-		if(ks==PGDN) {
+		if(ks==PGDOWN) {
 			txtview_press(txtview.pgdn,0,0);
 			return;
 		}

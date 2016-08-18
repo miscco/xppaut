@@ -492,7 +492,7 @@ static void browse_keypress(XEvent ev, int *used, BROWSER *b) {
 			data_pgup(b);
 			return;
 		}
-		if(ks==PGDN) {
+		if(ks==PGDOWN) {
 			data_pgdn(b);
 			return;
 		}

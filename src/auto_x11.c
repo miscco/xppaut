@@ -966,7 +966,7 @@ void traverse_diagram(void) {
 				CUR_DIAGRAM=d;
 				traverse_out(d,&ix,&iy,1);
 				break;
-			case PGDN: /*REVERSE TAB*/
+			case PGDOWN: /*REVERSE TAB*/
 				XORCross(ix,iy);
 				while(1) {
 					dnew=d->prev;

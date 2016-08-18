@@ -512,7 +512,7 @@ int do_range(double *x, int flag) {
 	if(range.rtype==2) {
 		nit2=range.steps2;
 	}
-	if(range.type==PARAMBOX) {
+	if(range.type==PARAMETER_BOX) {
 		get_val(range.item,&temp);
 	}
 	alloc_liap(nit); /* make space */
@@ -526,7 +526,7 @@ int do_range(double *x, int flag) {
 		} else  {
 			dpar2=(phigh2-plow2)/(double)nit;
 		}
-		if(range.type2==PARAMBOX) {
+		if(range.type2==PARAMETER_BOX) {
 			get_val(range.item2,&temp2);
 		}
 	}
@@ -570,7 +570,7 @@ int do_range(double *x, int flag) {
 						}
 					}
 				}
-				if(itype==ICBOX) {
+				if(itype==INITIAL_CONDITION_BOX) {
 					x[ivar]=p;
 				} else {
 					set_val(range.item,p);
@@ -578,7 +578,7 @@ int do_range(double *x, int flag) {
 					re_evaluate_kernels();
 				}
 				if(range.rtype>0) {
-					if(itype2==ICBOX) {
+					if(itype2==INITIAL_CONDITION_BOX) {
 						x[ivar2]=p2;
 					} else {
 						set_val(range.item2,p2);
@@ -659,11 +659,11 @@ int do_range(double *x, int flag) {
 	} else  {
 		get_ic(0,x);
 	}
-	if(range.type==PARAMBOX) {
+	if(range.type==PARAMETER_BOX) {
 		set_val(range.item,temp);
 	}
 	if(range.rtype>0) {
-		if(range.type2==PARAMBOX) {
+		if(range.type2==PARAMETER_BOX) {
 			set_val(range.item2,temp2);
 		}
 	}
@@ -2310,18 +2310,18 @@ static void plot_the_graphs(float *xv,float *xvold,int node,int neq,double ddt,i
 static int range_item(void) {
 	int i;
 	char bob[DEFAULT_STRING_LENGTH];
-	i=find_user_name(PARAMBOX,range.item);
+	i=find_user_name(PARAMETER_BOX,range.item);
 	if(i>-1) {
-		range.type=PARAMBOX;
+		range.type=PARAMETER_BOX;
 		range.index=i;
 	} else {
-		i=find_user_name(ICBOX,range.item);
+		i=find_user_name(INITIAL_CONDITION_BOX,range.item);
 		if(i<=-1) {
 			sprintf(bob," %s is not a parameter or variable !",range.item);
 			err_msg(bob);
 			return 0;
 		}
-		range.type=ICBOX;
+		range.type=INITIAL_CONDITION_BOX;
 		range.index=i;
 	}
 	return 1;
@@ -2331,18 +2331,18 @@ static int range_item(void) {
 static int range_item2(void) {
 	int i;
 	char bob[DEFAULT_STRING_LENGTH];
-	i=find_user_name(PARAMBOX,range.item2);
+	i=find_user_name(PARAMETER_BOX,range.item2);
 	if(i>-1) {
-		range.type2=PARAMBOX;
+		range.type2=PARAMETER_BOX;
 		range.index2=i;
 	} else {
-		i=find_user_name(ICBOX,range.item2);
+		i=find_user_name(INITIAL_CONDITION_BOX,range.item2);
 		if(i<=-1) {
 			sprintf(bob," %s is not a parameter or variable !",range.item2);
 			err_msg(bob);
 			return 0;
 		}
-		range.type2=ICBOX;
+		range.type2=INITIAL_CONDITION_BOX;
 		range.index2=i;
 	}
 	return 1;
@@ -2436,7 +2436,7 @@ static int set_up_eq_range(void) {
 	status=do_string_box(8,8,1,"Range Equilibria",n,values,45);
 	if(status!=0) {
 		strcpy(eq_range.item,values[0]);
-		i=find_user_name(PARAMBOX,eq_range.item);
+		i=find_user_name(PARAMETER_BOX,eq_range.item);
 		if(i<0) {
 			err_msg("No such parameter");
 			return 0;

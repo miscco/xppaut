@@ -210,9 +210,9 @@ int compile_flags(void) {
 			flag[j].comcond[k]=command[k];
 		}
 		for(i=0;i<flag[j].nevents;i++) {
-			index=find_user_name(ICBOX,flag[j].lhsname[i]);
+			index=find_user_name(INITIAL_CONDITION_BOX,flag[j].lhsname[i]);
 			if(index<0) {
-				index=find_user_name(PARAMBOX,flag[j].lhsname[i]);
+				index=find_user_name(PARAMETER_BOX,flag[j].lhsname[i]);
 				if(index<0) {
 					if(strcasecmp(flag[j].lhsname[i],"out_put")==0)	{
 						flag[j].type[i]=2;

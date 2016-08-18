@@ -1154,11 +1154,11 @@ static void do_intern_set(char *name1, char *value) {
 	char name[20];
 	convert(name1,name);
 
-	i=find_user_name(ICBOX,name);
+	i=find_user_name(INITIAL_CONDITION_BOX,name);
 	if(i>-1) {
 		last_ic[i]=atof(value);
 	} else {
-		i=find_user_name(PARAMBOX,name);
+		i=find_user_name(PARAMETER_BOX,name);
 		if(i>-1) {
 			set_val(name,atof(value));
 		} else {

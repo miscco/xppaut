@@ -6,10 +6,12 @@
 
 /* --- Macros --- */
 /* type values */
-#define PARAMBOX 1
-#define ICBOX 2
-#define DELAYBOX 3
-#define BCBOX 4
+enum xppBoxType {
+	PARAMETER_BOX = 1,
+	INITIAL_CONDITION_BOX,
+	DELAY_BOX,
+	BOUNDARY_CONDITION_BOX
+};
 
 /* --- Types --- */
 typedef struct {

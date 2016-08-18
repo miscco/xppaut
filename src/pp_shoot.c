@@ -30,14 +30,16 @@
 #include "xpplim.h"
 
 /* --- Macros --- */
-#define NOCHANGE 2
-#define GOODSHOT 1
-#define NUMICS -1
-#define TOOMANY -2
-#define BADJAC -3
-#define BADINT -4
-#define ABORT -5
-#define ABORT_ALL -6
+enum xppShootResult {
+	ABORT_ALL,
+	ABORT,
+	BADINT,
+	BADJAC,
+	TOOMANY,
+	NUMICS,
+	GOODSHOT,
+	NOCHANGE
+};
 
 /* --- Forward declarations --- */
 static void bad_shoot(int iret);
@@ -467,14 +469,14 @@ static int set_up_periodic(int *ipar, int *ivar, double *sect, int *ishow) {
 
 	status=do_string_box(4,4,1,"Periodic BCs",n,values,45);
 	if(status!=0) {
-		i=find_user_name(PARAMBOX,values[0]);
+		i=find_user_name(PARAMETER_BOX,values[0]);
 		if(i>-1) {
 			*ipar=i;
 		} else {
 			err_msg("No such parameter");
 			return(0);
 		}
-		i=find_user_name(ICBOX,values[1]);
+		i=find_user_name(INITIAL_CONDITION_BOX,values[1]);
 		if(i>-1) {
 			*ivar=i;
 		} else {
@@ -511,7 +513,7 @@ static int set_up_sh_range(void) {
 	status=do_string_box(7,7,1,"Range Shoot",n,values,45);
 	if(status!=0) {
 		strcpy(shoot_range.item,values[0]);
-		i=find_user_name(PARAMBOX,shoot_range.item);
+		i=find_user_name(PARAMETER_BOX,shoot_range.item);
 		if(i<0) {
 			err_msg("No such parameter");
 			return(0);

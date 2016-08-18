@@ -271,10 +271,10 @@ void add_point(double *par, double per, double *uhigh, double *ulow, double *uba
 		return;
 	}
 	if((flag2>0) && (Auto.plot==P_P)) {
-		type1=CSEQ;
+		type1=STABLE_EQUILIBRIUM;
 	}
 	switch(type1) {
-	case CSEQ:
+	case STABLE_EQUILIBRIUM:
 		if(Auto.plot==PE_P || Auto.plot==FR_P) {
 			break;
 		}
@@ -292,7 +292,7 @@ void add_point(double *par, double per, double *uhigh, double *ulow, double *uba
 		auto_line(x,y1,Auto.lastx,Auto.lasty);
 		autobw();
 		break;
-	case CUEQ:
+	case UNSTABLE_EQUILIBRIUM:
 		if(Auto.plot==PE_P || Auto.plot==FR_P) {
 			break;
 		}
@@ -310,7 +310,7 @@ void add_point(double *par, double per, double *uhigh, double *ulow, double *uba
 		auto_line(x,y1,Auto.lastx,Auto.lasty);
 		autobw();
 		break;
-	case UPER:
+	case UNSTABLE_PERIODIC:
 		if(icp1!=Auto.icp1) {
 			break;
 		}
@@ -330,7 +330,7 @@ void add_point(double *par, double per, double *uhigh, double *ulow, double *uba
 		}
 		autobw();
 		break;
-	case SPER:
+	case STABLE_PERIODIC:
 		if(icp1!=Auto.icp1) {
 			break;
 		}
@@ -395,10 +395,10 @@ void add_ps_point(double *par, double per, double *uhigh, double *ulow, double *
 		return;
 	}
 	if((flag2>0) && (Auto.plot==P_P)) {
-		type1=CSEQ;
+		type1=STABLE_EQUILIBRIUM;
 	}
 	switch(type1) {
-	case CSEQ:
+	case STABLE_EQUILIBRIUM:
 		if(Auto.plot==PE_P || Auto.plot==FR_P) {
 			break;
 		}
@@ -418,7 +418,7 @@ void add_ps_point(double *par, double per, double *uhigh, double *ulow, double *
 		}
 		line_abs((float)x,(float)y1,(float)Auto.lastx,(float)Auto.lasty);
 		break;
-	case CUEQ:
+	case UNSTABLE_EQUILIBRIUM:
 		if(Auto.plot==PE_P || Auto.plot==FR_P) {
 			break;
 		}
@@ -439,7 +439,7 @@ void add_ps_point(double *par, double per, double *uhigh, double *ulow, double *
 		}
 		line_abs((float)x,(float)y1,(float)Auto.lastx,(float)Auto.lasty);
 		break;
-	case UPER:
+	case UNSTABLE_PERIODIC:
 		if(PS_Color) {
 			set_linestyle(9);
 		} else {
@@ -455,7 +455,7 @@ void add_ps_point(double *par, double per, double *uhigh, double *ulow, double *
 		point_abs((float)x,(float)y1);
 		point_abs((float)x,(float)y2);
 		break;
-	case SPER:
+	case STABLE_PERIODIC:
 		if(PS_Color) {
 			set_linestyle(7);
 		} else {
@@ -681,7 +681,7 @@ void auto_params(void) {
 	if(status!=0) {
 		for(i=0;i<8;i++) {
 			if(i<NAutoPar) {
-				in=find_user_name(PARAMBOX,values[i]);
+				in=find_user_name(PARAMETER_BOX,values[i]);
 				if(in>=0) {
 					AutoPar[i]=in;
 					in=get_param_index(values[i]);
@@ -824,7 +824,7 @@ void auto_plot_par(void) {
 			Auto.var=i-1;
 		}
 		/*  Now check the parameters  */
-		i1=find_user_name(PARAMBOX,values[1]);
+		i1=find_user_name(PARAMETER_BOX,values[1]);
 		if(i1>=0) {
 			for(i=0;i<NAutoPar;i++) {
 				if(i1==AutoPar[i]) {
@@ -832,7 +832,7 @@ void auto_plot_par(void) {
 				}
 			}
 		}
-		i1=find_user_name(PARAMBOX,values[2]);
+		i1=find_user_name(PARAMETER_BOX,values[2]);
 		if(i1>=0) {
 			for(i=0;i<NAutoPar;i++) {
 				if(i1==AutoPar[i]) {
@@ -1438,16 +1438,16 @@ int yes_reset_auto(void) {
 /* color plot stuff */
 static void colset(int type) {
 	switch(type) {
-	case CSEQ:
+	case STABLE_EQUILIBRIUM:
 		autocol(SEc);
 		break;
-	case CUEQ:
+	case UNSTABLE_EQUILIBRIUM:
 		autocol(UEc);
 		break;
-	case SPER:
+	case STABLE_PERIODIC:
 		autocol(SPc);
 		break;
-	case UPER:
+	case UNSTABLE_PERIODIC:
 		autocol(UPc);
 		break;
 	}
@@ -1723,7 +1723,7 @@ static int auto_name_to_index(char *s) {
 	if(in==0) {
 		return(10);
 	}
-	in=find_user_name(PARAMBOX,s);
+	in=find_user_name(PARAMETER_BOX,s);
 	for(i=0;i<NAutoPar;i++) {
 		if(AutoPar[i]==in) {
 			return(i);

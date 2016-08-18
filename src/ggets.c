@@ -166,9 +166,9 @@ int get_key_press(XEvent *ev) {
 			  ((ks>=XK_space) && (ks<=XK_asciitilde))) {
 		return((int)buf[0]);
 	} else if(ks==XK_BackSpace) {
-		return(BKSP);
+		return(BACKSPACE);
 	} else if(ks==XK_Delete) {
-		return(DEL);
+		return(DELETE);
 	} else if(ks==XK_Tab) {
 		return(TAB);
 	} else if(ks==XK_Home) {
@@ -186,7 +186,7 @@ int get_key_press(XEvent *ev) {
 	} else if(ks==XK_PgUp) {
 		return(PGUP);
 	} else if(ks==XK_PgDn) {
-		return(PGDN);
+		return(PGDOWN);
 	} else {
 		return(BADKEY);
 	}
@@ -381,7 +381,7 @@ void edit_window(Window w, int *pos, char *value, int *col, int *done, int ch) {
 	case DOWN:
 	case UP:
 	case PGUP:
-	case PGDN:
+	case PGDOWN:
 		return;    /* junk key  */
 	case ESC:
 		*done=-1;  /* quit without saving */
@@ -393,8 +393,8 @@ void edit_window(Window w, int *pos, char *value, int *col, int *done, int ch) {
 			*done=2;
 		}
 		return;   /* save this guy */
-	case BKSP:
-	case DEL:
+	case BACKSPACE:
+	case DELETE:
 		if(*pos>0) {
 			memmov(&value[*pos-1],&value[*pos],strlen(value)-*pos+1);
 			*pos=*pos-1;
